@@ -1,24 +1,18 @@
 package clientCore;
+/**
+ * @author Yuri Kalinin 
+ * version 1.0.0
+ **/ 
 
 import javax.mail.MessagingException;
 
-/**
- * @author Yuri Kalinin
- * version 1.0.0
- *
- */
 public class Run {
 
-	public static void main(String[] args) {
-		MailReader  readMail = new MailReader();
-		try {
-			readMail.getMassage(readMail.connectionInbox());
-			
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public static void main(String[] args) throws MessagingException {
+		MailReader readMail = new MailReader();
+		MailWrite writeMail = new MailWrite();
+		readMail.getMassage(readMail.connectionInbox());
+		writeMail.sendEmail();
 
 	}
 
