@@ -1,6 +1,7 @@
 package clientCore;
 
 import java.util.Properties;
+import java.util.Scanner;
 
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -10,18 +11,34 @@ import javax.mail.Session;
 import javax.mail.Store;
 
 /**
- * @author Yuri Kalinin 
- * read e-mails from inbox folder on the server 
- * version 1.0.0
+ * @author Yuri Kalinin read e-mails from inbox folder on the server version
+ *         1.0.1
  *
  */
 public class MailReader {
+
 	// --------- connection parameter--------------
-	private String hostName = ""; // TODO add the host name
-	private String userName = ""; // TODO add the user name
-	private String password = ""; // TODO add the password
+	private String hostName;
+	private String userName;
+	private String password;
 	private Folder inbox;
 	private Store store;
+
+	public MailReader(Object hostName, Object userName) {
+
+		this.hostName = hostName.toString();
+		System.out.println(hostName.toString());
+		
+		this.userName = userName.toString();
+		System.out.println(userName.toString());
+		// ---------testing password---------
+		System.out.print("Enter your password->");
+		Scanner input = new Scanner(System.in);
+		password = input.nextLine();
+		// -------------------------------------
+	}
+
+	
 
 	public Folder connectionInbox() throws MessagingException {
 
@@ -67,8 +84,7 @@ public class MailReader {
 
 		for (int i = 0; i < messages.length; i++) {
 
-			inbox.close(true);
-			store.close();
+	
 
 			// --------------just for testing-----------------------
 			System.out.println("Message " + (i + 1));
@@ -77,6 +93,8 @@ public class MailReader {
 			System.out.println("Sent Date : " + messages[i].getSentDate());
 			System.out.println();
 		}
+		inbox.close(true);
+		store.close();
 		return messages;
 	}
 }

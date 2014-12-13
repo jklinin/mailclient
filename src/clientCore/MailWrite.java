@@ -3,10 +3,11 @@ package clientCore;
 /**
  * send EMail to the server 
  * @author Yuri Kalinin
- * version 1.0.0
+ * version 1.0.1
  *
  */
 import java.util.Properties;
+import java.util.Scanner;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,9 +19,20 @@ import javax.mail.internet.MimeMessage;
 
 public class MailWrite {
 
-	private String userName = ""; // TODO add userName email adr
-	private String password = ""; // TODO add password for email box
-	private String hostName = ""; // TODO server
+	private String userName;
+	private String password;
+	private String hostName ;
+
+	public MailWrite(Object hostName, Object userName) {
+
+		this.hostName = hostName.toString();
+		this.userName = userName.toString();
+		// ---------testing password---------
+		System.out.print("Enter your password->");
+		Scanner input = new Scanner(System.in);
+		password = input.nextLine();
+		// -------------------------------------
+	}
 
 	public void sendEmail(String fromEmail, String toEmail, String subject,
 			String textEmail) {
