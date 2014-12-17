@@ -1,4 +1,4 @@
-/*
+
 package clientCore;
 
 import java.io.IOException;
@@ -13,15 +13,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-*//*
-
-*/
 /**
  * @author Yuri Kalinin
  * read settings from XML file
  * version 1.0.0
  *
- *//*
+ */
 
 
 public class ReadXML {
@@ -66,4 +63,4 @@ public ArrayList getSettings(){
 }
 }
 
-*/
+

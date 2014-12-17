@@ -1,15 +1,14 @@
-/*
 
 package clientCore;
 
 
-*/
+
 /**
  * send EMail to the server 
  * @author Yuri Kalinin
  * version 1.0.1
  *
- *//*
+ */
 
 
 import java.util.Properties;
@@ -76,4 +75,4 @@ public class MailWrite {
 		}
 	}
 }
-*/
+

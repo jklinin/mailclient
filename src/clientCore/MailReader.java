@@ -1,4 +1,4 @@
-/*
+
 package clientCore;
 
 import java.util.Properties;
@@ -11,14 +11,12 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-*/
+
 /**
  * @author Yuri Kalinin read e-mails from inbox folder on the server version
  *         1.0.1
  *
- *//*
-*/
-/*
+ */
 public class MailReader {
 
 	// --------- connection parameter--------------
@@ -69,15 +67,12 @@ public class MailReader {
 
 	}
 
-	*//*
-*/
+
 /**
 	 * This method returns array of messages in the form
 	 * 
 	 * 
-	 *//*
-*/
-/*
+	 */
 
 	public Message[] getMassage(Folder inbox) throws MessagingException {
 		Message messages[] = null;
@@ -106,4 +101,4 @@ public class MailReader {
 		return messages;
 	}
 }
-*/
+
