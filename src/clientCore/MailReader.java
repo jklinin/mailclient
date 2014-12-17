@@ -1,4 +1,3 @@
-
 package clientCore;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-
 /**
  * @author Yuri Kalinin read e-mails from inbox folder on the server version
  *         1.0.1
@@ -28,12 +26,13 @@ public class MailReader {
 	private String password;
 	private Folder inbox;
 	private Store store;
+	private Message messages[];
 
 	public MailReader(Object hostName, Object userName) {
 
 		this.hostName = hostName.toString();
 		System.out.println(hostName.toString());
-		
+
 		this.userName = userName.toString();
 		System.out.println(userName.toString());
 		// ---------testing password---------
@@ -42,8 +41,6 @@ public class MailReader {
 		password = input.nextLine();
 		// -------------------------------------
 	}
-
-	
 
 	public Folder connectionInbox() throws MessagingException {
 
@@ -70,15 +67,15 @@ public class MailReader {
 
 	}
 
-
-/**
-	 * This method returns array of messages in the form
+	/**
+	 * This method reads the messages from server
 	 * 
 	 * 
 	 */
 
-	public Message[] getMassage(Folder inbox) throws MessagingException {
-		Message messages[] = null;
+
+	public void getMassage(Folder inbox) throws MessagingException {
+//		Message messages[] = null;
 		try {
 			messages = inbox.getMessages();
 		} catch (MessagingException e) {
@@ -88,10 +85,8 @@ public class MailReader {
 		if (messages.length == 0)
 			System.out.println("No messages found.");
 		Object content;
-		  String s;
+		String s;
 		for (int i = 0; i < messages.length; i++) {
-
-	
 
 			// --------------just for testing-----------------------
 			System.out.println("Message " + (i + 1));
@@ -107,13 +102,12 @@ public class MailReader {
 					System.out.println(s);
 				} else if (content instanceof Multipart) {
 					for (int j = 0; j < ((Multipart) content).getCount(); j++) {
-						Multipart mp = (Multipart)content; 
+						Multipart mp = (Multipart) content;
 						BodyPart bodyPart = mp.getBodyPart(j);
-						// if (bodyPart.isMimeType("text/*")) {
+
 						s = (String) bodyPart.getContent();
 						System.out.println(s);
 
-						// }
 					}
 				}
 			} catch (IOException e) {
@@ -123,7 +117,13 @@ public class MailReader {
 		}
 		inbox.close(true);
 		store.close();
+		
+	}
+	/**
+	 * This method returns array of massage( e.g for gui)
+	 */
+	public Message [] getMassagesArray(){
 		return messages;
+		
 	}
 }
-
