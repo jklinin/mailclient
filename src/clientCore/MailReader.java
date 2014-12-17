@@ -1,12 +1,15 @@
 
 package clientCore;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.Scanner;
 
+import javax.mail.BodyPart;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
@@ -84,7 +87,8 @@ public class MailReader {
 		}
 		if (messages.length == 0)
 			System.out.println("No messages found.");
-
+		Object content;
+		  String s;
 		for (int i = 0; i < messages.length; i++) {
 
 	
@@ -95,6 +99,27 @@ public class MailReader {
 			System.out.println("Subject : " + messages[i].getSubject());
 			System.out.println("Sent Date : " + messages[i].getSentDate());
 			System.out.println();
+
+			try {
+				content = messages[i].getContent();
+				if (content instanceof String) {
+					s = (String) content;
+					System.out.println(s);
+				} else if (content instanceof Multipart) {
+					for (int j = 0; j < ((Multipart) content).getCount(); j++) {
+						Multipart mp = (Multipart)content; 
+						BodyPart bodyPart = mp.getBodyPart(j);
+						// if (bodyPart.isMimeType("text/*")) {
+						s = (String) bodyPart.getContent();
+						System.out.println(s);
+
+						// }
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		inbox.close(true);
 		store.close();
