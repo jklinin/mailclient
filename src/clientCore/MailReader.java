@@ -18,7 +18,7 @@ import javax.mail.Store;
  *         1.0.1
  *
  */
-public class MailReader {
+public class MailReader implements UpdateMail {
 
 	// --------- connection parameter--------------
 	private String hostName;
@@ -42,7 +42,7 @@ public class MailReader {
 		// -------------------------------------
 	}
 
-	public Folder connectionInbox() throws MessagingException {
+	public void connectionInbox() throws MessagingException {
 
 		Properties properties = System.getProperties();
 		properties.setProperty("mail.pop3.host", hostName);
@@ -63,7 +63,7 @@ public class MailReader {
 			e.printStackTrace();
 		}
 
-		return inbox;
+		getMassage();
 
 	}
 
@@ -74,7 +74,7 @@ public class MailReader {
 	 */
 
 
-	public void getMassage(Folder inbox) throws MessagingException {
+	private void getMassage() throws MessagingException {
 //		Message messages[] = null;
 		try {
 			messages = inbox.getMessages();

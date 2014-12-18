@@ -24,10 +24,14 @@ public class Run {
 		readerXML.readSettings();
 		settings= readerXML.getSettings();
 //	just for testing
-		MailReader readMail = new MailReader(settings.get(0), settings.get(2));
+		UpdateMail readMail = new MailReader(settings.get(0), settings.get(2));
+		readMail.connectionInbox();
+		System.out.println("=====");
+		readMail.connectionInbox();
+		readMail.getMassagesArray();
 		MailWrite writeMail = new MailWrite(settings.get(1), settings.get(2)); 
-		readMail.getMassage(readMail.connectionInbox());
-		 writeMail.sendEmail("project_test91@mail.ru","Email", "test", "test, test"); //put dest. emailadress into Email
+		
+		 writeMail.sendEmail("project_test91@mail.ru","project_test91@mail.ru", "test", "test, test"); //put dest. emailadress into Email
 
 	}
 }
