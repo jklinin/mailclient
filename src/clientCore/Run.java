@@ -21,14 +21,20 @@ public class Run {
 
 	public static void main(String[] args) throws MessagingException {
 		ReadXML readerXML = new ReadXML();
+		
+			
+		
+
+
 		readerXML.readSettings();
 		settings = readerXML.getSettings();
 		// just for testing
 		UpdateMail readMail = new MailReader(settings.get(0), settings.get(2));
+		
 		readMail.connectionInbox();
 		readMail.getMassagesArray();
-		SendMail writeMail = new MailWrite(settings.get(1), settings.get(2));
-		writeMail.sendEmail("project_test91@mail.ru", "project_test91@mail.ru",
+		SendMail writteMail = new MailWrite(settings.get(1), settings.get(2));
+		writteMail.sendEmail("project_test91@mail.ru", "project_test91@mail.ru",
 				"test", "test, test"); // put dest. emailadress into Email
 
 	}
