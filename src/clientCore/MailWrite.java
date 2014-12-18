@@ -22,7 +22,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class MailWrite {
+public class MailWrite implements SendMail{
 
 	private String userName;
 	private String password;
