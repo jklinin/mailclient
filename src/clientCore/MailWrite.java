@@ -74,5 +74,8 @@ public class MailWrite implements SendMail{
 			throw new RuntimeException(e);
 		}
 	}
+public void answerMail(String fromEmail, String toEmail, String subject, String textEmail){
+	sendEmail( fromEmail,  toEmail, "Re: "+subject,  textEmail);
+}
 }
 
