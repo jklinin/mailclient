@@ -11,7 +11,7 @@ import java.util.Date;
  * @serial number, subject, sent date, sender address, copy to address, hide
  *         copy to address, content, addresses to copies
  */
-public class MessagesDate implements Serializable, ReadEMaailFromFile {
+public class MessagesDate implements Serializable, ReadEMailFromFile {
 	private int number;
 	private String addressFrom;
 	private String subject;

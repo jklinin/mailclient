@@ -23,19 +23,13 @@ public class Run {
 
 		readMail.connectionInbox();
 		readMail.getMassagesArray();
-	/*	SendMail writteMail = new MailWrite(settings.get(1), settings.get(2));
-		writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
+//		SendMail writteMail = new MailWrite(settings.get(1), settings.get(2));
+//		writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
 																										// dest.
 																										// emailadress
 																										// into
 																										// Email
-*/	/*	ReadCSV readCSV = new ReadCSV();
-		try {
-			readCSV.readCSV();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+
 
 	}
 }
