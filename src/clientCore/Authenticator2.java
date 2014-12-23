@@ -10,7 +10,8 @@ class Authenticator2 extends JFrame {
 	final static boolean RIGHT_TO_LEFT = false;
 	private JButton login, cancel;
 	private static JButton buttonUpdateMail;
-	
+	private static JButton buttonNewMail;
+
 	JTextField userName;
 	JPasswordField password;
 
@@ -23,12 +24,23 @@ class Authenticator2 extends JFrame {
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
-		button = new JButton("New Email");
+		buttonNewMail = new JButton("New Email");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.fill = GridBagConstraints.VERTICAL;
 		c.gridx = 0;
 		c.gridy = 0;
-		pane.add(button, c);
+		buttonNewMail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == buttonNewMail) {
+					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(),
+					 Run.getSettingUserName());
+					 writteMail.answerMail("project_test91@mail.ru",
+					 "project_test91@mail.ru", "test", "test, test"); // put dest. emailadress into Email
+
+				}
+			}
+		});
+		pane.add(buttonNewMail, c);
 
 		button = new JButton("Button 2");
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -47,7 +59,7 @@ class Authenticator2 extends JFrame {
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
-					UpdateMail readMail = new MailReader(Run.getSettingProtocol(), Run.getSettingUserName());
+					UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName());
 					try {
 						readMail.connectionInbox();
 					} catch (MessagingException e1) {
@@ -57,7 +69,7 @@ class Authenticator2 extends JFrame {
 					readMail.getMassagesArray();
 				}
 			}
-				});
+		});
 		pane.add(buttonUpdateMail, c);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -157,7 +169,5 @@ class Authenticator2 extends JFrame {
 			frame.setVisible(true);
 		}
 	}
-
-	
 
 }

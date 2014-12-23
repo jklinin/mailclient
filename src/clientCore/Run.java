@@ -38,8 +38,12 @@ public class Run {
 		return settings.get(2);
 	}
 
-	public static Object getSettingProtocol() {
+	public static Object getSettingProtocolPOP() {
 		return settings.get(0);
+		
+	}
+	public static Object getSettingProtocolSMTP() {
+		return settings.get(1);
 		
 	}
 
