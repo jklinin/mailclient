@@ -1,12 +1,16 @@
 package clientCore;
 
+import javax.mail.MessagingException;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 
 class Authenticator2 extends JFrame {
 	final static boolean RIGHT_TO_LEFT = false;
-	JButton login, cancel;
+	private JButton login, cancel;
+	private static JButton buttonUpdateMail;
+	
 	JTextField userName;
 	JPasswordField password;
 
@@ -34,13 +38,27 @@ class Authenticator2 extends JFrame {
 		c.gridy = 0;
 		pane.add(button, c);
 
-		button = new JButton("Update");
+		buttonUpdateMail = new JButton("Update");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.0;
 		c.gridx = 2;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.CENTER;
-		pane.add(button, c);
+		buttonUpdateMail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == buttonUpdateMail) {
+					UpdateMail readMail = new MailReader(Run.getSettingProtocol(), Run.getSettingUserName());
+					try {
+						readMail.connectionInbox();
+					} catch (MessagingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					readMail.getMassagesArray();
+				}
+			}
+				});
+		pane.add(buttonUpdateMail, c);
 
 		JScrollPane scrollPane = new JScrollPane();
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -140,8 +158,6 @@ class Authenticator2 extends JFrame {
 		}
 	}
 
-	public static void main(String args[]) {
-		new Authenticator2();
-	}
+	
 
 }
