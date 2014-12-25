@@ -38,11 +38,12 @@ public class NewMailWindow extends JFrame {
 		sendMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == sendMail) {
-					
+
 					if (!emailadr.getText().equals("")) {
 						passwordDialog();
+
 						SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
-						if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), "test", emailbody.getText()) == true) {
+						if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true) {
 							dispose();
 						} else {
 							JOptionPane.showMessageDialog(null, "Please try again", "Error by sending", JOptionPane.ERROR_MESSAGE);
@@ -95,10 +96,10 @@ public class NewMailWindow extends JFrame {
 		c.gridy = 3;
 		getContentPane().add(label, c);
 
-		ccadr = new JTextField(20);
+		bccadr = new JTextField(20);
 		c.gridx = 2;
 		c.gridy = 3;
-		getContentPane().add(ccadr, c);
+		getContentPane().add(bccadr, c);
 
 		emailbody = new JEditorPane();
 		c.fill = GridBagConstraints.BOTH;
