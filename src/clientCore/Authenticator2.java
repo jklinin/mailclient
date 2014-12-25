@@ -20,7 +20,6 @@ class Authenticator2 extends JFrame {
 		d.setSize(960, 540);
 		frame.setSize(d);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		addComponentsToPane(frame.getContentPane());
 		frame.setVisible(true);
 
