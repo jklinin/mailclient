@@ -11,6 +11,7 @@ class Authenticator2 extends JFrame {
 	private JButton login, cancel;
 	private static JButton buttonUpdateMail;
 	private static JButton buttonNewMail;
+	private static String passwordMail;
 
 	JTextField userName;
 	JPasswordField password;
@@ -32,10 +33,13 @@ class Authenticator2 extends JFrame {
 		buttonNewMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
-					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(),
-					 Run.getSettingUserName());
-					 writteMail.answerMail("project_test91@mail.ru",
-					 "project_test91@mail.ru", "test", "test, test"); // put dest. emailadress into Email
+					passwordDialog();
+					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
+					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
+																														// dest.
+																														// emailadress
+																														// into
+																														// Email
 
 				}
 			}
@@ -59,16 +63,19 @@ class Authenticator2 extends JFrame {
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
-					UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName());
+					passwordDialog();
+					UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 					try {
 						readMail.connectionInbox();
 					} catch (MessagingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+
+						JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
+						// e1.printStackTrace();
 					}
 					readMail.getMassagesArray();
 				}
 			}
+
 		});
 		pane.add(buttonUpdateMail, c);
 
@@ -152,6 +159,14 @@ class Authenticator2 extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 
+	}
+
+	public static void passwordDialog() {
+		JPasswordField passwordField = new JPasswordField(10);
+		passwordField.setEchoChar('#');
+		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
+		System.out.println(passwordField.getPassword());
+		passwordMail = passwordField.getPassword().toString();
 	}
 
 	class WelcomeFrame extends JFrame {

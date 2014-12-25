@@ -39,18 +39,16 @@ public class MailReader implements UpdateMail {
 	private Message messages[];
 	private ArrayList<MessagesDate> messagesList = new ArrayList();
 
-	public MailReader(Object hostName, Object userName) {
+	public MailReader(Object hostName, Object userName, String passwordMail) {
 
 		this.hostName = hostName.toString();
 		System.out.println(hostName.toString());
 
 		this.userName = userName.toString();
 		System.out.println(userName.toString());
-		// ---------testing password---------
-		System.out.print("Enter your password->");
-		Scanner input = new Scanner(System.in);
-		password = input.nextLine();
-		// -------------------------------------
+		
+		password = passwordMail;
+		
 		messagesList = new ArrayList();
 	}
 
@@ -70,6 +68,7 @@ public class MailReader implements UpdateMail {
 			inbox = store.getFolder("Inbox");
 			inbox.open(Folder.READ_ONLY);
 		} catch (NoSuchProviderException e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -91,6 +90,7 @@ public class MailReader implements UpdateMail {
 		try {
 			messages = inbox.getMessages();
 		} catch (MessagingException e) {
+
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -108,7 +108,7 @@ public class MailReader implements UpdateMail {
 				System.out.println("TO : " + addressTO[j].toString());
 				toAddress.add(addressTO[j].toString());
 			}
-			
+
 			System.out.println("Subject : " + messages[i].getSubject());
 			System.out.println("Sent Date : " + messages[i].getSentDate());
 			ArrayList<String> copyOnAddress = new ArrayList();
@@ -136,8 +136,8 @@ public class MailReader implements UpdateMail {
 			}
 			System.out.println();
 
-			messagesList.add(new MessagesDate(messages[i].getMessageNumber(), messages[i].getFrom().toString(),toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, messages[i].getContent().toString()));
-			
+			messagesList.add(new MessagesDate(messages[i].getMessageNumber(), messages[i].getFrom().toString(), toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, messages[i].getContent().toString()));
+
 			try {
 				content = messages[i].getContent();
 				if (content instanceof String) {
@@ -163,8 +163,8 @@ public class MailReader implements UpdateMail {
 	}
 
 	/**
-	 * This method returns array of massages( e.g for gui)
-	 * this method don't read the file
+	 * This method returns array of massages( e.g for gui) this method don't
+	 * read the file
 	 */
 	public Message[] getMassagesArray() {
 
@@ -215,14 +215,15 @@ public class MailReader implements UpdateMail {
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream("messages.ser"));
 
 		ArrayList<MessagesDate> array = (ArrayList<MessagesDate>) in.readObject();
-		
-// -------------- just for testing of seril---------------------------------------
+
+		// -------------- just for testing of
+		// seril---------------------------------------
 		System.out.println(array.get(0).getNumber());
 		System.out.println(array.get(0).getAddressFrom());
 		System.out.println(array.get(0).getSubject());
-		if(array.get(0).getCopyOnAddres()!=null)
-		System.out.println(array.get(0).getCopyOnAddres());
-//--------------------------------------------------------------------------------
+		if (array.get(0).getCopyOnAddres() != null)
+			System.out.println(array.get(0).getCopyOnAddres());
+		// --------------------------------------------------------------------------------
 		in.close();
 		return array;
 
