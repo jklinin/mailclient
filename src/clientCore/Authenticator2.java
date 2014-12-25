@@ -70,7 +70,7 @@ class Authenticator2 extends JFrame {
 					} catch (MessagingException e1) {
 
 						JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
-						// e1.printStackTrace();
+						 e1.printStackTrace();
 					}
 					readMail.getMassagesArray();
 				}
@@ -166,7 +166,8 @@ class Authenticator2 extends JFrame {
 		passwordField.setEchoChar('#');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
 		System.out.println(passwordField.getPassword());
-		passwordMail = passwordField.getPassword().toString();
+		passwordMail = String.valueOf(passwordField.getPassword());
+		System.out.println(passwordMail);
 	}
 
 	class WelcomeFrame extends JFrame {
