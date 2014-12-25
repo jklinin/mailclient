@@ -36,9 +36,9 @@ public class NewMailWindow extends JFrame {
 		sendMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == sendMail) {
-					passwordDialog();
-					if (emailadr.getText() != null) {
-
+					
+					if (!emailadr.getText().equals("")) {
+						passwordDialog();
 						SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
 						if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), "test", emailbody.getText()) == true) {
 							dispose();
