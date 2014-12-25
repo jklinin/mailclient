@@ -34,7 +34,7 @@ public class MailWrite implements SendMail {
 
 	}
 
-	public boolean sendEmail(String fromEmail, String toEmail, String subject, String textEmail) {
+	public boolean sendEmail(String fromEmail, String toEmail, String subject, String textEmail, String ccAdr, String bccAdr) {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", hostName);
@@ -54,23 +54,29 @@ public class MailWrite implements SendMail {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromEmail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+			if (!ccAdr.equals("")) {
+				message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(ccAdr));
+			}
+			if (!bccAdr.equals("")) {
+				message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(bccAdr));
+			}
 			message.setSubject(subject);
 			message.setText(textEmail);
 
 			Transport.send(message);
 
-//			System.out.println("Done");
+			System.out.println("Done");
 			return true;
 
 		} catch (MessagingException e) {
-			
-			JOptionPane.showMessageDialog(null,  "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
-//			throw new RuntimeException(e);
+
+			JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
+			// throw new RuntimeException(e);
 		}
 		return false;
 	}
 
 	public void answerMail(String fromEmail, String toEmail, String subject, String textEmail) {
-		sendEmail(fromEmail, toEmail, "Re: " + subject, textEmail);
+		// sendEmail(fromEmail, toEmail, "Re: " + subject, textEmail);
 	}
 }
