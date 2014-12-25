@@ -13,9 +13,29 @@ class Authenticator2 extends JFrame {
 	private static JButton buttonNewMail;
 	private static String passwordMail;
 
-	JTextField userName;
-	JPasswordField password;
+//	JTextField userName;
+//	JPasswordField password;
+	
+	public Authenticator2() {
 
+
+		
+		JFrame frame = new JFrame("Email_client");
+		Dimension d = new Dimension();
+		d.setSize(960, 540);
+		frame.setSize(d);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		addComponentsToPane(frame.getContentPane());
+		frame.setVisible(true);
+	
+//					new WelcomeFrame();
+		
+
+
+
+
+	}
 	public static void addComponentsToPane(Container pane) {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -111,55 +131,7 @@ class Authenticator2 extends JFrame {
 		pane.add(label, c);
 	}
 
-	public Authenticator2() {
-		setTitle("Login into email client");
-		setLayout(new GridLayout(3, 2));
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);
 
-		userName = new JTextField(20);
-		password = new JPasswordField(20);
-
-		login = new JButton("Login");
-		cancel = new JButton("Cancel");
-
-		add(new JLabel("userName"));
-		add(userName);
-
-		add(new JLabel("password"));
-		add(password);
-
-		add(login);
-		add(cancel);
-
-		userName.requestFocus();
-
-		login.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				String un = userName.getText();
-				String pa = new String(password.getPassword());
-
-				if ((un.equals("test")) && (pa.equals("test"))) {
-					dispose();
-					new WelcomeFrame();
-				}
-			}
-		});
-
-		KeyAdapter k = new KeyAdapter() {
-			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ENTER)
-					login.doClick();
-			}
-		};
-
-		password.addKeyListener(k);
-		userName.addKeyListener(k);
-
-		pack();
-		setLocationRelativeTo(null);
-
-	}
 
 	public static void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
@@ -170,20 +142,6 @@ class Authenticator2 extends JFrame {
 		System.out.println(passwordMail);
 	}
 
-	class WelcomeFrame extends JFrame {
-		JLabel label;
 
-		public WelcomeFrame() {
-
-			JFrame frame = new JFrame("Email_client");
-			Dimension d = new Dimension();
-			d.setSize(960, 540);
-			frame.setSize(d);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-			addComponentsToPane(frame.getContentPane());
-			frame.setVisible(true);
-		}
-	}
 
 }
