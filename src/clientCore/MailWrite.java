@@ -34,7 +34,7 @@ public class MailWrite implements SendMail {
 
 	}
 
-	public void sendEmail(String fromEmail, String toEmail, String subject, String textEmail) {
+	public boolean sendEmail(String fromEmail, String toEmail, String subject, String textEmail) {
 
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", hostName);
@@ -59,13 +59,15 @@ public class MailWrite implements SendMail {
 
 			Transport.send(message);
 
-			System.out.println("Done");
+//			System.out.println("Done");
+			return true;
 
 		} catch (MessagingException e) {
 			
 			JOptionPane.showMessageDialog(null,  "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
 //			throw new RuntimeException(e);
 		}
+		return false;
 	}
 
 	public void answerMail(String fromEmail, String toEmail, String subject, String textEmail) {
