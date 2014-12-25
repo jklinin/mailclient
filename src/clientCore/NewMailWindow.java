@@ -1,22 +1,21 @@
 package clientCore;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
-
-
 
 public class NewMailWindow extends JFrame {
 
 	private JScrollPane scrollpane;
 	private JButton sendMail;
 	private JPanel contentPanel = new JPanel();
-	private JTextField textContent; 
+	private JTextField emailadr;
+	private JTextField ccadr;
+	private JEditorPane emailbody;
+	private JLabel label;
 	private String passwordMail;
-	
 
 	NewMailWindow() {
 		super("New Mail");
@@ -27,29 +26,26 @@ public class NewMailWindow extends JFrame {
 	}
 
 	private void initialization() {
-		//setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        setLayout(new GridBagLayout());
+		// setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
 		JPanel nofixedaddress = new JPanel();
-		JTextField emailadr;
-		JTextField ccadr;
-		JEditorPane emailbody;
-		JLabel label;
 
-
-
-		sendMail= new JButton("Send EMail");
+		sendMail = new JButton("Send EMail");
 		sendMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == sendMail) {
 					passwordDialog();
-					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
-					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
-					// dest.
-					// emailadress
-					// into
-					// Email
+					if (emailadr.getText() != null) {
+
+						SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
+						if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), "test", emailbody.getText()) == true) {
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(null, "Please try again", "Error by sending", JOptionPane.ERROR_MESSAGE);
+						}
+					}
 				}
 			}
 		});
@@ -94,9 +90,8 @@ public class NewMailWindow extends JFrame {
 		c.ipady = 200;
 		getContentPane().add(emailbody, c);
 
-
-
 	}
+
 	private void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('#');
