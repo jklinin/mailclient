@@ -49,7 +49,6 @@ class Authenticator2 extends JFrame {
 																														// emailadress
 																														// into
 																														// Email
-
 				}
 			}
 		});
