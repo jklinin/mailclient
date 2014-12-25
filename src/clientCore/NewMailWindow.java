@@ -13,6 +13,7 @@ public class NewMailWindow extends JFrame {
 	private JPanel contentPanel = new JPanel();
 	private JTextField emailadr;
 	private JTextField ccadr;
+	private JTextField bccadr;
 	private JEditorPane emailbody;
 	private JTextField subj;
 	private JLabel label;
@@ -89,13 +90,23 @@ public class NewMailWindow extends JFrame {
 		c.gridy = 2;
 		getContentPane().add(ccadr, c);
 
+		label = new JLabel("BCC @:");
+		c.gridx = 1;
+		c.gridy = 3;
+		getContentPane().add(label, c);
+
+		ccadr = new JTextField(20);
+		c.gridx = 2;
+		c.gridy = 3;
+		getContentPane().add(ccadr, c);
+
 		emailbody = new JEditorPane();
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_END;
 		c.weighty = 1.2;
 		c.weightx = 0.0;
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 4;
 		c.gridwidth = 3;
 		c.ipady = 200;
 		getContentPane().add(emailbody, c);
