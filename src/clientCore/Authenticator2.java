@@ -13,13 +13,8 @@ class Authenticator2 extends JFrame {
 	private static JButton buttonNewMail;
 	private static String passwordMail;
 
-//	JTextField userName;
-//	JPasswordField password;
-	
 	public Authenticator2() {
 
-
-		
 		JFrame frame = new JFrame("Email_client");
 		Dimension d = new Dimension();
 		d.setSize(960, 540);
@@ -28,14 +23,9 @@ class Authenticator2 extends JFrame {
 
 		addComponentsToPane(frame.getContentPane());
 		frame.setVisible(true);
-	
-//					new WelcomeFrame();
-		
-
-
-
 
 	}
+
 	public static void addComponentsToPane(Container pane) {
 		if (RIGHT_TO_LEFT) {
 			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -53,9 +43,10 @@ class Authenticator2 extends JFrame {
 		buttonNewMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
-					passwordDialog();
-					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
-					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
+					NewMailWindow newMail= new NewMailWindow();
+//					passwordDialog();
+//					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
+//					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
 																														// dest.
 																														// emailadress
 																														// into
@@ -83,6 +74,8 @@ class Authenticator2 extends JFrame {
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
+					
+					
 					passwordDialog();
 					UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 					try {
@@ -90,7 +83,7 @@ class Authenticator2 extends JFrame {
 					} catch (MessagingException e1) {
 
 						JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
-						 e1.printStackTrace();
+						e1.printStackTrace();
 					}
 					readMail.getMassagesArray();
 				}
@@ -131,8 +124,6 @@ class Authenticator2 extends JFrame {
 		pane.add(label, c);
 	}
 
-
-
 	public static void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('#');
@@ -141,7 +132,5 @@ class Authenticator2 extends JFrame {
 		passwordMail = String.valueOf(passwordField.getPassword());
 		System.out.println(passwordMail);
 	}
-
-
 
 }
