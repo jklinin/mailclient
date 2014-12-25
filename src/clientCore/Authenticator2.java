@@ -20,8 +20,10 @@ class Authenticator2 extends JFrame {
 		d.setSize(960, 540);
 		frame.setSize(d);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		addComponentsToPane(frame.getContentPane());
 		frame.setVisible(true);
+
 	}
 
 	public static void addComponentsToPane(Container pane) {
@@ -30,6 +32,7 @@ class Authenticator2 extends JFrame {
 		}
 
 		JButton button;
+		JEditorPane viewbody;
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -49,25 +52,21 @@ class Authenticator2 extends JFrame {
 																														// emailadress
 																														// into
 																														// Email
+
 				}
 			}
 		});
 		pane.add(buttonNewMail, c);
 
 		button = new JButton("Button 2");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.fill = GridBagConstraints.VERTICAL;
-		c.weightx = 0.0;
+		//c.weightx = 0.0;
 		c.gridx = 1;
 		c.gridy = 0;
 		pane.add(button, c);
 
 		buttonUpdateMail = new JButton("Update");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.0;
 		c.gridx = 2;
 		c.gridy = 0;
-		c.anchor = GridBagConstraints.CENTER;
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
@@ -90,34 +89,30 @@ class Authenticator2 extends JFrame {
 		pane.add(buttonUpdateMail, c);
 
 		JScrollPane scrollPane = new JScrollPane();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.fill = GridBagConstraints.VERTICAL;
+		c.anchor = GridBagConstraints.CENTER;
 		c.ipady = 500; // make this component tall
-		c.weightx = 0.5;
+		c.weightx = 0.3;
 		c.weighty = 1.0;
-		c.gridwidth = 2;
 		c.gridx = 0;
-		c.gridy = 2;
+		c.gridy = 1;
 		pane.add(scrollPane, c);
 
-		button = new JButton("Main Window");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.fill = GridBagConstraints.VERTICAL;
-		c.ipady = 500; // make this component tall
+		viewbody = new JEditorPane();
+		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 0.5;
-		c.weighty = 1.0;
-		c.gridwidth = 2;
+		c.weighty = 0.0;
+		c.gridwidth = GridBagConstraints.REMAINDER;
 		c.gridx = 1;
-		c.gridy = 2;
-		pane.add(button, c);
+		c.gridy = 1;
+		pane.add(viewbody, c);
 
 		JLabel label;
 		label = new JLabel("status bar");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.0;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.SOUTH;
+		c.weighty = 4;
 		c.gridx = 0;
 		c.gridy = 3;
-		c.anchor = GridBagConstraints.SOUTH;
 		pane.add(label, c);
 	}
 

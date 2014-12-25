@@ -14,6 +14,7 @@ public class NewMailWindow extends JFrame {
 	private JTextField emailadr;
 	private JTextField ccadr;
 	private JEditorPane emailbody;
+	private JTextField subj;
 	private JLabel label;
 	private String passwordMail;
 
@@ -50,7 +51,6 @@ public class NewMailWindow extends JFrame {
 			}
 		});
 
-		c.ipadx = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridwidth = 1;
 		c.weightx = 0.5;
@@ -69,14 +69,24 @@ public class NewMailWindow extends JFrame {
 		c.gridy = 0;
 		getContentPane().add(emailadr, c);
 
-		label = new JLabel("CC @:");
+		label = new JLabel("Subject:");
 		c.gridx = 1;
 		c.gridy = 1;
 		getContentPane().add(label, c);
 
-		ccadr = new JTextField(20);
+		subj = new JTextField(20);
 		c.gridx = 2;
 		c.gridy = 1;
+		getContentPane().add(subj, c);
+
+		label = new JLabel("CC @:");
+		c.gridx = 1;
+		c.gridy = 2;
+		getContentPane().add(label, c);
+
+		ccadr = new JTextField(20);
+		c.gridx = 2;
+		c.gridy = 2;
 		getContentPane().add(ccadr, c);
 
 		emailbody = new JEditorPane();
