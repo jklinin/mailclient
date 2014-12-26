@@ -21,7 +21,7 @@ public class NewMailWindow extends JFrame {
 
 	NewMailWindow() {
 		super("New Mail");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setSize(800, 800);
 		initialization();
 		setVisible(true);
