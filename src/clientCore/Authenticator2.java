@@ -1,9 +1,11 @@
 package clientCore;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 class Authenticator2 extends JFrame {
 	private static String passwordMail;
 	private JButton buttonNewMail;
@@ -25,22 +27,23 @@ class Authenticator2 extends JFrame {
 	}
 
 	public void addComponentsToPane() {
-
+		DefaultTableModel model = new DefaultTableModel();
 		buttonNewMail = new JButton();
         buttonUpdateMail = new JButton();
-		previewMail = new JTable();
+		previewMail = new JTable(model);
 		viewMail = new JEditorPane();
 		scrollPane1 = new JScrollPane();
         scrollPane2 = new JScrollPane();
         previewlabel = new JLabel();
         viewlabel = new JLabel();
         statuslabel = new JLabel();
+
 		
 		Container gcp = getContentPane();
         gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		((GridBagLayout)gcp.getLayout()).columnWidths = new int[] {450, 216, 176, 0};
-        ((GridBagLayout)gcp.getLayout()).rowHeights = new int[] {0, 0, 604, 38, 0};
+		((GridBagLayout)gcp.getLayout()).columnWidths = new int[] {450, 200, 200, 0};
+        ((GridBagLayout)gcp.getLayout()).rowHeights = new int[] {0, 0, 600, 40, 0};
 
 
 		buttonNewMail.addActionListener(new ActionListener() {
@@ -123,6 +126,13 @@ class Authenticator2 extends JFrame {
         gcp.add(viewlabel, c);
 
 		scrollPane1.setViewportView(previewMail);
+    	model.addColumn("FROM");
+		model.addColumn("TO");
+		model.addColumn("Subject");
+		model.addColumn("Sent Date");
+		for(int i=1; i<37; i++){
+			model.addRow(new Object[] { "" });
+		}
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 1;
