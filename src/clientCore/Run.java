@@ -10,25 +10,19 @@ import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
+
+
+
 public class Run {
 	private static ArrayList<String> settings = new ArrayList();
 
 	public static void main(String[] args) throws MessagingException {
-		ReadXML readerXML = new ReadXML();
-
-		readerXML.readSettings();
-		settings = readerXML.getSettings();
+//		ReadXML readerXML = new ReadXML();
+		new Thread(new ReadCSVRunnable()).start();
+//		readerXML.readSettings();
+//		settings = readerXML.getSettings();
 		new Authenticator2();// GUI
-		// just for testing
-		
-		// SendMail writteMail = new MailWrite(settings.get(1),
-		// settings.get(2));
-		// writteMail.answerMail("project_test91@mail.ru",
-		// "project_test91@mail.ru", "test", "test, test"); // put
-		// dest.
-		// emailadress
-		// into
-		// Email
+	
 
 	}
 
@@ -46,7 +40,14 @@ public class Run {
 		return settings.get(1);
 		
 	}
-
+	public static class ReadCSVRunnable implements Runnable {		
+		@Override
+		public void run() {
+			ReadXML readerXML = new ReadXML();
+			readerXML.readSettings();
+			settings = readerXML.getSettings();
+		}
+	}
 
 
 
