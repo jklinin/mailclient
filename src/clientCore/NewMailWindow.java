@@ -1,5 +1,10 @@
 package clientCore;
-
+/**
+ * the class for the input window of email
+ * version 1.0.2
+ */
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.swing.*;
 
 import java.awt.*;
@@ -38,8 +43,28 @@ public class NewMailWindow extends JFrame {
 		sendMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == sendMail) {
-
+					// check cc email address
+					if (!ccadr.getText().equals("")) {
+						if (isValidEmailAddress(ccadr.getText()) == false) {
+							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+					// check bcc email address
+					if (!bccadr.getText().equals("")) {
+						if (isValidEmailAddress(bccadr.getText()) == false) {
+							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+					// check the destination email address
 					if (!emailadr.getText().equals("")) {
+
+						if (isValidEmailAddress(emailadr.getText()) == false) {
+							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses is not correct", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+
 						passwordDialog();
 
 						SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
@@ -48,8 +73,11 @@ public class NewMailWindow extends JFrame {
 						} else {
 							JOptionPane.showMessageDialog(null, "Please try again", "Error by sending", JOptionPane.ERROR_MESSAGE);
 						}
+					}else{
+						JOptionPane.showMessageDialog(null, "Please enter the correct email address", "Destination field is empty", JOptionPane.ERROR_MESSAGE);
 					}
 				}
+
 			}
 		});
 
@@ -113,7 +141,10 @@ public class NewMailWindow extends JFrame {
 		getContentPane().add(emailbody, c);
 
 	}
-
+/**
+ * @author Yuri Kalinin
+ * the method for the input of password 
+ */
 	private void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('#');
@@ -121,5 +152,23 @@ public class NewMailWindow extends JFrame {
 		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
 		System.out.println(passwordMail);
+	}
+
+	/**
+	 * @author Yuri Kalinin
+	 * @param email
+	 * @return the check value of email address. if the email address is
+	 *         incorrect, the method returns false.
+	 * 
+	 */
+	public static boolean isValidEmailAddress(String email) {
+		boolean result = true;
+		try {
+			InternetAddress emailAddr = new InternetAddress(email);
+			emailAddr.validate();
+		} catch (AddressException ex) {
+			result = false;
+		}
+		return result;
 	}
 }
