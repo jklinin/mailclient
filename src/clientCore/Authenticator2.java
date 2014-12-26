@@ -90,12 +90,8 @@ class Authenticator2 extends JFrame {
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
-		c.ipadx = 0;
-		c.ipady = 0;
         buttonUpdateMail.setText("Update");
         gcp.add(buttonUpdateMail, c);
 
@@ -105,24 +101,16 @@ class Authenticator2 extends JFrame {
 		c.gridy = 1;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
-		c.ipadx = 0;
-		c.ipady = 0;
         gcp.add(previewlabel, c);
         viewlabel.setText("Mail content");
 		c.gridx = 1;
 		c.gridy = 1;
 		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
-		c.ipadx = 0;
-		c.ipady = 0;
         gcp.add(viewlabel, c);
 
 		scrollPane1.setViewportView(previewMail);
@@ -137,12 +125,8 @@ class Authenticator2 extends JFrame {
 		c.gridy = 2;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
-		c.ipadx = 0;
-		c.ipady = 0;
         gcp.add(scrollPane1, c);
 
         scrollPane2.setViewportView(viewMail);
@@ -150,12 +134,8 @@ class Authenticator2 extends JFrame {
 		c.gridy = 2;
 		c.gridwidth = 2;
 		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
-		c.ipadx = 0;
-		c.ipady = 0;
         gcp.add(scrollPane2, c);
 
         statuslabel.setText("Status Bar");
@@ -163,12 +143,8 @@ class Authenticator2 extends JFrame {
 		c.gridy = 3;
 		c.gridwidth = 3;
 		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
-		c.ipadx = 0;
-		c.ipady = 0;
         gcp.add(statuslabel, c);
 		/*gcp.add(statuslabel, new GridBagConstraints(0, 3, 3, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.VERTICAL,
@@ -187,3 +163,4 @@ class Authenticator2 extends JFrame {
 	}
 
 }
+
