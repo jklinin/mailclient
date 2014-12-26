@@ -1,53 +1,55 @@
 package clientCore;
 
-import javax.mail.MessagingException;
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 class Authenticator2 extends JFrame {
-	final static boolean RIGHT_TO_LEFT = false;
-	private JButton login, cancel;
-	private static JButton buttonUpdateMail;
-	private static JButton buttonNewMail;
 	private static String passwordMail;
+	private JButton buttonNewMail;
+	private JButton buttonUpdateMail;
+	private JTable previewMail;
+	private JEditorPane viewMail;
+	private JScrollPane scrollPane1;
+	private JScrollPane scrollPane2;
+	private JLabel previewlabel;
+	private JLabel viewlabel;
+	private JLabel statuslabel;
 
 	public Authenticator2() {
-
-		JFrame frame = new JFrame("Email_client");
-		Dimension d = new Dimension();
-		d.setSize(960, 540);
-		frame.setSize(d);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		addComponentsToPane(frame.getContentPane());
-		frame.setVisible(true);
+		super("Main Client");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addComponentsToPane();
+		setVisible(true);
 
 	}
 
-	public static void addComponentsToPane(Container pane) {
-		if (RIGHT_TO_LEFT) {
-			pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		}
+	public void addComponentsToPane() {
 
-		JButton button;
-		JEditorPane viewbody;
-		pane.setLayout(new GridBagLayout());
+		buttonNewMail = new JButton();
+        buttonUpdateMail = new JButton();
+		previewMail = new JTable();
+		viewMail = new JEditorPane();
+		scrollPane1 = new JScrollPane();
+        scrollPane2 = new JScrollPane();
+        previewlabel = new JLabel();
+        viewlabel = new JLabel();
+        statuslabel = new JLabel();
+		
+		Container gcp = getContentPane();
+        gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
+		((GridBagLayout)gcp.getLayout()).columnWidths = new int[] {450, 216, 176, 0};
+        ((GridBagLayout)gcp.getLayout()).rowHeights = new int[] {0, 0, 604, 38, 0};
 
-		buttonNewMail = new JButton("New Email");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.fill = GridBagConstraints.VERTICAL;
-		c.gridx = 0;
-		c.gridy = 0;
+
 		buttonNewMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
 					NewMailWindow newMail= new NewMailWindow();
-//					passwordDialog();
-//					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
-//					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
+		//					passwordDialog();
+		//					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
+		//					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
 																														// dest.
 																														// emailadress
 																														// into
@@ -56,64 +58,113 @@ class Authenticator2 extends JFrame {
 				}
 			}
 		});
-		pane.add(buttonNewMail, c);
+        buttonNewMail.setText("New Mail");
 
-		button = new JButton("Button 2");
-		//c.weightx = 0.0;
-		c.gridx = 1;
+		c.gridx = 0;
 		c.gridy = 0;
-		pane.add(button, c);
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.ipadx = 0;
+		c.ipady = 0;
+        gcp.add(buttonNewMail, c);
 
-		buttonUpdateMail = new JButton("Update");
-		c.gridx = 2;
-		c.gridy = 0;
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
-					
-					
 					passwordDialog();
 					UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
-					try {
-						readMail.connectionInbox();
-					} catch (MessagingException e1) {
-
-						JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
-						e1.printStackTrace();
-					}
 					readMail.getMassagesArray();
 				}
 			}
 
 		});
-		pane.add(buttonUpdateMail, c);
 
-		JScrollPane scrollPane = new JScrollPane();
+		c.gridx = 2;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
 		c.anchor = GridBagConstraints.CENTER;
-		c.ipady = 500; // make this component tall
-		c.weightx = 0.3;
-		c.weighty = 1.0;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.ipadx = 0;
+		c.ipady = 0;
+        buttonUpdateMail.setText("Update");
+        gcp.add(buttonUpdateMail, c);
+
+
+        previewlabel.setText("Incoming mail");
 		c.gridx = 0;
 		c.gridy = 1;
-		pane.add(scrollPane, c);
-
-		viewbody = new JEditorPane();
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 0.5;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0.0;
 		c.weighty = 0.0;
-		c.gridwidth = GridBagConstraints.REMAINDER;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.ipadx = 0;
+		c.ipady = 0;
+        gcp.add(previewlabel, c);
+        viewlabel.setText("Mail content");
 		c.gridx = 1;
 		c.gridy = 1;
-		pane.add(viewbody, c);
-
-		JLabel label;
-		label = new JLabel("status bar");
+		c.gridwidth = 2;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.SOUTH;
-		c.weighty = 4;
+		c.ipadx = 0;
+		c.ipady = 0;
+        gcp.add(viewlabel, c);
+
+		scrollPane1.setViewportView(previewMail);
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.BOTH;
+		c.ipadx = 0;
+		c.ipady = 0;
+        gcp.add(scrollPane1, c);
+
+        scrollPane2.setViewportView(viewMail);
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 2;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.BOTH;
+		c.ipadx = 0;
+		c.ipady = 0;
+        gcp.add(scrollPane2, c);
+
+        statuslabel.setText("Status Bar");
 		c.gridx = 0;
 		c.gridy = 3;
-		pane.add(label, c);
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.ipadx = 0;
+		c.ipady = 0;
+        gcp.add(statuslabel, c);
+		/*gcp.add(statuslabel, new GridBagConstraints(0, 3, 3, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.VERTICAL,
+            new Insets(0, 0, 0, 0), 0, 0));*/
+        pack();
+        setLocationRelativeTo(getOwner());
 	}
 
 	public static void passwordDialog() {
