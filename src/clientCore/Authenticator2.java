@@ -35,7 +35,12 @@ class Authenticator2 extends JFrame {
 	}
 
 	public void addComponentsToPane() {
-		model = new DefaultTableModel();
+        String[] columnNames = {"FROM",
+                        "TO",
+                        "Subject",
+                        "Date"
+		};
+		model = new DefaultTableModel(columnNames,37);
 		previewMail = new JTable(model);
 		buttonNewMail = new JButton();
 		buttonUpdateMail = new JButton();
@@ -49,7 +54,7 @@ class Authenticator2 extends JFrame {
 		Container gcp = getContentPane();
 		gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 450, 200, 200, 0 };
+		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 452, 200, 200, 0 };
 		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 0, 0, 600, 40, 0 };
 
 		buttonNewMail.addActionListener(new ActionListener() {
@@ -128,10 +133,11 @@ class Authenticator2 extends JFrame {
 		model.addColumn("Sent Date");
 
 		new Thread(new AddRowsThread()).start();
-
-		// for(int i=1; i<37; i++){
-		// model.addRow(new Object[] { "" });
-		// }
+        for(int i=0; i<4; i++){
+			previewMail.getColumnModel().getColumn(i).setPreferredWidth(113);
+			previewMail.getColumnModel().getColumn(i).setMaxWidth(113);
+			previewMail.getColumnModel().getColumn(i).setMinWidth(113);
+         }
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 1;
