@@ -17,6 +17,7 @@ class Authenticator2 extends JFrame {
 	private static String passwordMail;
 	private JButton buttonNewMail;
 	private JButton buttonUpdateMail;
+	private JButton buttonAnswer;
 	private JTable previewMail;
 	private JEditorPane viewMail;
 	private JScrollPane scrollPane1;
@@ -35,15 +36,11 @@ class Authenticator2 extends JFrame {
 	}
 
 	public void addComponentsToPane() {
-        String[] columnNames = {"FROM",
-                        "TO",
-                        "Subject",
-                        "Date"
-		};
-		model = new DefaultTableModel(columnNames,37);
+		model = new DefaultTableModel();
 		previewMail = new JTable(model);
 		buttonNewMail = new JButton();
 		buttonUpdateMail = new JButton();
+		buttonAnswer = new JButton();
 		viewMail = new JEditorPane();
 		scrollPane1 = new JScrollPane();
 		scrollPane2 = new JScrollPane();
@@ -99,6 +96,15 @@ class Authenticator2 extends JFrame {
 			}
 
 		});
+
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.VERTICAL;
+		buttonAnswer.setText("Answer");
+		gcp.add(buttonAnswer, c);
 
 		c.gridx = 2;
 		c.gridy = 0;
