@@ -46,10 +46,14 @@ public class MailReader implements UpdateMail {
 
 		this.userName = userName.toString();
 		System.out.println(userName.toString());
-		
+
 		password = passwordMail;
-		
+
 		messagesList = new ArrayList();
+	}
+
+	public MailReader() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void connectionInbox() throws MessagingException {

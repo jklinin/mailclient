@@ -1,5 +1,7 @@
 package clientCore;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.mail.Message;
@@ -10,5 +12,6 @@ public interface UpdateMail {
 																// from server
 
 	public Message[] getMassagesArray(); // returns array of massages;
+	public ArrayList<MessagesDate> readMessagesFile() throws FileNotFoundException, IOException, ClassNotFoundException;
 
 }

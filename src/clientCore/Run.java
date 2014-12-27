@@ -10,23 +10,16 @@ import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
-
-
-
 public class Run {
 	private static ArrayList<String> settings = new ArrayList();
 
 	public static void main(String[] args) throws MessagingException {
-//		ReadXML readerXML = new ReadXML();
+
 		new Thread(new ReadCSVRunnable()).start();
-//		readerXML.readSettings();
-//		settings = readerXML.getSettings();
+
 		new Authenticator2();// GUI
-	
 
 	}
-
-	
 
 	public static Object getSettingUserName() {
 		return settings.get(2);
@@ -34,13 +27,15 @@ public class Run {
 
 	public static Object getSettingProtocolPOP() {
 		return settings.get(0);
-		
+
 	}
+
 	public static Object getSettingProtocolSMTP() {
 		return settings.get(1);
-		
+
 	}
-	public static class ReadCSVRunnable implements Runnable {		
+
+	public static class ReadCSVRunnable implements Runnable {
 		@Override
 		public void run() {
 			ReadXML readerXML = new ReadXML();
@@ -48,7 +43,5 @@ public class Run {
 			settings = readerXML.getSettings();
 		}
 	}
-
-
 
 }

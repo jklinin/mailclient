@@ -22,7 +22,7 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 	private String content;
 
 	MessagesDate(int messageNum, String addressFrom, ArrayList<String> addressTo, String subject, Date sentDate, ArrayList<String> copyOnAddress, ArrayList<String> copyHideAddress, String content) {
-
+		
 		this.number = messageNum;
 		this.sentDate = sentDate;
 		this.subject = subject;
@@ -33,7 +33,7 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 		this.content = content;
 
 	}
-
+	MessagesDate(){};
 	public int getNumber() {
 		return number;
 	}
@@ -43,7 +43,7 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 		return subject;
 	}
 
-	public Date sentDate() {
+	public Date getSentDate() {
 		return sentDate;
 
 	}

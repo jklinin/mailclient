@@ -1,12 +1,19 @@
 package clientCore;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
 class Authenticator2 extends JFrame {
+	private DefaultTableModel model;
 	private static String passwordMail;
 	private JButton buttonNewMail;
 	private JButton buttonUpdateMail;
@@ -17,6 +24,7 @@ class Authenticator2 extends JFrame {
 	private JLabel previewlabel;
 	private JLabel viewlabel;
 	private JLabel statuslabel;
+	private Message[] messages = null;
 
 	public Authenticator2() {
 		super("Main Client");
@@ -27,41 +35,42 @@ class Authenticator2 extends JFrame {
 	}
 
 	public void addComponentsToPane() {
-		DefaultTableModel model = new DefaultTableModel();
-		buttonNewMail = new JButton();
-        buttonUpdateMail = new JButton();
+		model = new DefaultTableModel();
 		previewMail = new JTable(model);
+		buttonNewMail = new JButton();
+		buttonUpdateMail = new JButton();
 		viewMail = new JEditorPane();
 		scrollPane1 = new JScrollPane();
-        scrollPane2 = new JScrollPane();
-        previewlabel = new JLabel();
-        viewlabel = new JLabel();
-        statuslabel = new JLabel();
+		scrollPane2 = new JScrollPane();
+		previewlabel = new JLabel();
+		viewlabel = new JLabel();
+		statuslabel = new JLabel();
 
-		
 		Container gcp = getContentPane();
-        gcp.setLayout(new GridBagLayout());
+		gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		((GridBagLayout)gcp.getLayout()).columnWidths = new int[] {450, 200, 200, 0};
-        ((GridBagLayout)gcp.getLayout()).rowHeights = new int[] {0, 0, 600, 40, 0};
-
+		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 450, 200, 200, 0 };
+		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 0, 0, 600, 40, 0 };
 
 		buttonNewMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
-					NewMailWindow newMail= new NewMailWindow();
-		//					passwordDialog();
-		//					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
-		//					writteMail.answerMail("project_test91@mail.ru", "project_test91@mail.ru", "test", "test, test"); // put
-																														// dest.
-																														// emailadress
-																														// into
-																														// Email
+					NewMailWindow newMail = new NewMailWindow();
+					// passwordDialog();
+					// SendMail writteMail = new
+					// MailWrite(Run.getSettingProtocolSMTP(),
+					// Run.getSettingUserName(), passwordMail);
+					// writteMail.answerMail("project_test91@mail.ru",
+					// "project_test91@mail.ru", "test", "test, test"); // put
+					// dest.
+					// emailadress
+					// into
+					// Email
 
 				}
 			}
 		});
-        buttonNewMail.setText("New Mail");
+		buttonNewMail.setText("New Mail");
 
 		c.gridx = 0;
 		c.gridy = 0;
@@ -73,14 +82,14 @@ class Authenticator2 extends JFrame {
 		c.fill = GridBagConstraints.VERTICAL;
 		c.ipadx = 0;
 		c.ipady = 0;
-        gcp.add(buttonNewMail, c);
+		gcp.add(buttonNewMail, c);
 
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
 					passwordDialog();
-					UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
-					readMail.getMassagesArray();
+					new Thread(new UpdateEMailThread()).start();
+
 				}
 			}
 
@@ -92,65 +101,69 @@ class Authenticator2 extends JFrame {
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
-        buttonUpdateMail.setText("Update");
-        gcp.add(buttonUpdateMail, c);
+		buttonUpdateMail.setText("Update");
+		gcp.add(buttonUpdateMail, c);
 
-
-        previewlabel.setText("Incoming mail");
+		previewlabel.setText("Incoming mail");
 		c.gridx = 0;
 		c.gridy = 1;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
-        gcp.add(previewlabel, c);
-        viewlabel.setText("Mail content");
+		gcp.add(previewlabel, c);
+		viewlabel.setText("Mail content");
 		c.gridx = 1;
 		c.gridy = 1;
 		c.gridwidth = 2;
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
-        gcp.add(viewlabel, c);
+		gcp.add(viewlabel, c);
 
 		scrollPane1.setViewportView(previewMail);
-    	model.addColumn("FROM");
+		model.addColumn("FROM");
 		model.addColumn("TO");
 		model.addColumn("Subject");
 		model.addColumn("Sent Date");
-		for(int i=1; i<37; i++){
-			model.addRow(new Object[] { "" });
-		}
+
+		new Thread(new AddRowsThread()).start();
+
+		// for(int i=1; i<37; i++){
+		// model.addRow(new Object[] { "" });
+		// }
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
-        gcp.add(scrollPane1, c);
+		gcp.add(scrollPane1, c);
 
-        scrollPane2.setViewportView(viewMail);
+		scrollPane2.setViewportView(viewMail);
 		c.gridx = 1;
 		c.gridy = 2;
 		c.gridwidth = 2;
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
-        gcp.add(scrollPane2, c);
+		gcp.add(scrollPane2, c);
 
-        statuslabel.setText("Status Bar");
+		statuslabel.setText("Status Bar");
 		c.gridx = 0;
 		c.gridy = 3;
 		c.gridwidth = 3;
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
-        gcp.add(statuslabel, c);
-		/*gcp.add(statuslabel, new GridBagConstraints(0, 3, 3, 1, 0.0, 0.0,
-            GridBagConstraints.CENTER, GridBagConstraints.VERTICAL,
-            new Insets(0, 0, 0, 0), 0, 0));*/
-        pack();
-        setLocationRelativeTo(getOwner());
+		gcp.add(statuslabel, c);
+		/*
+		 * gcp.add(statuslabel, new GridBagConstraints(0, 3, 3, 1, 0.0, 0.0,
+		 * GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(0,
+		 * 0, 0, 0), 0, 0));
+		 */
+		pack();
+		setLocationRelativeTo(getOwner());
 	}
 
 	public static void passwordDialog() {
@@ -162,5 +175,44 @@ class Authenticator2 extends JFrame {
 		System.out.println(passwordMail);
 	}
 
-}
+	class AddRowsThread implements Runnable {
+		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
+			model.setRowCount(0);
+			UpdateMail readMail = new MailReader();
+			ArrayList<MessagesDate> arrayList = new ArrayList();
+			arrayList = readMail.readMessagesFile();
+			for (int i = 0; i < arrayList.size(); i++) {
+				model.addRow(new Object[] { arrayList.get(i).getAddressFrom(), arrayList.get(i).getAdressTo(), arrayList.get(i).getSubject(), arrayList.get(i).getSentDate() });
+			}
+		}
 
+		@Override
+		public void run() {
+			try {
+				addNewRowTable();
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	class UpdateEMailThread implements Runnable {
+
+		@Override
+		public void run() {
+			UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
+			try {
+				readMail.connectionInbox();
+			} catch (MessagingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			readMail.getMassagesArray();
+			new Thread(new AddRowsThread()).start();
+
+		}
+
+	}
+}

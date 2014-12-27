@@ -8,7 +8,7 @@ public interface ReadEMailFromFile {
 
 	public String getSubject();// returns the subject of email
 
-	public Date sentDate();// returns the sent date of mail
+	public Date getSentDate();// returns the sent date of mail
 
 	public String getContent();// returns text from email(only text)
 

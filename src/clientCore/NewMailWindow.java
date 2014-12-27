@@ -23,6 +23,7 @@ public class NewMailWindow extends JFrame {
 	private JTextField subj;
 	private JLabel label;
 	private String passwordMail;
+	
 
 	NewMailWindow() {
 		super("New Mail");
