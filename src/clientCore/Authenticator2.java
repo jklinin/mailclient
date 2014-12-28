@@ -3,6 +3,10 @@ package clientCore;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
@@ -26,11 +30,12 @@ class Authenticator2 extends JFrame {
 	private JLabel viewlabel;
 	private JLabel statuslabel;
 	private Message[] messages = null;
-
+	ArrayList<MessagesDate> messagesList ;
 	public Authenticator2() {
 		super("Main Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addComponentsToPane();
+		
 		setVisible(true);
 
 	}
@@ -47,7 +52,7 @@ class Authenticator2 extends JFrame {
 		previewlabel = new JLabel();
 		viewlabel = new JLabel();
 		statuslabel = new JLabel();
-
+		messagesList = new ArrayList();
 		Container gcp = getContentPane();
 		gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -131,14 +136,32 @@ class Authenticator2 extends JFrame {
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
 		gcp.add(viewlabel, c);
-
+        //----Jtable----------------
 		scrollPane1.setViewportView(previewMail);
 		model.addColumn("FROM");
 		model.addColumn("TO");
 		model.addColumn("Subject");
 		model.addColumn("Sent Date");
+		previewMail.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		new Thread(new AddRowsThread()).start();
+		ListSelectionModel rowSM = previewMail.getSelectionModel();
+		rowSM.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				// Ignore extra messages.
+				if (e.getValueIsAdjusting())
+					return;
+
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if (!lsm.isSelectionEmpty()) {
+					int selectedRow = lsm.getMinSelectionIndex();
+					viewMail.setText(messagesList.get(selectedRow).getContent());
+				}
+			}
+		});
+		
+		
+     
+		
         for(int i=0; i<4; i++){
 			previewMail.getColumnModel().getColumn(i).setPreferredWidth(113);
 			previewMail.getColumnModel().getColumn(i).setMaxWidth(113);
@@ -151,7 +174,10 @@ class Authenticator2 extends JFrame {
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
 		gcp.add(scrollPane1, c);
-
+		//---------------------------------------------------
+		 // thread for the adding of rows
+		new Thread(new AddRowsThread()).start();
+		// ----------JEditorPane----------------------------
 		scrollPane2.setViewportView(viewMail);
 		c.gridx = 1;
 		c.gridy = 2;
@@ -160,7 +186,8 @@ class Authenticator2 extends JFrame {
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
 		gcp.add(scrollPane2, c);
-
+		//-------------------------------------------------
+		
 		statuslabel.setText("Status Bar");
 		c.gridx = 0;
 		c.gridy = 3;
@@ -191,10 +218,10 @@ class Authenticator2 extends JFrame {
 		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
 			model.setRowCount(0);
 			UpdateMail readMail = new MailReader();
-			ArrayList<MessagesDate> arrayList = new ArrayList();
-			arrayList = readMail.readMessagesFile();
-			for (int i = 0; i < arrayList.size(); i++) {
-				model.addRow(new Object[] { arrayList.get(i).getAddressFrom(), arrayList.get(i).getAdressTo(), arrayList.get(i).getSubject(), arrayList.get(i).getSentDate() });
+			
+			messagesList = readMail.readMessagesFile();
+			for (int i = 0; i < messagesList.size(); i++) {
+				model.addRow(new Object[] { messagesList.get(i).getAddressFrom(), messagesList.get(i).getAdressTo(), messagesList.get(i).getSubject(), messagesList.get(i).getSentDate() });
 			}
 		}
 
@@ -227,4 +254,6 @@ class Authenticator2 extends JFrame {
 		}
 
 	}
+	
+
 }
