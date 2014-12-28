@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class NewMailWindow extends JFrame {
 
-	private JScrollPane scrollpane;
+	private JScrollPane scrollPane;
 	private JButton sendMail;
 	private JPanel contentPanel = new JPanel();
 	private JTextField emailadr;
@@ -21,7 +21,10 @@ public class NewMailWindow extends JFrame {
 	private JTextField bccadr;
 	private JEditorPane emailbody;
 	private JTextField subj;
-	private JLabel label;
+	private JLabel label1;
+	private JLabel label2;
+	private JLabel label3;
+	private JLabel label4;
 	private String passwordMail;
 	
 
@@ -34,13 +37,29 @@ public class NewMailWindow extends JFrame {
 	}
 
 	private void initialization() {
-		// setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-
-		JPanel nofixedaddress = new JPanel();
-
 		sendMail = new JButton("Send EMail");
+		label1 = new JLabel("Destination @:");
+		label2 = new JLabel("Subject:");
+		label3 = new JLabel("CC @:");
+		label4 = new JLabel("BCC @:");
+		emailadr = new JTextField(20);
+		subj = new JTextField(20);
+		ccadr = new JTextField(20);
+		bccadr = new JTextField(20);
+		emailbody = new JEditorPane();
+		scrollPane = new JScrollPane();
+
+
+
+
+		Container gcp = getContentPane();
+		gcp.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 125, 125, 550, 0 };
+		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 20, 20, 20, 20, 500 };
+
+
+
 		sendMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == sendMail) {
@@ -82,55 +101,51 @@ public class NewMailWindow extends JFrame {
 			}
 		});
 
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.VERTICAL;
 		c.gridwidth = 1;
 		c.weightx = 0.5;
 		c.weighty = 0.00;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.NORTH;
-		getContentPane().add(sendMail, c);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		gcp.add(sendMail, c);
 
-		label = new JLabel("Destination @:");
+		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 1;
 		c.gridy = 0;
-		getContentPane().add(label, c);
+		gcp.add(label1, c);
 
-		emailadr = new JTextField(20);
-		c.gridx = 2;
-		c.gridy = 0;
-		getContentPane().add(emailadr, c);
-
-		label = new JLabel("Subject:");
 		c.gridx = 1;
 		c.gridy = 1;
-		getContentPane().add(label, c);
+		gcp.add(label2, c);
 
-		subj = new JTextField(20);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 2;
+		c.gridy = 0;
+		gcp.add(emailadr, c);
+
 		c.gridx = 2;
 		c.gridy = 1;
-		getContentPane().add(subj, c);
+		gcp.add(subj, c);
 
-		label = new JLabel("CC @:");
 		c.gridx = 1;
 		c.gridy = 2;
-		getContentPane().add(label, c);
+		gcp.add(label3, c);
 
-		ccadr = new JTextField(20);
+
 		c.gridx = 2;
 		c.gridy = 2;
-		getContentPane().add(ccadr, c);
+		gcp.add(ccadr, c);
 
-		label = new JLabel("BCC @:");
 		c.gridx = 1;
 		c.gridy = 3;
-		getContentPane().add(label, c);
+		gcp.add(label4, c);
 
-		bccadr = new JTextField(20);
 		c.gridx = 2;
 		c.gridy = 3;
-		getContentPane().add(bccadr, c);
+		gcp.add(bccadr, c);
 
-		emailbody = new JEditorPane();
+		scrollPane.setViewportView(emailbody);
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_END;
 		c.weighty = 1.2;
@@ -139,7 +154,7 @@ public class NewMailWindow extends JFrame {
 		c.gridy = 4;
 		c.gridwidth = 3;
 		c.ipady = 200;
-		getContentPane().add(emailbody, c);
+		gcp.add(scrollPane, c);
 
 	}
 /**
@@ -173,3 +188,4 @@ public class NewMailWindow extends JFrame {
 		return result;
 	}
 }
+
