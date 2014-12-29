@@ -18,6 +18,6 @@ public interface ReadEMailFromFile {
 
 	public ArrayList<String> getCopyHideOnAddress(); // if the address exist returns array of the addresses of hide copy
 
-	public ArrayList<String> getAdressTo();// returns array of addresses of receiver
+	public ArrayList<String> getAddressTo();// returns array of addresses of receiver
 
 }

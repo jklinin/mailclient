@@ -150,17 +150,45 @@ class Authenticator2 extends JFrame {
 					return;
 
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				String ccString;
+				String bccString;
+				String toString;
+				String fromString;
 				if (!lsm.isSelectionEmpty()) {
 					int selectedRow = lsm.getMinSelectionIndex();
-					viewMail.setText(messagesList.get(selectedRow).getContent());
+
+					ccString = "";
+					if (messagesList.get(selectedRow).getCopyOnAddres() != null) {
+						for (int i = 0; i < messagesList.get(selectedRow).getCopyOnAddres().size(); i++) {
+							ccString = ccString + messagesList.get(selectedRow).getCopyOnAddres().get(0) + "; ";
+						}
+
+					}
+					bccString = "";
+					if (messagesList.get(selectedRow).getCopyHideOnAddress() != null) {
+						for (int i = 0; i < messagesList.get(selectedRow).getCopyHideOnAddress().size(); i++) {
+							bccString = bccString + messagesList.get(selectedRow).getCopyHideOnAddress().get(0) + "; ";
+
+						}
+					}
+					toString = "";
+					for (int i = 0; i < messagesList.get(selectedRow).getAddressTo().size(); i++) {
+						toString = toString + messagesList.get(selectedRow).getAddressTo().get(0) + "; ";
+
+					}
+					fromString = "";
+					for (int i = 0; i < messagesList.get(selectedRow).getAddressFrom().size(); i++) {
+						fromString = fromString + messagesList.get(selectedRow).getAddressTo().get(0) + "; ";
+
+					}
+					viewMail.setText("From: " + fromString + "\n" + "To: " + toString + "\n" + "CC: " + ccString + "\n" + "BCC: " + bccString + "\n" + "Subject: " + messagesList.get(selectedRow).getSubject() + "\n" + "Sent Date: " + messagesList.get(selectedRow).getSentDate() + "\n" + "\n"
+							+ messagesList.get(selectedRow).getContent());
+
 				}
 			}
 		});
 
-
-
-
-        for(int i=0; i<4; i++){
+		for (int i = 0; i < 4; i++) {
 			previewMail.getColumnModel().getColumn(i).setPreferredWidth(200);
 			previewMail.getColumnModel().getColumn(i).setMaxWidth(200);
 			previewMail.getColumnModel().getColumn(i).setMinWidth(200);
@@ -220,7 +248,7 @@ class Authenticator2 extends JFrame {
 			messagesList = readMail.readMessagesFile();
 			for (int i = 0; i < messagesList.size(); i++) {
 
-				model.addRow(new Object[] { messagesList.get(i).getAddressFrom(), messagesList.get(i).getAdressTo(), messagesList.get(i).getSubject(), messagesList.get(i).getSentDate() });
+				model.addRow(new Object[] { messagesList.get(i).getAddressFrom(), messagesList.get(i).getAddressTo(), messagesList.get(i).getSubject(), messagesList.get(i).getSentDate() });
 			}
 		}
 

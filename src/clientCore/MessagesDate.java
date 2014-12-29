@@ -80,7 +80,7 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 		}
 	}
 
-	public ArrayList<String> getAdressTo() {
+	public ArrayList<String> getAddressTo() {
 		return addressToArray;
 	}
 
