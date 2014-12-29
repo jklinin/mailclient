@@ -35,7 +35,7 @@ class Authenticator2 extends JFrame {
 		super("Main Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addComponentsToPane();
-		
+
 		setVisible(true);
 
 	}
@@ -56,7 +56,7 @@ class Authenticator2 extends JFrame {
 		Container gcp = getContentPane();
 		gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 452, 200, 200, 0 };
+		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 800, 400, 400, 0 };
 		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 0, 0, 600, 40, 0 };
 
 		buttonNewMail.addActionListener(new ActionListener() {
@@ -85,7 +85,7 @@ class Authenticator2 extends JFrame {
 		c.gridheight = 1;
 		c.weightx = 0.0;
 		c.weighty = 0.0;
-		c.anchor = GridBagConstraints.CENTER;
+		c.anchor = GridBagConstraints.NORTHWEST;
 		c.fill = GridBagConstraints.VERTICAL;
 		c.ipadx = 0;
 		c.ipady = 0;
@@ -106,7 +106,6 @@ class Authenticator2 extends JFrame {
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
 		buttonAnswer.setText("Answer");
 		gcp.add(buttonAnswer, c);
@@ -115,7 +114,6 @@ class Authenticator2 extends JFrame {
 		c.gridy = 0;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.VERTICAL;
 		buttonUpdateMail.setText("Update");
 		gcp.add(buttonUpdateMail, c);
@@ -158,14 +156,14 @@ class Authenticator2 extends JFrame {
 				}
 			}
 		});
-		
-		
-     
-		
+
+
+
+
         for(int i=0; i<4; i++){
-			previewMail.getColumnModel().getColumn(i).setPreferredWidth(113);
-			previewMail.getColumnModel().getColumn(i).setMaxWidth(113);
-			previewMail.getColumnModel().getColumn(i).setMinWidth(113);
+			previewMail.getColumnModel().getColumn(i).setPreferredWidth(200);
+			previewMail.getColumnModel().getColumn(i).setMaxWidth(200);
+			previewMail.getColumnModel().getColumn(i).setMinWidth(200);
          }
 		c.gridx = 0;
 		c.gridy = 2;
@@ -187,7 +185,7 @@ class Authenticator2 extends JFrame {
 		c.fill = GridBagConstraints.BOTH;
 		gcp.add(scrollPane2, c);
 		//-------------------------------------------------
-		
+
 		statuslabel.setText("Status Bar");
 		c.gridx = 0;
 		c.gridy = 3;
@@ -218,10 +216,10 @@ class Authenticator2 extends JFrame {
 		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
 			model.setRowCount(0);
 			UpdateMail readMail = new MailReader();
-			
+
 			messagesList = readMail.readMessagesFile();
 			for (int i = 0; i < messagesList.size(); i++) {
-				
+
 				model.addRow(new Object[] { messagesList.get(i).getAddressFrom(), messagesList.get(i).getAdressTo(), messagesList.get(i).getSubject(), messagesList.get(i).getSentDate() });
 			}
 		}
@@ -255,6 +253,6 @@ class Authenticator2 extends JFrame {
 		}
 
 	}
-	
+
 
 }
