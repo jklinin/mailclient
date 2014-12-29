@@ -221,6 +221,7 @@ class Authenticator2 extends JFrame {
 			
 			messagesList = readMail.readMessagesFile();
 			for (int i = 0; i < messagesList.size(); i++) {
+				
 				model.addRow(new Object[] { messagesList.get(i).getAddressFrom(), messagesList.get(i).getAdressTo(), messagesList.get(i).getSubject(), messagesList.get(i).getSentDate() });
 			}
 		}

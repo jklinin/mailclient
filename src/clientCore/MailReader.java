@@ -138,9 +138,20 @@ public class MailReader implements UpdateMail {
 					}
 				}
 			}
+			
+			ArrayList<String> fromAddress = new ArrayList();
+			if (messages[i].getFrom() != null) {
+				Address addressFrom[] = messages[i].getFrom();
+
+				if (addressFrom.length > 0) {
+					for (int j = 0; j < addressFrom.length; j++) {
+						fromAddress.add(addressFrom[j].toString());
+					}
+				}
+			}
 			System.out.println();
 
-			messagesList.add(new MessagesDate(messages[i].getMessageNumber(), messages[i].getFrom().toString(), toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, messages[i].getContent().toString()));
+			messagesList.add(new MessagesDate(messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, messages[i].getContent().toString()));
 
 			try {
 				content = messages[i].getContent();

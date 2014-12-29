@@ -12,7 +12,7 @@ public interface ReadEMailFromFile {
 
 	public String getContent();// returns text from email(only text)
 
-	public String getAddressFrom();// returns the address of sender
+	public ArrayList<String> getAddressFrom();// returns the addresses array of sender
 
 	public ArrayList<String> getCopyOnAddres();  // if the address exist returns array of the addresses of copy
 

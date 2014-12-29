@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class MessagesDate implements Serializable, ReadEMailFromFile {
 	private int number;
-	private String addressFrom;
+	private ArrayList<String> addressFromArray= new ArrayList();
 	private String subject;
 	private Date sentDate;
 	private ArrayList<String> addressToArray = new ArrayList();
@@ -21,12 +21,12 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 	private ArrayList<String> copyHideAddressArray = new ArrayList();
 	private String content;
 
-	MessagesDate(int messageNum, String addressFrom, ArrayList<String> addressTo, String subject, Date sentDate, ArrayList<String> copyOnAddress, ArrayList<String> copyHideAddress, String content) {
+	MessagesDate(int messageNum, ArrayList<String> addressFrom, ArrayList<String> addressTo, String subject, Date sentDate, ArrayList<String> copyOnAddress, ArrayList<String> copyHideAddress, String content) {
 		
 		this.number = messageNum;
 		this.sentDate = sentDate;
 		this.subject = subject;
-		this.addressFrom = addressFrom;
+		addressFromArray = addressFrom;
 		addressToArray = addressTo;
 		copyOnAddressArray = copyOnAddress;
 		copyHideAddressArray = copyHideAddress;
@@ -52,8 +52,8 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 		return content;
 	}
 
-	public String getAddressFrom() {
-		return addressFrom;
+	public ArrayList<String> getAddressFrom() {
+		return addressFromArray;
 	}
 
 	/**
