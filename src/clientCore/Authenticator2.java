@@ -30,7 +30,14 @@ class Authenticator2 extends JFrame {
 	private JLabel viewlabel;
 	private JLabel statuslabel;
 	private Message[] messages = null;
-	ArrayList<MessagesDate> messagesList ;
+	private ArrayList<MessagesDate> messagesList ;
+	private String ccStringTemp;
+	private String bccStringString;
+	private String toStringTemp;
+	private String fromStringTemp;
+	private String subjectStringTemp;
+	private String sentDateStringTemp;
+	int selectedRow;
 	public Authenticator2() {
 		super("Main Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -63,16 +70,7 @@ class Authenticator2 extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
 					NewMailWindow newMail = new NewMailWindow();
-					// passwordDialog();
-					// SendMail writteMail = new
-					// MailWrite(Run.getSettingProtocolSMTP(),
-					// Run.getSettingUserName(), passwordMail);
-					// writteMail.answerMail("project_test91@mail.ru",
-					// "project_test91@mail.ru", "test", "test, test"); // put
-					// dest.
-					// emailadress
-					// into
-					// Email
+				
 
 				}
 			}
@@ -107,9 +105,17 @@ class Authenticator2 extends JFrame {
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.fill = GridBagConstraints.VERTICAL;
+		//--- button Answer EMail------------------------
 		buttonAnswer.setText("Answer");
+		buttonAnswer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == buttonAnswer) {
+					NewMailWindow answerMail = new NewMailWindow(messagesList.get(selectedRow));
+				}
+			}
+		});
 		gcp.add(buttonAnswer, c);
-
+		//-------------------------------------------------
 		c.gridx = 2;
 		c.gridy = 0;
 		c.gridwidth = 1;
@@ -150,38 +156,37 @@ class Authenticator2 extends JFrame {
 					return;
 
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-				String ccString;
-				String bccString;
-				String toString;
-				String fromString;
+			
 				if (!lsm.isSelectionEmpty()) {
-					int selectedRow = lsm.getMinSelectionIndex();
+					selectedRow = lsm.getMinSelectionIndex();
 
-					ccString = "";
+					ccStringTemp = "";
 					if (messagesList.get(selectedRow).getCopyOnAddres() != null) {
 						for (int i = 0; i < messagesList.get(selectedRow).getCopyOnAddres().size(); i++) {
-							ccString = ccString + messagesList.get(selectedRow).getCopyOnAddres().get(0) + "; ";
+							ccStringTemp = ccStringTemp + messagesList.get(selectedRow).getCopyOnAddres().get(i) + "; ";
 						}
 
 					}
-					bccString = "";
+					bccStringString = "";
 					if (messagesList.get(selectedRow).getCopyHideOnAddress() != null) {
 						for (int i = 0; i < messagesList.get(selectedRow).getCopyHideOnAddress().size(); i++) {
-							bccString = bccString + messagesList.get(selectedRow).getCopyHideOnAddress().get(0) + "; ";
+							bccStringString = bccStringString + messagesList.get(selectedRow).getCopyHideOnAddress().get(i) + "; ";
 
 						}
 					}
-					toString = "";
+					toStringTemp = "";
 					for (int i = 0; i < messagesList.get(selectedRow).getAddressTo().size(); i++) {
-						toString = toString + messagesList.get(selectedRow).getAddressTo().get(0) + "; ";
+						toStringTemp = toStringTemp + messagesList.get(selectedRow).getAddressTo().get(i) + "; ";
 
 					}
-					fromString = "";
+					fromStringTemp = "";
 					for (int i = 0; i < messagesList.get(selectedRow).getAddressFrom().size(); i++) {
-						fromString = fromString + messagesList.get(selectedRow).getAddressTo().get(0) + "; ";
+						fromStringTemp = fromStringTemp + messagesList.get(selectedRow).getAddressFrom().get(i) + "; ";
 
 					}
-					viewMail.setText("From: " + fromString + "\n" + "To: " + toString + "\n" + "CC: " + ccString + "\n" + "BCC: " + bccString + "\n" + "Subject: " + messagesList.get(selectedRow).getSubject() + "\n" + "Sent Date: " + messagesList.get(selectedRow).getSentDate() + "\n" + "\n"
+					subjectStringTemp= messagesList.get(selectedRow).getSubject();
+					sentDateStringTemp=messagesList.get(selectedRow).getSentDate().toString();
+					viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " +subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
 							+ messagesList.get(selectedRow).getContent());
 
 				}

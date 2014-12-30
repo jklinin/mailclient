@@ -1,4 +1,5 @@
 package clientCore;
+
 /**
  * the class for the input window of email
  * version 1.0.2
@@ -26,13 +27,59 @@ public class NewMailWindow extends JFrame {
 	private JLabel label3;
 	private JLabel label4;
 	private String passwordMail;
-	
 
 	NewMailWindow() {
 		super("New Mail");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
 		initialization();
+		setVisible(true);
+	}
+
+	// answer selected email
+	public NewMailWindow(MessagesDate message) {
+
+		super("Answer Mail");
+
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setSize(800, 800);
+		initialization();
+		if (message.getSubject() != null) {
+			subj.setText("Re: " + message.getSubject());
+		}
+		emailadr.setText(message.getAddressFrom().get(0));
+		if (message.getCopyOnAddres() != null) {
+			ccadr.setText(message.getCopyOnAddres().get(0));
+		}
+		if (message.getCopyHideOnAddress() != null) {
+			bccadr.setText(message.getCopyHideOnAddress().get(0));
+		}
+
+		String ccStringTemp = "";
+		if (message.getCopyOnAddres() != null) {
+			for (int i = 0; i < message.getCopyOnAddres().size(); i++) {
+				ccStringTemp = ccStringTemp + message.getCopyOnAddres().get(i) + "; ";
+			}
+
+		}
+		String bccStringString = "";
+		if (message.getCopyHideOnAddress() != null) {
+			for (int i = 0; i < message.getCopyHideOnAddress().size(); i++) {
+				bccStringString = bccStringString + message.getCopyHideOnAddress().get(i) + "; ";
+
+			}
+		}
+		String toStringTemp = "";
+		for (int i = 0; i < message.getAddressTo().size(); i++) {
+			toStringTemp = toStringTemp + message.getAddressTo().get(i) + "; ";
+
+		}
+		String fromStringTemp = "";
+		for (int i = 0; i < message.getAddressFrom().size(); i++) {
+			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
+		}
+		emailbody.setText("\n\n\n\n______________________________________________________________________________________________________________\n"+"From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n"
+				+   message.getContent());
 		setVisible(true);
 	}
 
@@ -49,16 +96,11 @@ public class NewMailWindow extends JFrame {
 		emailbody = new JEditorPane();
 		scrollPane = new JScrollPane();
 
-
-
-
 		Container gcp = getContentPane();
 		gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 125, 125, 550, 0 };
 		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 20, 20, 20, 20, 500 };
-
-
 
 		sendMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -93,7 +135,7 @@ public class NewMailWindow extends JFrame {
 						} else {
 							JOptionPane.showMessageDialog(null, "Please try again", "Error by sending", JOptionPane.ERROR_MESSAGE);
 						}
-					}else{
+					} else {
 						JOptionPane.showMessageDialog(null, "Please enter the correct email address", "Destination field is empty", JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -132,7 +174,6 @@ public class NewMailWindow extends JFrame {
 		c.gridy = 2;
 		gcp.add(label3, c);
 
-
 		c.gridx = 2;
 		c.gridy = 2;
 		gcp.add(ccadr, c);
@@ -157,10 +198,10 @@ public class NewMailWindow extends JFrame {
 		gcp.add(scrollPane, c);
 
 	}
-/**
- * @author Yuri Kalinin
- * the method for the input of password 
- */
+
+	/**
+	 * @author Yuri Kalinin the method for the input of password
+	 */
 	private void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('#');
@@ -188,4 +229,3 @@ public class NewMailWindow extends JFrame {
 		return result;
 	}
 }
-
