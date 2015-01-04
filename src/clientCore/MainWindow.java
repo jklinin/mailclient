@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class Authenticator2 extends JFrame {
+class MainWindow extends JFrame {
 	private DefaultTableModel model;
 	private static String passwordMail;
 	private JButton buttonNewMail;
@@ -38,8 +38,8 @@ class Authenticator2 extends JFrame {
 	private String subjectStringTemp;
 	private String sentDateStringTemp;
 	int selectedRow;
-	public Authenticator2() {
-		super("Main Client");
+	public MainWindow() {
+		super("Mail Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addComponentsToPane();
 
@@ -238,17 +238,22 @@ class Authenticator2 extends JFrame {
 
 	public static void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
-		passwordField.setEchoChar('#');
+		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
 		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
 		System.out.println(passwordMail);
 	}
-
+/**
+ * 
+ * @author Yuri Kalinin 
+ * this thread adds the new rows in the view table
+ *
+ */
 	class AddRowsThread implements Runnable {
 		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
 			model.setRowCount(0);
-			UpdateMail readMail = new MailReader();
+			GetMails readMail = new MailReader();
 
 			messagesList = readMail.readMessagesFile();
 			for (int i = 0; i < messagesList.size(); i++) {
@@ -265,15 +270,21 @@ class Authenticator2 extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			statuslabel.setText("");
 		}
 	}
-
+/**
+ * @author Yuri Kalinin
+ * This is the thread 
+ * this thread updates the emails in view table 
+ *
+ */
 	class UpdateEMailThread implements Runnable {
 
 		@Override
 		public void run() {
-			UpdateMail readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
+			statuslabel.setText("Getting EMails");
+			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 			try {
 				readMail.connectionInbox();
 			} catch (MessagingException e1) {

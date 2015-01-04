@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
-public interface UpdateMail {
+public interface GetMails {
 	public void connectionInbox() throws MessagingException; // update emails
 																// from server
 

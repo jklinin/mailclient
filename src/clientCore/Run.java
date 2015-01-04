@@ -17,7 +17,7 @@ public class Run {
 
 		new Thread(new ReadCSVRunnable()).start();
 
-		new Authenticator2();// GUI
+		new MainWindow();// GUI
 
 	}
 

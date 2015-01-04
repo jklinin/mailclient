@@ -76,7 +76,5 @@ public class MailWrite implements SendMail {
 		return false;
 	}
 
-	public void answerMail(String fromEmail, String toEmail, String subject, String textEmail) {
-		// sendEmail(fromEmail, toEmail, "Re: " + subject, textEmail);
-	}
+
 }

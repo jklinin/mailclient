@@ -1,6 +1,7 @@
 package clientCore;
 
 /**
+ * @author Yuri Kalinin, Nikolay Antonov
  * the class for the input window of email
  * version 1.0.2
  */
@@ -22,10 +23,10 @@ public class NewMailWindow extends JFrame {
 	private JTextField bccadr;
 	private JEditorPane emailbody;
 	private JTextField subj;
-	private JLabel label1;
-	private JLabel label2;
-	private JLabel label3;
-	private JLabel label4;
+	private JLabel labelDest;
+	private JLabel labelSub;
+	private JLabel labelCC;
+	private JLabel labelBCC;
 	private String passwordMail;
 
 	NewMailWindow() {
@@ -85,10 +86,10 @@ public class NewMailWindow extends JFrame {
 
 	private void initialization() {
 		sendMail = new JButton("Send EMail");
-		label1 = new JLabel("Destination @:");
-		label2 = new JLabel("Subject:");
-		label3 = new JLabel("CC @:");
-		label4 = new JLabel("BCC @:");
+		labelDest = new JLabel("Destination @:");
+		labelSub = new JLabel("Subject:");
+		labelCC = new JLabel("CC @:");
+		labelBCC = new JLabel("BCC @:");
 		emailadr = new JTextField(20);
 		subj = new JTextField(20);
 		ccadr = new JTextField(20);
@@ -155,11 +156,11 @@ public class NewMailWindow extends JFrame {
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 1;
 		c.gridy = 0;
-		gcp.add(label1, c);
+		gcp.add(labelDest, c);
 
 		c.gridx = 1;
 		c.gridy = 1;
-		gcp.add(label2, c);
+		gcp.add(labelSub, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
@@ -172,7 +173,7 @@ public class NewMailWindow extends JFrame {
 
 		c.gridx = 1;
 		c.gridy = 2;
-		gcp.add(label3, c);
+		gcp.add(labelCC, c);
 
 		c.gridx = 2;
 		c.gridy = 2;
@@ -180,7 +181,7 @@ public class NewMailWindow extends JFrame {
 
 		c.gridx = 1;
 		c.gridy = 3;
-		gcp.add(label4, c);
+		gcp.add(labelBCC, c);
 
 		c.gridx = 2;
 		c.gridy = 3;
@@ -204,7 +205,7 @@ public class NewMailWindow extends JFrame {
 	 */
 	private void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
-		passwordField.setEchoChar('#');
+		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
 		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());

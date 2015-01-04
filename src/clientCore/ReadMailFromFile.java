@@ -3,7 +3,7 @@ package clientCore;
 import java.util.ArrayList;
 import java.util.Date;
 
-public interface ReadEMailFromFile {
+public interface ReadMailFromFile {
 	public int getNumber(); // returns the number of email in the box
 
 	public String getSubject();// returns the subject of email

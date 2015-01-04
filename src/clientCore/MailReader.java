@@ -28,7 +28,7 @@ import javax.mail.Store;
  *         1.0.2
  *
  */
-public class MailReader implements UpdateMail {
+public class MailReader implements GetMails {
 
 	// --------- connection parameter--------------
 	private String hostName;

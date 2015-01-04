@@ -11,17 +11,22 @@ import java.util.Date;
  * @serial number, subject, sent date, sender address, copy to address, hide
  *         copy to address, content, addresses to copies
  */
-public class MessagesDate implements Serializable, ReadEMailFromFile {
+public class MessagesDate implements Serializable, ReadMailFromFile {
 	private int number;
-	private ArrayList<String> addressFromArray= new ArrayList();
+	private ArrayList<String> addressFromArray;
 	private String subject;
 	private Date sentDate;
-	private ArrayList<String> addressToArray = new ArrayList();
-	private ArrayList<String> copyOnAddressArray = new ArrayList();
-	private ArrayList<String> copyHideAddressArray = new ArrayList();
+	private ArrayList<String> addressToArray;
+	private ArrayList<String> copyOnAddressArray;
+	private ArrayList<String> copyHideAddressArray;
 	private String content;
 
 	MessagesDate(int messageNum, ArrayList<String> addressFrom, ArrayList<String> addressTo, String subject, Date sentDate, ArrayList<String> copyOnAddress, ArrayList<String> copyHideAddress, String content) {
+		
+		addressFromArray= new ArrayList();
+		addressToArray = new ArrayList();
+		copyOnAddressArray = new ArrayList();
+		copyHideAddressArray = new ArrayList();
 		
 		this.number = messageNum;
 		this.sentDate = sentDate;
@@ -31,6 +36,7 @@ public class MessagesDate implements Serializable, ReadEMailFromFile {
 		copyOnAddressArray = copyOnAddress;
 		copyHideAddressArray = copyHideAddress;
 		this.content = content;
+		
 
 	}
 	MessagesDate(){};
