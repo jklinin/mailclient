@@ -8,7 +8,9 @@
 
 		<hostNamePop>pop.mail.ru</hostNamePop>
 		<hostNameSmtp>smtp.mail.ru</hostNameSmtp>
-		<userName>project_test91@mail.ru</userName></settings>
+		<userName>project_test91@mail.ru</userName>
+		<messagesFile>messages.ser</messagesFile>
+	</settings>
 
 
 
