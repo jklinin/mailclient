@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 public class ReadXML {
 
 	private static ArrayList settings = new ArrayList();
-	private static String[] nodeSetting = { "hostNamePop","hostNameSmtp", "userName" };
+	private static String[] nodeSetting = { "hostNamePop","hostNameSmtp", "userName", "messagesFile" };
 
 	public static void readSettings() {
 		String setting = null;

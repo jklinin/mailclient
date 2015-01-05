@@ -23,6 +23,8 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
+import com.sun.scenario.Settings;
+
 /**
  * @author Yuri Kalinin read e-mails from inbox folder on the server version
  *         1.0.2
@@ -220,7 +222,7 @@ public class MailReader implements GetMails {
 	 * */
 	public void saveMessages(ArrayList<MessagesDate> mList) throws MessagingException, FileNotFoundException, IOException {
 
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("messages.ser"));
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(Run.getNameFileMessagesContainer().toString()));
 		for (int i = 0; i < mList.size(); i++) {
 			out.writeObject(mList);
 
@@ -242,7 +244,8 @@ public class MailReader implements GetMails {
 	 * */
 	public ArrayList<MessagesDate> readMessagesFile() throws FileNotFoundException, IOException, ClassNotFoundException {
 
-		ObjectInputStream in = new ObjectInputStream(new FileInputStream("messages.ser"));
+
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesContainer().toString()));
 
 		ArrayList<MessagesDate> array = (ArrayList<MessagesDate>) in.readObject();
 

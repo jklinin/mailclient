@@ -15,7 +15,7 @@ public class Run {
 
 	public static void main(String[] args) throws MessagingException {
 
-		new Thread(new ReadCSVRunnable()).start();
+		ReadCSVRunnable(); // settings
 
 		new MainWindow();// GUI
 
@@ -35,13 +35,17 @@ public class Run {
 
 	}
 
-	public static class ReadCSVRunnable implements Runnable {
-		@Override
-		public void run() {
-			ReadXML readerXML = new ReadXML();
-			readerXML.readSettings();
-			settings = readerXML.getSettings();
-		}
+	public static Object getNameFileMessagesContainer() {
+		return settings.get(3);
+
+	}
+
+	public static void ReadCSVRunnable() {
+
+		ReadXML readerXML = new ReadXML();
+		readerXML.readSettings();
+		settings = readerXML.getSettings();
+		
 	}
 
 }
