@@ -100,8 +100,8 @@ public class MailReader implements GetMails {
 		}
 		if (messages.length == 0)
 			System.out.println("No messages found.");
-		Object content;
-
+		Object content; 
+		 String type; // type of messages contant
 		for (int i = 0; i < messages.length; i++) {
 
 			System.out.println("Message " + (i + 1));
@@ -150,11 +150,26 @@ public class MailReader implements GetMails {
 				}
 			}
 			System.out.println();
+			 content = messages[i].getContent();
+			
+			if (content instanceof String) {
+				type="text";
+				messagesList.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, content.toString()));
+			}else if (content instanceof Multipart) {
+				for (int j = 0; j < ((Multipart) content).getCount(); j++) {
+					Multipart mp = (Multipart) content;
+					BodyPart bodyPart = mp.getBodyPart(j);
 
-			messagesList.add(new MessagesDate(messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, messages[i].getContent().toString()));
-
-			try {
-				content = messages[i].getContent();
+//					s = (String) bodyPart.getContent();
+					
+					type="html";
+					messagesList.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
+				}
+			}
+			// just for test
+			try { 
+				 content = messages[i].getContent();
+				
 				if (content instanceof String) {
 					s = (String) content;
 					System.out.println(s);
@@ -164,7 +179,7 @@ public class MailReader implements GetMails {
 						BodyPart bodyPart = mp.getBodyPart(j);
 
 						s = (String) bodyPart.getContent();
-						System.out.println(s);
+						System.out.println(s + " multipart");
 
 					}
 				}
@@ -212,13 +227,13 @@ public class MailReader implements GetMails {
 		}
 		out.flush();
 		out.close();
-		// just for test
+		/*// just for test
 		try {
 			readMessagesFile();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	/**

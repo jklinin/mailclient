@@ -30,7 +30,7 @@ class MainWindow extends JFrame {
 	private JLabel viewlabel;
 	private JLabel statuslabel;
 	private Message[] messages = null;
-	private ArrayList<MessagesDate> messagesList ;
+	private ArrayList<MessagesDate> messagesList;
 	private String ccStringTemp;
 	private String bccStringString;
 	private String toStringTemp;
@@ -38,6 +38,7 @@ class MainWindow extends JFrame {
 	private String subjectStringTemp;
 	private String sentDateStringTemp;
 	int selectedRow;
+
 	public MainWindow() {
 		super("Mail Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -70,7 +71,6 @@ class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
 					NewMailWindow newMail = new NewMailWindow();
-				
 
 				}
 			}
@@ -105,7 +105,7 @@ class MainWindow extends JFrame {
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		c.fill = GridBagConstraints.VERTICAL;
-		//--- button Answer EMail------------------------
+		// --- button Answer EMail------------------------
 		buttonAnswer.setText("Answer");
 		buttonAnswer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -115,7 +115,7 @@ class MainWindow extends JFrame {
 			}
 		});
 		gcp.add(buttonAnswer, c);
-		//-------------------------------------------------
+		// -------------------------------------------------
 		c.gridx = 2;
 		c.gridy = 0;
 		c.gridwidth = 1;
@@ -140,8 +140,9 @@ class MainWindow extends JFrame {
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.NONE;
 		gcp.add(viewlabel, c);
-        //----Jtable----------------
+		// ----Jtable----------------
 		scrollPane1.setViewportView(previewMail);
+		viewMail.setEditable(false); // set JEdotorPane not editable
 		model.addColumn("FROM");
 		model.addColumn("TO");
 		model.addColumn("Subject");
@@ -150,13 +151,14 @@ class MainWindow extends JFrame {
 
 		ListSelectionModel rowSM = previewMail.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
+
 			public void valueChanged(ListSelectionEvent e) {
 				// Ignore extra messages.
 				if (e.getValueIsAdjusting())
 					return;
 
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-			
+
 				if (!lsm.isSelectionEmpty()) {
 					selectedRow = lsm.getMinSelectionIndex();
 
@@ -184,11 +186,24 @@ class MainWindow extends JFrame {
 						fromStringTemp = fromStringTemp + messagesList.get(selectedRow).getAddressFrom().get(i) + "; ";
 
 					}
-					subjectStringTemp= messagesList.get(selectedRow).getSubject();
-					sentDateStringTemp=messagesList.get(selectedRow).getSentDate().toString();
-					viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " +subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
-							+ messagesList.get(selectedRow).getContent());
-
+					subjectStringTemp = messagesList.get(selectedRow).getSubject();
+					sentDateStringTemp = messagesList.get(selectedRow).getSentDate().toString();
+					System.out.println(messagesList.get(selectedRow).getTypeMessages() + " type of selected messages");// TODO
+																														// remove
+																														// this
+																														// is
+																														// just
+																														// for
+																														// testing
+					if (messagesList.get(selectedRow).getTypeMessages().equals("text")) {
+						viewMail.setContentType("text");
+						viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
+								+ messagesList.get(selectedRow).getContent());
+					} else if (messagesList.get(selectedRow).getTypeMessages().equals("html")) {
+						viewMail.setContentType("text/html");
+						viewMail.setText("<p> From: " + fromStringTemp + "<br>" + "To: " + toStringTemp + "<br>" + "CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + subjectStringTemp + "<br>" + "Sent Date: " + sentDateStringTemp + "<br>" + "</p>"
+								+ messagesList.get(selectedRow).getContent());
+					}
 				}
 			}
 		});
@@ -197,7 +212,7 @@ class MainWindow extends JFrame {
 			previewMail.getColumnModel().getColumn(i).setPreferredWidth(200);
 			previewMail.getColumnModel().getColumn(i).setMaxWidth(200);
 			previewMail.getColumnModel().getColumn(i).setMinWidth(200);
-         }
+		}
 		c.gridx = 0;
 		c.gridy = 2;
 		c.gridwidth = 1;
@@ -205,8 +220,8 @@ class MainWindow extends JFrame {
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
 		gcp.add(scrollPane1, c);
-		//---------------------------------------------------
-		 // thread for the adding of rows
+		// ---------------------------------------------------
+		// thread for the adding of rows
 		new Thread(new AddRowsThread()).start();
 		// ----------JEditorPane----------------------------
 		scrollPane2.setViewportView(viewMail);
@@ -217,7 +232,7 @@ class MainWindow extends JFrame {
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
 		gcp.add(scrollPane2, c);
-		//-------------------------------------------------
+		// -------------------------------------------------
 
 		statuslabel.setText("Status Bar");
 		c.gridx = 0;
@@ -244,12 +259,12 @@ class MainWindow extends JFrame {
 		passwordMail = String.valueOf(passwordField.getPassword());
 		System.out.println(passwordMail);
 	}
-/**
- * 
- * @author Yuri Kalinin 
- * this thread adds the new rows in the view table
- *
- */
+
+	/**
+	 * 
+	 * @author Yuri Kalinin this thread adds the new rows in the view table
+	 *
+	 */
 	class AddRowsThread implements Runnable {
 		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
 			model.setRowCount(0);
@@ -273,12 +288,12 @@ class MainWindow extends JFrame {
 			statuslabel.setText("");
 		}
 	}
-/**
- * @author Yuri Kalinin
- * This is the thread 
- * this thread updates the emails in view table 
- *
- */
+
+	/**
+	 * @author Yuri Kalinin This is the thread this thread updates the emails in
+	 *         view table
+	 *
+	 */
 	class UpdateEMailThread implements Runnable {
 
 		@Override
@@ -297,6 +312,5 @@ class MainWindow extends JFrame {
 		}
 
 	}
-
 
 }

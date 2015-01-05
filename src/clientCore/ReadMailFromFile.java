@@ -5,6 +5,7 @@ import java.util.Date;
 
 public interface ReadMailFromFile {
 	public int getNumber(); // returns the number of email in the box
+	public String getTypeMessages(); // returns the type of messages content
 
 	public String getSubject();// returns the subject of email
 
