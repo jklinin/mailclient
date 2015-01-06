@@ -160,7 +160,8 @@ class MainWindow extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
 				if (!lsm.isSelectionEmpty()) {
-					selectedRow = lsm.getMinSelectionIndex();
+					int lastElement = messagesList.size() - 1;
+					selectedRow = lastElement - lsm.getMinSelectionIndex();
 
 					ccStringTemp = "";
 					if (messagesList.get(selectedRow).getCopyOnAddres() != null) {
@@ -223,7 +224,7 @@ class MainWindow extends JFrame {
 		// ---------------------------------------------------
 		// thread for the adding of rows
 		new Thread(new AddRowsThread()).start();
-		
+
 		// ----------JEditorPane----------------------------
 		scrollPane2.setViewportView(viewMail);
 		c.gridx = 1;
@@ -272,10 +273,13 @@ class MainWindow extends JFrame {
 			GetMails readMail = new MailReader();
 
 			messagesList = readMail.readMessagesFile();
-			for (int i = 0; i < messagesList.size(); i++) {
+			int i = messagesList.size() - 1;
+			do {
 
 				model.addRow(new Object[] { messagesList.get(i).getAddressFrom(), messagesList.get(i).getAddressTo(), messagesList.get(i).getSubject(), messagesList.get(i).getSentDate() });
-			}
+				i--;
+
+			} while (i > 0);
 		}
 
 		@Override
@@ -299,7 +303,7 @@ class MainWindow extends JFrame {
 
 		@Override
 		public void run() {
-			statuslabel.setText("Getting EMails");
+			statuslabel.setText("Receiving emails");
 			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 			try {
 				readMail.connectionInbox();
