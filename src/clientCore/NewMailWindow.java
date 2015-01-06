@@ -29,7 +29,7 @@ public class NewMailWindow extends JFrame {
 	private JLabel labelBCC;
 	private String passwordMail;
 
-	NewMailWindow() {
+	public NewMailWindow() {
 		super("New Mail");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
@@ -37,8 +37,13 @@ public class NewMailWindow extends JFrame {
 		setVisible(true);
 	}
 
-	// answer selected email
-	public NewMailWindow(MessagesDate message) {
+	
+	/**
+	 * @author Yuri Kalinin
+	 * the constructor with message parameter for the answering of email
+	 * @param message
+	 */
+	public NewMailWindow(MessagesDate message) {// answer selected email
 
 		super("Answer Mail");
 
@@ -79,8 +84,16 @@ public class NewMailWindow extends JFrame {
 		for (int i = 0; i < message.getAddressFrom().size(); i++) {
 			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
 		}
-		emailbody.setText("\n\n\n\n______________________________________________________________________________________________________________\n"+"From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n"
+		if (message.getTypeMessages().equals("text")){
+			emailbody.setContentType("text");
+		emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n"+"From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n"
 				+   message.getContent());
+		}
+		if(message.getTypeMessages().equals("html")){
+			emailbody.setContentType("text/html");
+			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>"
+					+   message.getContent());
+		}
 		setVisible(true);
 	}
 
@@ -201,7 +214,8 @@ public class NewMailWindow extends JFrame {
 	}
 
 	/**
-	 * @author Yuri Kalinin the method for the input of password
+	 * @author Yuri Kalinin 
+	 * the method for the input of password
 	 */
 	private void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);

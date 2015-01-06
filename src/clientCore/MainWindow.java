@@ -223,6 +223,7 @@ class MainWindow extends JFrame {
 		// ---------------------------------------------------
 		// thread for the adding of rows
 		new Thread(new AddRowsThread()).start();
+		
 		// ----------JEditorPane----------------------------
 		scrollPane2.setViewportView(viewMail);
 		c.gridx = 1;
