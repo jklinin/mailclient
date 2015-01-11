@@ -23,12 +23,12 @@ public class MessagesDate implements Serializable, ReadMailFromFile {
 	private String content;
 
 	MessagesDate(String type, int messageNum, ArrayList<String> addressFrom, ArrayList<String> addressTo, String subject, Date sentDate, ArrayList<String> copyOnAddress, ArrayList<String> copyHideAddress, String content) {
-		
-		addressFromArray= new ArrayList();
+
+		addressFromArray = new ArrayList();
 		addressToArray = new ArrayList();
 		copyOnAddressArray = new ArrayList();
 		copyHideAddressArray = new ArrayList();
-		
+
 		this.number = messageNum;
 		this.sentDate = sentDate;
 		this.subject = subject;
@@ -37,10 +37,13 @@ public class MessagesDate implements Serializable, ReadMailFromFile {
 		copyOnAddressArray = copyOnAddress;
 		copyHideAddressArray = copyHideAddress;
 		this.content = content;
-		typeMessage=type;
+		typeMessage = type;
 
 	}
-	MessagesDate(){};
+
+	MessagesDate() {
+	};
+
 	public int getNumber() {
 		return number;
 	}
@@ -62,7 +65,8 @@ public class MessagesDate implements Serializable, ReadMailFromFile {
 	public ArrayList<String> getAddressFrom() {
 		return addressFromArray;
 	}
-	public String getTypeMessages(){
+
+	public String getTypeMessages() {
 		return typeMessage;
 	}
 

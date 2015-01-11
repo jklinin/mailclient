@@ -50,10 +50,10 @@ class MainWindow extends JFrame {
 
 	public void addComponentsToPane() {
 		model = new DefaultTableModel() {
-    		@Override
-    		public boolean isCellEditable(int row, int column) {
-       			return false;
-    		}
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
 		};
 		previewMail = new JTable(model);
 		buttonNewMail = new JButton();
@@ -97,7 +97,12 @@ class MainWindow extends JFrame {
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
+					try{
 					passwordDialog();
+					}catch(NullPointerException ex){
+						System.err.println(ex.getMessage());
+						return;
+					}
 					new Thread(new UpdateEMailThread()).start();
 
 				}
@@ -194,13 +199,7 @@ class MainWindow extends JFrame {
 					}
 					subjectStringTemp = messagesList.get(selectedRow).getSubject();
 					sentDateStringTemp = messagesList.get(selectedRow).getSentDate().toString();
-					System.out.println(messagesList.get(selectedRow).getTypeMessages() + " type of selected messages");// TODO
-																														// remove
-																														// this
-																														// is
-																														// just
-																														// for
-																														// testing
+					
 					if (messagesList.get(selectedRow).getTypeMessages().equals("text")) {
 						viewMail.setContentType("text");
 						viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
@@ -258,13 +257,15 @@ class MainWindow extends JFrame {
 		setLocationRelativeTo(getOwner());
 	}
 
-	public static void passwordDialog() {
+	public static void passwordDialog()  {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
-		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
-		System.out.println(passwordMail);
+		if (passwordMail.equals("")){
+			throw new NullPointerException("The field password is empty");
+		}
+		
 	}
 
 	/**
@@ -289,12 +290,19 @@ class MainWindow extends JFrame {
 
 		@Override
 		public void run() {
+
 			try {
 				addNewRowTable();
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				// this ok hear
+
+			} catch (ClassNotFoundException e) {
+				System.err.println(e.getMessage());
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+
 			}
+
 			statuslabel.setText("");
 		}
 	}
@@ -312,11 +320,15 @@ class MainWindow extends JFrame {
 			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 			try {
 				readMail.connectionInbox();
-			} catch (MessagingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (MessagingException e) {
+				System.err.println(e.getMessage());
 			}
+			try{
 			readMail.getMassagesArray();
+			}catch(NullPointerException ex){
+				statuslabel.setText("");
+				return;
+			}
 			new Thread(new AddRowsThread()).start();
 
 		}

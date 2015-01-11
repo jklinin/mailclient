@@ -26,13 +26,19 @@ public class MailWrite implements SendMail {
 	private String hostName;
 
 	public MailWrite(Object hostName, Object userName, String passwordMail) {
-
 		this.hostName = hostName.toString();
 		this.userName = userName.toString();
-
 		password = passwordMail;
 
 	}
+
+	/**
+	 * @author Yuri Kalinin this method connects to the email server and sends
+	 *         the email
+	 * @return true if the email is sended and false if not
+	 * @exception if
+	 *                the Authentication is not correct
+	 */
 
 	public boolean sendEmail(String fromEmail, String toEmail, String subject, String textEmail, String ccAdr, String bccAdr) {
 
@@ -62,19 +68,15 @@ public class MailWrite implements SendMail {
 			}
 			message.setSubject(subject);
 			message.setText(textEmail);
-
 			Transport.send(message);
-
-			System.out.println("Done");
 			return true;
-
 		} catch (MessagingException e) {
 
 			JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
-			// throw new RuntimeException(e);
-		}
-		return false;
-	}
+			return false;
 
+		}
+		
+	}
 
 }

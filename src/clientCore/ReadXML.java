@@ -1,10 +1,10 @@
-
 package clientCore;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,55 +14,56 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * @author Yuri Kalinin
- * read settings from XML file
- * version 1.0.0
+ * @author Yuri Kalinin read settings from XML file version 1.0.0
  *
  */
-
 
 public class ReadXML {
 
 	private static ArrayList settings = new ArrayList();
-	private static String[] nodeSetting = { "hostNamePop","hostNameSmtp", "userName", "messagesFile" };
+	private static String[] nodeSetting = { "hostNamePop", "hostNameSmtp", "userName", "messagesFile" };
 
 	public static void readSettings() {
 		String setting = null;
 		final String XMLfileName = "settings.xml";
 		for (int i = 0; i < nodeSetting.length; i++) {
-			String nodeName=nodeSetting[i];
+			String nodeName = nodeSetting[i];
 			try {
 
-				DocumentBuilderFactory factory = DocumentBuilderFactory
-						.newInstance();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				Document document = builder.parse(XMLfileName);
-				NodeList tableNameNodeList = document
-						.getElementsByTagName(nodeName);
+				NodeList tableNameNodeList = document.getElementsByTagName(nodeName);
 
-				setting = tableNameNodeList.item(0).getChildNodes().item(0)
-						.getTextContent();
+				setting = tableNameNodeList.item(0).getChildNodes().item(0).getTextContent();
 
 			} catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "The settings file is not correct. The program will be finished", "Settings file Error", JOptionPane.ERROR_MESSAGE);
+
+				System.exit(0);
+
 			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "The settings file is not correct. The program will be finished", "Settings file Error", JOptionPane.ERROR_MESSAGE);
+
+				System.exit(0);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				JOptionPane.showMessageDialog(null, "The settings file can't be find. The program will be finished", "Settings file Error", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
+				System.exit(0);
+
+			} catch (NullPointerException e) {
+				JOptionPane.showMessageDialog(null, "The settings file can't be find. The program will be finished", "Settings file Error", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
+				System.exit(0);
+
 			}
-			catch (NullPointerException e) {
-				e.printStackTrace();
-			}
-			
+
 			settings.add(setting);
 		}
 	}
-public ArrayList getSettings(){
-	return settings;
-}
-}
 
-
+	public ArrayList getSettings() {
+		return settings;
+	}
+}
