@@ -52,7 +52,9 @@ public class ReadXML {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-
+			}
+			catch (NullPointerException e) {
+				e.printStackTrace();
 			}
 			
 			settings.add(setting);
