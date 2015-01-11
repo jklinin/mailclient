@@ -49,7 +49,12 @@ class MainWindow extends JFrame {
 	}
 
 	public void addComponentsToPane() {
-		model = new DefaultTableModel();
+		model = new DefaultTableModel() {
+    		@Override
+    		public boolean isCellEditable(int row, int column) {
+       			return false;
+    		}
+		};
 		previewMail = new JTable(model);
 		buttonNewMail = new JButton();
 		buttonUpdateMail = new JButton();
