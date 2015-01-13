@@ -5,10 +5,7 @@ import javax.mail.MessagingException;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,13 +16,17 @@ import java.util.ArrayList;
 class MainWindow extends JFrame {
 	private DefaultTableModel model;
 	private static String passwordMail;
+	private JPanel buttonCont = new JPanel();
 	private JButton buttonNewMail;
 	private JButton buttonUpdateMail;
 	private JButton buttonAnswer;
+	private JButton buttonAddressBook;
 	private JTable previewMail;
 	private JEditorPane viewMail;
+	private JScrollPane buttonJsp;
 	private JScrollPane scrollPane1;
 	private JScrollPane scrollPane2;
+	private JScrollPane scrollPane3;
 	private JLabel previewlabel;
 	private JLabel viewlabel;
 	private JLabel statuslabel;
@@ -43,25 +44,29 @@ class MainWindow extends JFrame {
 		super("Mail Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addComponentsToPane();
-
 		setVisible(true);
 
 	}
 
+
 	public void addComponentsToPane() {
 		model = new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
+    	@Override
+    	public boolean isCellEditable(int row, int column) {
+       		return false;
+    	}
 		};
 		previewMail = new JTable(model);
+		buttonCont = new JPanel();
+		buttonJsp = new JScrollPane(buttonCont);
 		buttonNewMail = new JButton();
 		buttonUpdateMail = new JButton();
 		buttonAnswer = new JButton();
+		buttonAddressBook = new JButton();
 		viewMail = new JEditorPane();
 		scrollPane1 = new JScrollPane();
 		scrollPane2 = new JScrollPane();
+		scrollPane3 = new JScrollPane();
 		previewlabel = new JLabel();
 		viewlabel = new JLabel();
 		statuslabel = new JLabel();
@@ -72,6 +77,7 @@ class MainWindow extends JFrame {
 		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 800, 400, 400, 0 };
 		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 0, 0, 600, 40, 0 };
 
+
 		buttonNewMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonNewMail) {
@@ -80,42 +86,17 @@ class MainWindow extends JFrame {
 				}
 			}
 		});
+
 		buttonNewMail.setText("New Mail");
+		gcp.add(buttonJsp, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.NORTH,
+				GridBagConstraints.VERTICAL,
+				new Insets(0, 0, 0, 0), 0, 0));
+		buttonCont.add(buttonNewMail);
 
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		c.fill = GridBagConstraints.VERTICAL;
-		c.ipadx = 0;
-		c.ipady = 0;
-		gcp.add(buttonNewMail, c);
-
-		buttonUpdateMail.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == buttonUpdateMail) {
-					try{
-					passwordDialog();
-					}catch(NullPointerException ex){
-						System.err.println(ex.getMessage());
-						return;
-					}
-					new Thread(new UpdateEMailThread()).start();
-
-				}
-			}
-
-		});
-
+		// --- button Answer EMail------------------------
 		c.gridx = 1;
 		c.gridy = 0;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.fill = GridBagConstraints.VERTICAL;
-		// --- button Answer EMail------------------------
 		buttonAnswer.setText("Answer");
 		buttonAnswer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -124,24 +105,44 @@ class MainWindow extends JFrame {
 				}
 			}
 		});
-		gcp.add(buttonAnswer, c);
+		buttonCont.add(buttonAnswer);
+
 		// -------------------------------------------------
+		buttonUpdateMail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == buttonUpdateMail) {
+					passwordDialog();
+					new Thread(new UpdateEMailThread()).start();
+
+				}
+			}
+
+		});
+
 		c.gridx = 2;
 		c.gridy = 0;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.fill = GridBagConstraints.VERTICAL;
 		buttonUpdateMail.setText("Update");
-		gcp.add(buttonUpdateMail, c);
+		buttonCont.add(buttonUpdateMail);
+
+		buttonAddressBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == buttonAddressBook) {
+					AddressBook newAddressBook = new AddressBook();
+				}
+			}
+		});
+		c.gridx = 3;
+		c.gridy = 0;
+		buttonAddressBook.setText("Address Book");
+		buttonCont.add(buttonAddressBook);
+
+
 
 		previewlabel.setText("Incoming mail");
-		c.gridx = 0;
-		c.gridy = 1;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		c.anchor = GridBagConstraints.CENTER;
-		c.fill = GridBagConstraints.VERTICAL;
-		gcp.add(previewlabel, c);
+		gcp.add(previewlabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER,
+				GridBagConstraints.VERTICAL,
+				new Insets(0, 0, 0, 0), 0, 0));
 		viewlabel.setText("Mail content");
 		c.gridx = 1;
 		c.gridy = 1;
@@ -151,7 +152,7 @@ class MainWindow extends JFrame {
 		c.fill = GridBagConstraints.NONE;
 		gcp.add(viewlabel, c);
 		// ----Jtable----------------
-		scrollPane1.setViewportView(previewMail);
+		scrollPane3.setViewportView(previewMail);
 		viewMail.setEditable(false); // set JEdotorPane not editable
 		model.addColumn("FROM");
 		model.addColumn("TO");
@@ -199,7 +200,13 @@ class MainWindow extends JFrame {
 					}
 					subjectStringTemp = messagesList.get(selectedRow).getSubject();
 					sentDateStringTemp = messagesList.get(selectedRow).getSentDate().toString();
-					
+					System.out.println(messagesList.get(selectedRow).getTypeMessages() + " type of selected messages");// TODO
+																														// remove
+																														// this
+																														// is
+																														// just
+																														// for
+																														// testing
 					if (messagesList.get(selectedRow).getTypeMessages().equals("text")) {
 						viewMail.setContentType("text");
 						viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
@@ -224,7 +231,7 @@ class MainWindow extends JFrame {
 		c.gridheight = 1;
 		c.anchor = GridBagConstraints.CENTER;
 		c.fill = GridBagConstraints.BOTH;
-		gcp.add(scrollPane1, c);
+		gcp.add(scrollPane3, c);
 		// ---------------------------------------------------
 		// thread for the adding of rows
 		new Thread(new AddRowsThread()).start();
@@ -257,15 +264,13 @@ class MainWindow extends JFrame {
 		setLocationRelativeTo(getOwner());
 	}
 
-	public static void passwordDialog()  {
+	public static void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
+		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
-		if (passwordMail.equals("")){
-			throw new NullPointerException("The field password is empty");
-		}
-		
+		System.out.println(passwordMail);
 	}
 
 	/**
@@ -290,19 +295,12 @@ class MainWindow extends JFrame {
 
 		@Override
 		public void run() {
-
 			try {
 				addNewRowTable();
-			} catch (FileNotFoundException e) {
-				// this ok hear
-
-			} catch (ClassNotFoundException e) {
-				System.err.println(e.getMessage());
-			} catch (IOException e) {
-				System.err.println(e.getMessage());
-
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
 			statuslabel.setText("");
 		}
 	}
@@ -320,15 +318,11 @@ class MainWindow extends JFrame {
 			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 			try {
 				readMail.connectionInbox();
-			} catch (MessagingException e) {
-				System.err.println(e.getMessage());
+			} catch (MessagingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			try{
 			readMail.getMassagesArray();
-			}catch(NullPointerException ex){
-				statuslabel.setText("");
-				return;
-			}
 			new Thread(new AddRowsThread()).start();
 
 		}
@@ -336,3 +330,4 @@ class MainWindow extends JFrame {
 	}
 
 }
+
