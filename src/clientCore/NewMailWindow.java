@@ -9,8 +9,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.swing.*;
 
-import com.sun.imageio.stream.StreamCloser;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,9 +37,10 @@ public class NewMailWindow extends JFrame {
 		setVisible(true);
 	}
 
+	
 	/**
-	 * @author Yuri Kalinin the constructor with message parameter for the
-	 *         answering of email
+	 * @author Yuri Kalinin
+	 * the constructor with message parameter for the answering of email
 	 * @param message
 	 */
 	public NewMailWindow(MessagesDate message) {// answer selected email
@@ -85,15 +84,15 @@ public class NewMailWindow extends JFrame {
 		for (int i = 0; i < message.getAddressFrom().size(); i++) {
 			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
 		}
-		if (message.getTypeMessages().equals("text")) {
+		if (message.getTypeMessages().equals("text")){
 			emailbody.setContentType("text");
-			emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n" + "From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: "
-					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
+		emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n"+"From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n"
+				+   message.getContent());
 		}
-		if (message.getTypeMessages().equals("html")) {
+		if(message.getTypeMessages().equals("html")){
 			emailbody.setContentType("text/html");
-			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
-					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + message.getContent());
+			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>"
+					+   message.getContent());
 		}
 		setVisible(true);
 	}
@@ -123,21 +122,25 @@ public class NewMailWindow extends JFrame {
 					// check cc email address
 					if (!ccadr.getText().equals("")) {
 						if (isValidEmailAddress(ccadr.getText()) == false) {
+							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 					}
 					// check bcc email address
 					if (!bccadr.getText().equals("")) {
 						if (isValidEmailAddress(bccadr.getText()) == false) {
+							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 					}
 					// check the destination email address
 					if (!emailadr.getText().equals("")) {
+
 						if (isValidEmailAddress(emailadr.getText()) == false) {
+							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses is not correct", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-						try{
+
 						passwordDialog();
 
 						SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
@@ -145,9 +148,6 @@ public class NewMailWindow extends JFrame {
 							dispose();
 						} else {
 							JOptionPane.showMessageDialog(null, "Please try again", "Error by sending", JOptionPane.ERROR_MESSAGE);
-						}
-						}catch (NullPointerException ex){
-							System.err.println(ex);
 						}
 					} else {
 						JOptionPane.showMessageDialog(null, "Please enter the correct email address", "Destination field is empty", JOptionPane.ERROR_MESSAGE);
@@ -157,23 +157,20 @@ public class NewMailWindow extends JFrame {
 			}
 		});
 
-		c.fill = GridBagConstraints.VERTICAL;
-		c.gridwidth = 1;
-		c.weightx = 0.5;
-		c.weighty = 0.00;
-		c.gridx = 0;
-		c.gridy = 1;
-		c.anchor = GridBagConstraints.CENTER;
-		gcp.add(sendMail, c);
+		gcp.add(sendMail, new GridBagConstraints(0, 1, 1, 1, 0.5, 0.00,
+				GridBagConstraints.CENTER,
+				GridBagConstraints.VERTICAL,
+				new Insets(0, 0, 0, 0), 0, 0));
 
-		c.anchor = GridBagConstraints.WEST;
-		c.gridx = 1;
-		c.gridy = 0;
-		gcp.add(labelDest, c);
-
-		c.gridx = 1;
-		c.gridy = 1;
-		gcp.add(labelSub, c);
+		gcp.add(labelDest, new GridBagConstraints(1, 0, 1, 1, 0.5, 0.00,
+				GridBagConstraints.WEST,
+				GridBagConstraints.VERTICAL,
+				new Insets(0, 0, 0, 0), 0, 0));
+		
+		gcp.add(labelSub, new GridBagConstraints(1, 1, 1, 1, 0.5, 0.00,
+				GridBagConstraints.WEST,
+				GridBagConstraints.VERTICAL,
+				new Insets(0, 0, 0, 0), 0, 0));
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 2;
@@ -214,17 +211,16 @@ public class NewMailWindow extends JFrame {
 	}
 
 	/**
-	 * @author Yuri Kalinin the method for the input of password
+	 * @author Yuri sKalinin
+	 * the method for the input of password
 	 */
 	private void passwordDialog() {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
+		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
-		if(passwordMail.equals("")){
-			throw new NullPointerException("Password field is empty");
-		}
-
+		System.out.println(passwordMail);
 	}
 
 	/**
@@ -240,8 +236,7 @@ public class NewMailWindow extends JFrame {
 			InternetAddress emailAddr = new InternetAddress(email);
 			emailAddr.validate();
 		} catch (AddressException ex) {
-			JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
-			return false;
+			result = false;
 		}
 		return result;
 	}
