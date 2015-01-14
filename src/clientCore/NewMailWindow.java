@@ -8,6 +8,7 @@ package clientCore;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.swing.*;
+import com.sun.imageio.stream.StreamCloser;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -140,7 +141,7 @@ public class NewMailWindow extends JFrame {
 							JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses is not correct", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-
+						try{
 						passwordDialog();
 
 						SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), passwordMail);
@@ -148,6 +149,9 @@ public class NewMailWindow extends JFrame {
 							dispose();
 						} else {
 							JOptionPane.showMessageDialog(null, "Please try again", "Error by sending", JOptionPane.ERROR_MESSAGE);
+						}
+						}catch (NullPointerException ex){
+							System.err.println(ex);
 						}
 					} else {
 						JOptionPane.showMessageDialog(null, "Please enter the correct email address", "Destination field is empty", JOptionPane.ERROR_MESSAGE);
@@ -218,10 +222,12 @@ public class NewMailWindow extends JFrame {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
-		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
-		System.out.println(passwordMail);
-	}
+		if(passwordMail.equals("")){
+			throw new NullPointerException("Password field is empty");
+		}
+
+ 	}
 
 	/**
 	 * @author Yuri Kalinin
@@ -236,7 +242,8 @@ public class NewMailWindow extends JFrame {
 			InternetAddress emailAddr = new InternetAddress(email);
 			emailAddr.validate();
 		} catch (AddressException ex) {
-			result = false;
+			JOptionPane.showMessageDialog(null, "Please check  Email Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
 		return result;
 	}
