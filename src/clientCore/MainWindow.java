@@ -5,7 +5,10 @@ import javax.mail.MessagingException;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,8 +114,13 @@ class MainWindow extends JFrame {
 		buttonUpdateMail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == buttonUpdateMail) {
-					passwordDialog();
-					new Thread(new UpdateEMailThread()).start();
+						try{
+						passwordDialog();
+						}catch(NullPointerException ex){
+							System.err.println(ex.getMessage());
+							return;
+						}
+						new Thread(new UpdateEMailThread()).start();
 
 				}
 			}
@@ -268,9 +276,10 @@ class MainWindow extends JFrame {
 		JPasswordField passwordField = new JPasswordField(10);
 		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
-		System.out.println(passwordField.getPassword());
 		passwordMail = String.valueOf(passwordField.getPassword());
-		System.out.println(passwordMail);
+		if (passwordMail.equals("")){
+			throw new NullPointerException("The field password is empty");
+		}
 	}
 
 	/**
@@ -295,14 +304,20 @@ class MainWindow extends JFrame {
 
 		@Override
 		public void run() {
-			try {
-				addNewRowTable();
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			statuslabel.setText("");
-		}
+
+ 			try {
+ 				addNewRowTable();
+			} catch (FileNotFoundException e) {
+				// this ok hear
+			} catch (ClassNotFoundException e) {
+				System.err.println(e.getMessage());
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+
+ 			}
+
+ 			statuslabel.setText("");
+ 		}
 	}
 
 	/**
@@ -318,11 +333,16 @@ class MainWindow extends JFrame {
 			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), passwordMail);
 			try {
 				readMail.connectionInbox();
-			} catch (MessagingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (MessagingException e) {
+				System.err.println(e.getMessage());
+
+ 			}
+			try{
+ 			readMail.getMassagesArray();
+			}catch(NullPointerException ex){
+				statuslabel.setText("");
+				return;
 			}
-			readMail.getMassagesArray();
 			new Thread(new AddRowsThread()).start();
 
 		}
@@ -330,4 +350,3 @@ class MainWindow extends JFrame {
 	}
 
 }
-
