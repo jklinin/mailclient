@@ -1,4 +1,4 @@
-package clientCore;
+package func_core;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

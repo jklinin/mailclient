@@ -1,4 +1,4 @@
-package clientCore;
+package func_core;
 
 /**
  * send EMail to the server 

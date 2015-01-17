@@ -1,4 +1,4 @@
-package clientCore;
+package func_core;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -25,6 +25,8 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.swing.JOptionPane;
+
+import utility.Run;
 
 
 

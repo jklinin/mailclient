@@ -1,4 +1,4 @@
-package clientCore;
+package func_core;
 
 import java.util.ArrayList;
 import java.util.Date;
