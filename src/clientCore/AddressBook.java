@@ -24,7 +24,7 @@ public class AddressBook extends JFrame {
     public AddressBook() {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(630, 641);
+		setSize(630, 650);
 		initialization();
 		setVisible(true);
 	}

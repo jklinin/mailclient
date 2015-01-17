@@ -24,7 +24,7 @@ public class NewContact extends JFrame {
     public NewContact() {
         super("New Contact");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(550, 320);
+        setSize(550, 330);
         initialization();
         setVisible(true);
     }
