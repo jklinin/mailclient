@@ -45,7 +45,7 @@ public class NewContact extends JFrame {
         gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
         ((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 150, 400 };
-		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 40,60,60,60,100 };
+		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 50,60,60,60,100 };
 
         saveContact.setText("Save contact");
         gcp.add(jsp1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,

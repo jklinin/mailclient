@@ -45,7 +45,7 @@ public class AddressBook extends JFrame {
 		gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 200, 200, 200 };
-		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 40,  600 };
+		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 50,  600 };
 
 		buttonAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
