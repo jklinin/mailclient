@@ -6,6 +6,8 @@ package clientCore;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AddressBook extends JFrame {
     private DefaultTableModel model;
@@ -22,7 +24,7 @@ public class AddressBook extends JFrame {
     public AddressBook() {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(600, 641);
+		setSize(630, 641);
 		initialization();
 		setVisible(true);
 	}
@@ -45,7 +47,14 @@ public class AddressBook extends JFrame {
 		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 200, 200, 200 };
 		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 40,  600 };
 
-        buttonAdd.setText("Add");
+		buttonAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == buttonAdd) {
+					NewContact newNewContact = new NewContact();
+				}
+			}
+		});
+        buttonAdd.setText("Add contact");
 		gcp.add(jsp, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.NORTH,
 				GridBagConstraints.VERTICAL,
@@ -62,8 +71,8 @@ public class AddressBook extends JFrame {
     	model.addColumn("Surname");
     	model.addColumn("Email_addr");
 		for (int i = 0; i < 3; i++) {
-			viewBook.getColumnModel().getColumn(i).setPreferredWidth(200);
-			viewBook.getColumnModel().getColumn(i).setMaxWidth(200);
+			viewBook.getColumnModel().getColumn(i).setPreferredWidth(210);
+			viewBook.getColumnModel().getColumn(i).setMaxWidth(210);
 			viewBook.getColumnModel().getColumn(i).setMinWidth(100);
 		}
 		gcp.add(jsp2, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0,
@@ -74,3 +83,4 @@ public class AddressBook extends JFrame {
 
     }
 }
+
