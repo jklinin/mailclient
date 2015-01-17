@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<root>
+
+
+
+	<settings>
+
+
+		<hostNamePop>pop.mail.ru</hostNamePop>
+		<hostNameSmtp>smtp.mail.ru</hostNameSmtp>
+		<userName>project_test91@mail.ru</userName>
+		<messagesFile>messages.ser</messagesFile>
+	</settings>
+
+
+
+</root>
