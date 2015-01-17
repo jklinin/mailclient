@@ -37,7 +37,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 	private JLabel previewlabel;
 	private JLabel viewlabel;
-	static JLabel statuslabel;
+	private static JLabel statuslabel;
 
 	static ArrayList<MessagesDate> messagesList;
 	private String ccStringTemp;
@@ -283,4 +283,9 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 	}
 	// ----------------------------------------------------------
+	
+	// ----- Controller for Label Satus bar
+	public static  void setStatusBarLabel(String status){
+		statuslabel.setText(status);
+	}
 }

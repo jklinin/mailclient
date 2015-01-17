@@ -7,23 +7,27 @@ import javax.swing.JPasswordField;
  * @author Yuri sKalinin the method for the input of password
  */
 public class PasswordDialog {
-
-	private String passwordMail=null;
+	private boolean status = false;
+	private String passwordMail;
 
 	PasswordDialog() {
-		
+
 		JPasswordField passwordField = new JPasswordField(10);
-		while(!passwordMail.equals("")){
-			
+
 		passwordField.setEchoChar('*');
 		JOptionPane.showMessageDialog(null, passwordField, "Enter password", JOptionPane.INFORMATION_MESSAGE);
-		
-			passwordMail = String.valueOf(passwordField.getPassword());
-			
+		passwordMail = String.valueOf(passwordField.getPassword());
+		if (!passwordMail.equals("")) {
+			status = true;
+		} else {
+			status = false;
 		}
 	}
 
 	public String getPasswordMail() {
 		return passwordMail;
+	}
+	public boolean getStatus(){
+		return status;
 	}
 }

@@ -5,8 +5,7 @@ package core_gui_and_threads;
  * the class for the input window of email
  * version 1.0.2
  */
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+
 import javax.swing.*;
 
 import utility.Run;
@@ -26,7 +25,6 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 
 	private JScrollPane scrollPane;
 	private JButton sendMail;
-	private JPanel contentPanel = new JPanel();
 	private JTextField emailadr;
 	private JTextField ccadr;
 	private JTextField bccadr;
@@ -36,7 +34,6 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	private JLabel labelSub;
 	private JLabel labelCC;
 	private JLabel labelBCC;
-	private String passwordMail;
 
 	public NewMailWindow() {
 		super("New Mail");
@@ -60,53 +57,11 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		setSize(800, 800);
 		setResizable(false);
 		initialization();
-		if (message.getSubject() != null) {
-			subj.setText("Re: " + message.getSubject());
-		}
-		emailadr.setText(message.getAddressFrom().get(0));
-		if (message.getCopyOnAddres() != null) {
-			ccadr.setText(message.getCopyOnAddres().get(0));
-		}
-		if (message.getCopyHideOnAddress() != null) {
-			bccadr.setText(message.getCopyHideOnAddress().get(0));
-		}
-
-		String ccStringTemp = "";
-		if (message.getCopyOnAddres() != null) {
-			for (int i = 0; i < message.getCopyOnAddres().size(); i++) {
-				ccStringTemp = ccStringTemp + message.getCopyOnAddres().get(i) + "; ";
-			}
-
-		}
-		String bccStringString = "";
-		if (message.getCopyHideOnAddress() != null) {
-			for (int i = 0; i < message.getCopyHideOnAddress().size(); i++) {
-				bccStringString = bccStringString + message.getCopyHideOnAddress().get(i) + "; ";
-
-			}
-		}
-		String toStringTemp = "";
-		for (int i = 0; i < message.getAddressTo().size(); i++) {
-			toStringTemp = toStringTemp + message.getAddressTo().get(i) + "; ";
-
-		}
-		String fromStringTemp = "";
-		for (int i = 0; i < message.getAddressFrom().size(); i++) {
-			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
-		}
-		if (message.getTypeMessages().equals("text")) {
-			emailbody.setContentType("text");
-			emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n" + "From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: "
-					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
-		}
-		if (message.getTypeMessages().equals("html")) {
-			emailbody.setContentType("text/html");
-			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
-					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + message.getContent());
-		}
+		setFieldsAnswer(message);
 		setVisible(true);
 	}
-//GUI
+
+	// GUI
 	private void initialization() {
 		sendMail = new JButton("Send EMail");
 		labelDest = new JLabel("Destination @:");
@@ -175,50 +130,109 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 
 	}
 
-	// Aktion
+	/**
+	 * Set fields in the answer- window
+	 * 
+	 * @param message
+	 */
+	private void setFieldsAnswer(MessagesDate message) {
+		if (message.getSubject() != null) {
+			subj.setText("Re: " + message.getSubject());
+		}
+		emailadr.setText(message.getAddressFrom().get(0));
+		if (message.getCopyOnAddres() != null) {
+			ccadr.setText(message.getCopyOnAddres().get(0));
+		}
+		if (message.getCopyHideOnAddress() != null) {
+			bccadr.setText(message.getCopyHideOnAddress().get(0));
+		}
+
+		String ccStringTemp = "";
+		if (message.getCopyOnAddres() != null) {
+			for (int i = 0; i < message.getCopyOnAddres().size(); i++) {
+				ccStringTemp = ccStringTemp + message.getCopyOnAddres().get(i) + "; ";
+			}
+
+		}
+		String bccStringString = "";
+		if (message.getCopyHideOnAddress() != null) {
+			for (int i = 0; i < message.getCopyHideOnAddress().size(); i++) {
+				bccStringString = bccStringString + message.getCopyHideOnAddress().get(i) + "; ";
+
+			}
+		}
+		String toStringTemp = "";
+		for (int i = 0; i < message.getAddressTo().size(); i++) {
+			toStringTemp = toStringTemp + message.getAddressTo().get(i) + "; ";
+
+		}
+		String fromStringTemp = "";
+		for (int i = 0; i < message.getAddressFrom().size(); i++) {
+			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
+		}
+		if (message.getTypeMessages().equals("text")) {
+			emailbody.setContentType("text");
+			emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n" + "From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: "
+					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
+		}
+		if (message.getTypeMessages().equals("html")) {
+			emailbody.setContentType("text/html");
+			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
+					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + message.getContent());
+		}
+	}
+
+	// -------------Controller for buttons-------------------
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == sendMail) {
 			EMailAddressCheck checkEMailAddress = new EMailAddressCheck(ccadr.getText(), bccadr.getText(), emailadr.getText());
 			if (checkEMailAddress.checkAddress() == true) {
-				SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), new PasswordDialog().getPasswordMail());
-				if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true)
-					dispose();
+				PasswordDialog password = new PasswordDialog();
+				if (password.getStatus() == true) {
+					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), password.getPasswordMail());
+
+					if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true)
+						dispose();
+				}
 			}
 
 		}
-		
 
 	}
-// TODO Mouse CKlick
+
+	// ----------------------------------------------------------------------------------
+	// TODO Mouse CKlick
+	// -------- Controller for Mouse Click Address Fields----------------------
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 }

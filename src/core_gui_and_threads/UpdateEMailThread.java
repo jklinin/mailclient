@@ -9,19 +9,23 @@ public class UpdateEMailThread implements Runnable {
 
 	@Override
 	public void run() {
-		
+
 		PasswordDialog password = new PasswordDialog();
-		MainWindow.statuslabel.setText("Receiving emails");
-		GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
-		try {
-			readMail.connectionInbox();
-		} catch (MessagingException e1) {
-			// TODO Auto-generated catch block
-			System.out.println("error");
-			MainWindow.statuslabel.setText("");
-			e1.printStackTrace();
+
+		if (password.getStatus() == true) {
+//			MainWindow.statuslabel.setText("Receiving emails");
+			MainWindow.setStatusBarLabel("Receiving emails");
+			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
+
+			try {
+				readMail.connectionInbox();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			readMail.getMassagesArray();
 		}
-		readMail.getMassagesArray();
 		new Thread(new AddRowsThread()).start();
 
 	}

@@ -26,10 +26,8 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.swing.JOptionPane;
 
+import core_gui_and_threads.MainWindow;
 import utility.Run;
-
-
-
 
 /**
  * @author Yuri Kalinin read e-mails from inbox folder on the server version
@@ -46,43 +44,45 @@ public class MailReader implements GetMails {
 	private Store store;
 	private Message messages[];
 	private ArrayList<MessagesDate> messagesList;
-	
+
 	public MailReader(Object hostName, Object userName, String passwordMail) {
 		this.hostName = hostName.toString();
 		this.userName = userName.toString();
 		password = passwordMail;
-		messagesList = new ArrayList();	
+		messagesList = new ArrayList();
 	}
 
 	public MailReader() {
-		
+
 	}
 
 	public void connectionInbox() {
+		if (!password.equals("")) {
+			Properties properties = System.getProperties();
+			properties.setProperty("mail.pop3.host", hostName);
+			properties.setProperty("mail.pop3.user", userName);
+			properties.setProperty("mail.pop3.password", password);
+			properties.setProperty("mail.pop3.port", "995");
+			properties.setProperty("mail.pop3.auth", "true");
+			properties.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			Session session = Session.getDefaultInstance(properties);
+			try {
+				store = session.getStore("pop3");
+				store.connect(hostName, userName, password);
+				inbox = store.getFolder("Inbox");
+				inbox.open(Folder.READ_ONLY);
+			} catch (NoSuchProviderException e) {
 
-		Properties properties = System.getProperties();
-		properties.setProperty("mail.pop3.host", hostName);
-		properties.setProperty("mail.pop3.user", userName);
-		properties.setProperty("mail.pop3.password", password);
-		properties.setProperty("mail.pop3.port", "995");
-		properties.setProperty("mail.pop3.auth", "true");
-		properties.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		Session session = Session.getDefaultInstance(properties);
-		try {
-			store = session.getStore("pop3");
-			store.connect(hostName, userName, password);
-			inbox = store.getFolder("Inbox");
-			inbox.open(Folder.READ_ONLY);
-		} catch (NoSuchProviderException e) {
+				JOptionPane.showMessageDialog(null, "Error with connection to provider ", "Provider connection error", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
+				return;
+			} catch (MessagingException e) {
+				JOptionPane.showMessageDialog(null, "Password is not correct. ", "Password is not correct", JOptionPane.ERROR_MESSAGE);
+				MainWindow.setStatusBarLabel("Status bar");
+				System.err.println(e.getMessage());
+				return;
 
-			JOptionPane.showMessageDialog(null, "Error with connection to provider ", "Provider connection error", JOptionPane.ERROR_MESSAGE);
-			System.err.println(e.getMessage());
-			return;
-		} catch (MessagingException e) {
-			JOptionPane.showMessageDialog(null, "Password is not correct. ", "Password is not correct", JOptionPane.ERROR_MESSAGE);
-			System.err.println(e.getMessage());
-			return;
-			
+			}
 		}
 
 	}
@@ -97,36 +97,34 @@ public class MailReader implements GetMails {
 	 */
 
 	private void getMessages() throws MessagingException, FileNotFoundException, IOException {
-		
-		String s;// temp 
+
+		String s;// temp
 		try {
 			messages = inbox.getMessages();
 		} catch (MessagingException e) {
 			System.err.println(e.getMessage());
-			
+
 		}
-		if (messages.length == 0){
+		if (messages.length == 0) {
 			System.out.println("No messages found.");
 		}
-		Object content; 
+		Object content;
 		String type; // type of messages contant
 		for (int i = 0; i < messages.length; i++) {
 
-			
 			ArrayList<String> toAddress = new ArrayList();
 			Address addressTO[] = messages[i].getRecipients(Message.RecipientType.TO);
 			for (int j = 0; j < addressTO.length; j++) {
-				
+
 				toAddress.add(addressTO[j].toString());
 			}
 
-			
 			ArrayList<String> copyOnAddress = new ArrayList();
 			if (messages[i].getRecipients(Message.RecipientType.CC) != null) {
 				Address addressCC[] = messages[i].getRecipients(Message.RecipientType.CC);
 				if (addressCC.length > 0) {
 					for (int j = 0; j < addressCC.length; j++) {
-						
+
 						copyOnAddress.add(addressCC[j].toString());
 					}
 				}
@@ -137,12 +135,12 @@ public class MailReader implements GetMails {
 
 				if (addressBCC.length > 0) {
 					for (int j = 0; j < addressBCC.length; j++) {
-					
+
 						copyHideAddress.add(addressBCC[j].toString());
 					}
 				}
 			}
-			
+
 			ArrayList<String> fromAddress = new ArrayList();
 			if (messages[i].getFrom() != null) {
 				Address addressFrom[] = messages[i].getFrom();
@@ -153,28 +151,28 @@ public class MailReader implements GetMails {
 					}
 				}
 			}
-			 content = messages[i].getContent();	
+			content = messages[i].getContent();
 			if (content instanceof String) {
-				type="text"; // set message type text
+				type = "text"; // set message type text
 				messagesList.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, content.toString()));
-			}else if (content instanceof Multipart) {
+			} else if (content instanceof Multipart) {
 				for (int j = 0; j < ((Multipart) content).getCount(); j++) {
 					Multipart mp = (Multipart) content;
-					BodyPart bodyPart = mp.getBodyPart(j);		
-					type="html"; // set message type html
+					BodyPart bodyPart = mp.getBodyPart(j);
+					type = "html"; // set message type html
 					messagesList.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
 				}
 			}
-			
-
 
 		}
+
 		saveMessages(messagesList);
 	}
 
 	/**
 	 * This method returns array of massages( e.g for gui) this method don't
 	 * read the file
+	 * 
 	 * @return the email message
 	 */
 	public Message[] getMassagesArray() {
@@ -185,7 +183,7 @@ public class MailReader implements GetMails {
 			System.err.println(e.getMessage());
 
 		} catch (MessagingException e) {
-			System.err.println(e.getMessage());		
+			System.err.println(e.getMessage());
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
@@ -205,7 +203,7 @@ public class MailReader implements GetMails {
 		}
 		out.flush();
 		out.close();
-		
+
 	}
 
 	/**
@@ -218,7 +216,7 @@ public class MailReader implements GetMails {
 			in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesContainer().toString()));
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getMessage());
-		
+
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}

@@ -37,6 +37,7 @@ import func_core.MailReader;
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			MainWindow.statuslabel.setText("");
+			
+		MainWindow.setStatusBarLabel("Status bar");
 		}
 	}

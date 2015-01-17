@@ -19,6 +19,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 
+import core_gui_and_threads.MainWindow;
+
 public class MailWrite implements SendMail {
 
 	private String userName;
@@ -36,8 +38,7 @@ public class MailWrite implements SendMail {
 	 * @author Yuri Kalinin this method connects to the email server and sends
 	 *         the email
 	 * @return true if the email is sended and false if not
-	 * @exception if
-	 *                the Authentication is not correct
+	 * @exception if the Authentication is not correct
 	 */
 
 	public boolean sendEmail(String fromEmail, String toEmail, String subject, String textEmail, String ccAdr, String bccAdr) {
@@ -56,7 +57,7 @@ public class MailWrite implements SendMail {
 		});
 
 		try {
-
+			MainWindow.setStatusBarLabel("Email sending");
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromEmail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
@@ -69,14 +70,16 @@ public class MailWrite implements SendMail {
 			message.setSubject(subject);
 			message.setText(textEmail);
 			Transport.send(message);
+			MainWindow.setStatusBarLabel("Status bar");
 			return true;
 		} catch (MessagingException e) {
 
 			JOptionPane.showMessageDialog(null, "Password is incorrect", "Authentication Error", JOptionPane.ERROR_MESSAGE);
+			MainWindow.setStatusBarLabel("Status bar");
 			return false;
 
 		}
-		
+
 	}
 
 }
