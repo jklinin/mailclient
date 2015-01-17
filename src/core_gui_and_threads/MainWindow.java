@@ -24,6 +24,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private JButton buttonUpdateMail;
 	private JButton buttonAnswer;
 	private JButton buttonAddressBook;
+	private JToggleButton toggleSentFolder ; 
 	private JTable previewMail;
 	private JEditorPane viewMail;
 
@@ -71,6 +72,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		buttonUpdateMail = new JButton();
 		buttonAnswer = new JButton();
 		buttonAddressBook = new JButton();
+		toggleSentFolder = new JToggleButton();
 		viewMail = new JEditorPane();
 
 		scrollPane1 = new JScrollPane();
@@ -121,13 +123,19 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		buttonUpdateMail.setText("Update");
 		buttonUpdateMail.addActionListener(this);
 		buttonsPanel.add(buttonUpdateMail);
+		//----JToggleButton----------------------
+		toggleSentFolder.setText("Sent Folder");
+		toggleSentFolder.addActionListener(this);
+		buttonsPanel.add(toggleSentFolder);
+		//----------------------------------------
+			
 		// --------------------------JLabels--------------------
 		previewlabel.setText("Incoming mail" + "          ");
 		previewlabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		buttonsPanel.add(previewlabel, 0);
 		viewlabel.setText("          " + "Mail content");
 		viewlabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		buttonsPanel.add(viewlabel, 5);
+		buttonsPanel.add(viewlabel, 6);
 
 		// ----Jtable--------------------------------------------
 
@@ -190,6 +198,16 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			NewMailWindow newMail = new NewMailWindow();
 
 		}
+		
+		if (e.getSource() == toggleSentFolder) {
+			if (toggleSentFolder.getText() == "Sent Folder") {
+				toggleSentFolder.setText("Inbox Folder");
+			} else {
+				toggleSentFolder.setText("Sent Folder");
+			}
+		}
+		
+
 	}
 
 	// --------------Controllers for JTable----------------------
@@ -200,7 +218,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			return;
 
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-		System.out.println("table");
+	
 		if (!lsm.isSelectionEmpty()) {
 			int lastElement = messagesList.size() - 1;
 			selectedRow = lastElement - lsm.getMinSelectionIndex();
