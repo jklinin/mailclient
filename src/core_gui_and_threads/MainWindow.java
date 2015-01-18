@@ -197,6 +197,8 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		} else if (e.getSource() == buttonNewMail) {
 			NewMailWindow newMail = new NewMailWindow();
 
+		} else if (e.getSource() == buttonAddressBook) {
+			AddressBook newAddressBook = new AddressBook();
 		}
 		
 		if (e.getSource() == toggleSentFolder) {
@@ -206,6 +208,8 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 				toggleSentFolder.setText("Sent Folder");
 			}
 		}
+
+
 		
 
 	}
