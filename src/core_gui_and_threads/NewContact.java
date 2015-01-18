@@ -5,12 +5,13 @@ package core_gui_and_threads;
  */
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class NewContact extends JFrame {
-    private JScrollPane jsp1;
+public class NewContact extends JFrame implements ActionListener {
     private JPanel jp1;
-    private JScrollPane jsp2;
+    private JScrollPane jsp1;
     private JPanel jp2;
     private JButton saveContact;
     private JLabel labelName;
@@ -24,35 +25,32 @@ public class NewContact extends JFrame {
     public NewContact() {
         super("New Contact");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(550, 330);
+        setSize(550, 340);
         initialization();
         setVisible(true);
     }
 
     public void initialization() {
-        JPanel jp1 = new JPanel();
-        JScrollPane jsp1 = new JScrollPane(jp1);
-        JPanel jp2 = new JPanel();
-        JScrollPane jsp2 = new JScrollPane(jp2);
-        JButton saveContact = new JButton();
-        JLabel labelName = new JLabel("Name: ");
-        JLabel labelSurname = new JLabel("Surname: ");
-        JLabel labelEmailAddr = new JLabel("Email Add.:");
-        JTextField nameF = new JTextField(20);
-        JTextField surnameF = new JTextField(20);
-        JTextField emailF = new JTextField(20);
+        jp1 = new JPanel();
+        jp2 = new JPanel();
+        jsp1 = new JScrollPane(jp2);
+        saveContact = new JButton();
+        labelName = new JLabel("Name: ");
+        labelSurname = new JLabel("Surname: ");
+        labelEmailAddr = new JLabel("Email Add.:");
+        nameF = new JTextField(20);
+        surnameF = new JTextField(20);
+        emailF = new JTextField(20);
         Container gcp = getContentPane();
         gcp.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
         ((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 150, 400 };
-		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 50,60,60,60,100 };
+		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 60,60,60,60,100 };
 
         saveContact.setText("Save contact");
-        gcp.add(jsp1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.NORTHWEST,
-				GridBagConstraints.VERTICAL,
-				new Insets(0, 0, 0, 0), 0, 0));
+        saveContact.addActionListener(this);
 		jp1.add(saveContact);
+		gcp.add(jp1, c);
 
         gcp.add(labelName, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST,
@@ -84,4 +82,14 @@ public class NewContact extends JFrame {
 				GridBagConstraints.HORIZONTAL,
 				new Insets(0, 0, 0, 0), 0, 0));
     }
+    
+    // ------------------Controller for Buttons-------------------
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == saveContact) {
+                //TODO 
+                // save somethere
+				}
+
+	}
 }
