@@ -8,10 +8,15 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 
 public interface GetMails {
-	public void connectionInbox() throws MessagingException; // update emails
-																// from server
+	/**
+	 * gets emails from the server
+	 * @param folder is the on the server
+
+	 */
+	public void connectionInbox(String folder) throws MessagingException; 
 
 	public Message[] getMassagesArray(); // returns array of massages;
+
 	public ArrayList<MessagesDate> readMessagesFile() throws FileNotFoundException, IOException, ClassNotFoundException;
 
 }
