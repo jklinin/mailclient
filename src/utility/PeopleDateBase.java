@@ -1,5 +1,6 @@
 package utility;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 
 import func_address_book.*;
@@ -13,7 +14,7 @@ import func_address_book.*;
  */
 public class PeopleDateBase {
 	private static ArrayList<People> peopleList;
-	private int lastID;
+	private static int lastID;
 	private int firstID;
 
 	PeopleDateBase() {
@@ -78,5 +79,10 @@ public class PeopleDateBase {
 
 		}
 
+	}
+	
+	public static void removePeople(int index){
+		peopleList.remove(index);
+		lastID--;
 	}
 }

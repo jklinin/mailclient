@@ -70,12 +70,12 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 60, 600 };
 
 		buttonAdd.setText("Add contact");
-		buttonAdd.addActionListener(this);
 		buttonCont.add(buttonAdd);
+		buttonAdd.addActionListener(this);
 		gcp.add(buttonCont, c);
 
 		buttonRemove.setText("Remove");
-		buttonAdd.addActionListener(this);
+		buttonRemove.addActionListener(this);
 		buttonCont.add(buttonRemove);
 		c.gridx = 1;
 		gcp.add(buttonCont, c);
@@ -110,6 +110,11 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAdd) {
 			NewContact newNewContact = new NewContact();
+		}
+		if (e.getSource() == buttonRemove) {
+			System.out.println(selectedRow);//TODO just for testing
+			PeopleDateBase.removePeople(selectedRow);
+			dispose();
 		}
 
 	}
