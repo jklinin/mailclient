@@ -26,28 +26,31 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	private JButton buttonAdd;
 	private JButton buttonRemove;
 	private JPanel buttonCont;
-	private JScrollPane jsp1;
+	private JScrollPane jspCentre;
 	private JTable viewBook;
 	private int selectedRow;
-	private ArrayList<People> peopleList = new ArrayList<People>();
+	private ArrayList<People> peopleList;
 	private JTextField calledCompoent;
-
+	private JPanel panelCentr;
+	
 	public AddressBook(JTextField component) {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(600, 660);
-		initialization();
+		setSize(800, 1000);
+		peopleList = new ArrayList<People>();
+		panelCentr = new JPanel();
 		calledCompoent = component;
-		System.out.println(component.getName());// TODO Just for testing
+		initialization();
 		setVisible(true);
 	}
 
 	public AddressBook() {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(600, 660);
-		initialization();
-
+		setSize(700, 600);
+		peopleList = new ArrayList<People>();
+		panelCentr = new JPanel();
+		initialization();		
 		setVisible(true);
 	}
 
@@ -61,26 +64,26 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		buttonAdd = new JButton();
 		buttonRemove = new JButton();
 		buttonCont = new JPanel();
-		jsp1 = new JScrollPane();
+		jspCentre = new JScrollPane();
 		viewBook = new JTable(model);
 		Container gcp = getContentPane();
-		gcp.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		((GridBagLayout) gcp.getLayout()).columnWidths = new int[] { 200, 200, 200 };
-		((GridBagLayout) gcp.getLayout()).rowHeights = new int[] { 60, 600 };
-
+		panelCentr.setLayout(new GridBagLayout());
+		((GridBagLayout) panelCentr.getLayout()).columnWidths = new int[] { 0, 0, 0 };
+		((GridBagLayout) panelCentr.getLayout()).rowHeights = new int[] { 0, 0 };
+		
+		JPanel buttonPane = new JPanel();
 		buttonAdd.setText("Add contact");
 		buttonCont.add(buttonAdd);
 		buttonAdd.addActionListener(this);
-		gcp.add(buttonCont, c);
+
 
 		buttonRemove.setText("Remove");
 		buttonRemove.addActionListener(this);
 		buttonCont.add(buttonRemove);
-		c.gridx = 1;
-		gcp.add(buttonCont, c);
+		
+		buttonPane.add(buttonCont);
 
-		jsp1.setViewportView(viewBook);
+		jspCentre.setViewportView(viewBook);
 		model.addColumn("Name");
 		model.addColumn("Surname");
 		model.addColumn("Email_addr");
@@ -101,8 +104,11 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		// ---------mouse listner for JTable------------------------
 		viewBook.addMouseListener(this);
 		// ---------------------------------------------------------
-		gcp.add(jsp1, new GridBagConstraints(0, 1, 3, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-
+		
+		panelCentr.add(viewBook, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		jspCentre = new JScrollPane(panelCentr);
+		getContentPane().add(buttonPane, BorderLayout.NORTH);
+		getContentPane().add(jspCentre, BorderLayout.CENTER);
 	}
 
 	// ------------------Controller for Buttons-------------------
