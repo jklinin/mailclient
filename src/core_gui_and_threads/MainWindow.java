@@ -7,7 +7,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import utility.PeopleDateBase;
 import func_core.MessagesDate;
+import gui_addressbook.AddressBook;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,13 +20,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author Nikolay, Yuri
+ * the main window 
+ * version 1.0.4
+ *
+ */
 public class MainWindow extends JFrame implements ActionListener, ListSelectionListener, MouseListener {
 	static DefaultTableModel model;
 	private JButton buttonNewMail;
 	private JButton buttonUpdateMail;
 	private JButton buttonAnswer;
 	private JButton buttonAddressBook;
-	private JToggleButton toggleSentFolder ; 
+	private JToggleButton toggleSentFolder;
 	private JTable previewMail;
 	private JEditorPane viewMail;
 
@@ -49,10 +57,12 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private String sentDateStringTemp;
 	private static String passwordMail;
 	private int selectedRow;
+	private String folder = "Inbox";
 
 	public MainWindow() {
 		super("Mail Client");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
 		setSize(1500, 800);
 		addComponentsToPane();
 		setVisible(true);
@@ -123,12 +133,12 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		buttonUpdateMail.setText("Update");
 		buttonUpdateMail.addActionListener(this);
 		buttonsPanel.add(buttonUpdateMail);
-		//----JToggleButton----------------------
+		// ----JToggleButton----------------------
 		toggleSentFolder.setText("Sent Folder");
 		toggleSentFolder.addActionListener(this);
 		buttonsPanel.add(toggleSentFolder);
-		//----------------------------------------
-			
+		// ----------------------------------------
+
 		// --------------------------JLabels--------------------
 		previewlabel.setText("Incoming mail" + "          ");
 		previewlabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -181,7 +191,8 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 		// -------------------------------------------------
 
-		new Thread(new AddRowsThread()).start();
+		new Thread(new AddRowsThread("Inbox")).start();
+
 	}
 
 	// ------------------Controller for Buttons-------------------
@@ -193,24 +204,29 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		} else if (e.getSource() == buttonUpdateMail) {
 			// passwordDialog();
 			System.out.println("testUpdate");// TODO
-			new Thread(new UpdateEMailThread()).start();
+			new Thread(new UpdateEMailThread("Inbox")).start(); // for POP3 only
+																// folder INBOX
+
 		} else if (e.getSource() == buttonNewMail) {
 			NewMailWindow newMail = new NewMailWindow();
 
 		} else if (e.getSource() == buttonAddressBook) {
 			AddressBook newAddressBook = new AddressBook();
 		}
-		
+
 		if (e.getSource() == toggleSentFolder) {
 			if (toggleSentFolder.getText() == "Sent Folder") {
 				toggleSentFolder.setText("Inbox Folder");
+				folder = "Send";
+				System.out.println(folder + " set folder");// TODO
+				new Thread(new AddRowsThread("Sent")).start();
 			} else {
 				toggleSentFolder.setText("Sent Folder");
+				folder = "Inbox";
+				System.out.println(folder + " set folder");// TODO
+
 			}
 		}
-
-
-		
 
 	}
 
@@ -222,7 +238,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			return;
 
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
-	
+
 		if (!lsm.isSelectionEmpty()) {
 			int lastElement = messagesList.size() - 1;
 			selectedRow = lastElement - lsm.getMinSelectionIndex();
@@ -304,10 +320,11 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		// TODO Auto-generated method stub
 
 	}
+
 	// ----------------------------------------------------------
-	
-	// ----- Controller for Label Satus bar
-	public static  void setStatusBarLabel(String status){
+
+	// ----- Controller for Label Satus bar----------------------
+	public static void setStatusBarLabel(String status) {
 		statuslabel.setText(status);
 	}
 }

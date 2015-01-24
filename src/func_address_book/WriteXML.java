@@ -9,29 +9,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 /**
- * 
- * 
- * @author Yuri Kalinin
- * The method writte into the XML file from ArrayList with Name, Surname and Emailaddress
- * 
- *
+ * The method write from ArrayList Name, Surname and Email
+ * Address into the XML file 
+ * @author Yuri Kalinin 
+ * @version 1.0.0
  */
-public class WriteXML  {
-	
-public void writeXMLAddressBook (ArrayList <String> peopleInform){
+public class WriteXML {
+
+	public void writeXMLAddressBook(ArrayList<People> peopleList) {
 		RootXML people = new RootXML();
-		ArrayList<People> peopleList = new ArrayList<People>();
-			for(int i=0; i<peopleInform.size()-1;i++){
-			People p = new People();
-			p.setId(i);
-			p.setName(peopleInform.get(i));
-			p.setSurname(peopleInform.get(i));
-			p.setEmladr(peopleInform.get(i));
 
-			peopleList.add(p);
+		for (int i = 0; i < peopleList.size(); i++) {
 			people.setPeople(peopleList);
-			}
-
+		}
 		try {
 
 			File file = new File("file.xml");
@@ -40,11 +30,8 @@ public void writeXMLAddressBook (ArrayList <String> peopleInform){
 
 			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
 			jaxbMarshaller.marshal(people, file);
-			jaxbMarshaller.marshal(people, System.out);
-
-		
+			jaxbMarshaller.marshal(people, System.out); // TODO Just for testing
 
 		} catch (JAXBException e) {
 			e.printStackTrace();

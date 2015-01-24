@@ -14,11 +14,15 @@ import func_core.MailReader;
 	 *
 	 */
 	public class AddRowsThread implements Runnable {
+		private String folder;
+		 AddRowsThread(String folder){
+			 this.folder=folder;
+			 System.out.println(this.folder +" AddRowsThread");//TODO
+		 }
 		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
-			MainWindow.model.setRowCount(0);
-			GetMails readMail = new MailReader();
-
-			MainWindow.messagesList = readMail.readMessagesFile();
+			MainWindow.model.setRowCount(0);		
+			GetMails readMailFile = new MailReader();
+			MainWindow.messagesList = readMailFile.readMessagesFile(folder);
 			System.out.println(MainWindow.messagesList.size());//TODO
 			int i = MainWindow.messagesList.size() -1;
 			do {

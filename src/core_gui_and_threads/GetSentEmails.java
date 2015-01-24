@@ -3,13 +3,11 @@ package core_gui_and_threads;
 import javax.mail.MessagingException;
 
 import utility.Run;
-import func_core.*;
+import func_core.GetMails;
+import func_core.MailReader;
 
-public class UpdateEMailThread implements Runnable {
-private String folder;
-UpdateEMailThread(String folder){
-	this.folder=folder;
-}
+public class GetSentEmails implements Runnable {
+
 	@Override
 	public void run() {
 		PasswordDialog password = new PasswordDialog();
@@ -18,16 +16,13 @@ UpdateEMailThread(String folder){
 			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
 
 			try {
-				readMail.connectionInbox(folder);
+				readMail.connectionInbox("Sent");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			readMail.getMassagesArray();
 		}
-		new Thread(new AddRowsThread(folder)).start();
 
 	}
-
 }

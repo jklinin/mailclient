@@ -17,6 +17,6 @@ public interface GetMails {
 
 	public Message[] getMassagesArray(); // returns array of massages;
 
-	public ArrayList<MessagesDate> readMessagesFile() throws FileNotFoundException, IOException, ClassNotFoundException;
+	public ArrayList<MessagesDate> readMessagesFile(String folder) throws FileNotFoundException, IOException, ClassNotFoundException;
 
 }

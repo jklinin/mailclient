@@ -30,8 +30,8 @@ import core_gui_and_threads.MainWindow;
 import utility.Run;
 
 /**
- * @author Yuri Kalinin read e-mails from inbox folder on the server version
- *         1.0.2
+ * @author Yuri Kalinin gets e-mails from the server for inbox folder and for
+ *         the sent folder version 1.0.3
  *
  */
 public class MailReader implements GetMails {
@@ -40,10 +40,11 @@ public class MailReader implements GetMails {
 	private String hostName;
 	private String userName;
 	private String password;
-	private Folder inbox;
+	private Folder folder;
 	private Store store;
 	private Message messages[];
 	private ArrayList<MessagesDate> messagesList;
+	private String serverFolder;
 
 	public MailReader(Object hostName, Object userName, String passwordMail) {
 		this.hostName = hostName.toString();
@@ -56,8 +57,9 @@ public class MailReader implements GetMails {
 
 	}
 
-	public void connectionInbox() {
+	public void connectionInbox(String serverFolder) {
 		if (!password.equals("")) {
+			this.serverFolder = serverFolder;
 			Properties properties = System.getProperties();
 			properties.setProperty("mail.pop3.host", hostName);
 			properties.setProperty("mail.pop3.user", userName);
@@ -69,8 +71,8 @@ public class MailReader implements GetMails {
 			try {
 				store = session.getStore("pop3");
 				store.connect(hostName, userName, password);
-				inbox = store.getFolder("Inbox");
-				inbox.open(Folder.READ_ONLY);
+				folder = store.getFolder(serverFolder);
+				folder.open(Folder.READ_ONLY);
 			} catch (NoSuchProviderException e) {
 
 				JOptionPane.showMessageDialog(null, "Error with connection to provider ", "Provider connection error", JOptionPane.ERROR_MESSAGE);
@@ -100,7 +102,7 @@ public class MailReader implements GetMails {
 
 		String s;// temp
 		try {
-			messages = inbox.getMessages();
+			messages = folder.getMessages();
 		} catch (MessagingException e) {
 			System.err.println(e.getMessage());
 
@@ -193,27 +195,47 @@ public class MailReader implements GetMails {
 
 	/**
 	 * the method for serialization of class MessagesDate
+	 * 
+	 * @param serverFolder
 	 * */
 	public void saveMessages(ArrayList<MessagesDate> mList) throws MessagingException, FileNotFoundException, IOException {
+		if (serverFolder.equals("Inbox")) {
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(Run.getNameFileMessagesInboxContainer().toString()));
+			for (int i = 0; i < mList.size(); i++) {
+				out.writeObject(mList);
 
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(Run.getNameFileMessagesContainer().toString()));
-		for (int i = 0; i < mList.size(); i++) {
-			out.writeObject(mList);
+			}
+			out.flush();
+			out.close();
 
+		} else {
+			if (serverFolder.equals("Sent")) {
+				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(Run.getNameFileMessagesSentContainer().toString()));
+				for (int i = 0; i < mList.size(); i++) {
+					out.writeObject(mList);
+
+				}
+				out.flush();
+				out.close();
+
+			}
 		}
-		out.flush();
-		out.close();
 
 	}
 
 	/**
-	 * the method read the file test.ser the method for deserialization of class
+	 * the method read the file .ser the method for deserialization of class
 	 * MessagesDate returns the array of Messages
 	 * */
-	public ArrayList<MessagesDate> readMessagesFile() {
+	public ArrayList<MessagesDate> readMessagesFile(String folder) {
 		ObjectInputStream in = null;
 		try {
-			in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesContainer().toString()));
+			if(folder.equals("Inbox")){
+			in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesInboxContainer().toString()));
+			}else{
+				System.out.println("++ reading from file "+Run.getNameFileMessagesSentContainer().toString() );
+				in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesSentContainer().toString()));
+			}
 		} catch (FileNotFoundException e) {
 			System.err.println(e.getMessage());
 

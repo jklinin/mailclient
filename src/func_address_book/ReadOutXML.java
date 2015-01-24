@@ -10,9 +10,9 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.Validator;
 /**
- * THe class for the the reading XML file with people
+ *  reading XML file with people information
  * @author Yuri Kalinin
- * @return ArrayList of people from XML File
+ * @return ArrayList of type People, which contains id, name, surname and emailaddress
  */
 public class ReadOutXML {
 	static ArrayList<People> peopleList = new ArrayList<People>();
@@ -27,9 +27,6 @@ public class ReadOutXML {
 			RootXML root = (RootXML) jaxbUnmarshaller.unmarshal(file);
 			
 			peopleList = root.getPeople();
-			for (int i = 0; i < peopleList.size(); i++) {
-				System.out.println(peopleList.get(i).getId());
-			}
 			
 			
 		} catch (JAXBException e) {

@@ -7,6 +7,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * this is the root for XML file 
+ * contains list of people
+ * @version 1.0.0
+ * @author Yuri Kalinin
+ */
 @XmlRootElement
 public class RootXML {
 

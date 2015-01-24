@@ -1,9 +1,10 @@
 package core_gui_and_threads;
 
 /**
+ * GUI 
  * @author Yuri Kalinin, Nikolay Antonov
  * the class for the input window of email
- * version 1.0.2
+ * version 1.0.3
  */
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import func_core.EMailAddressCheck;
 import func_core.MailWrite;
 import func_core.MessagesDate;
 import func_core.SendMail;
+import gui_addressbook.AddressBook;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,14 +22,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class NewMailWindow extends JFrame implements ActionListener, MouseListener {
 
 	private JScrollPane scrollPane;
 	private JButton sendMail;
-	private JTextField emailadr;
-	private JTextField ccadr;
-	private JTextField bccadr;
+	private static JTextField emailadr;
+	private static JTextField ccadr;
+	private static JTextField bccadr;
 	private JEditorPane emailbody;
 	private JTextField subj;
 	private JLabel labelDest;
@@ -93,6 +97,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		c.gridx = 2;
 		c.gridy = 0;
 		emailadr.addMouseListener(this);
+		emailadr.setName("emailadr");
 		gcp.add(emailadr, c);
 
 		c.gridx = 2;
@@ -106,6 +111,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		c.gridx = 2;
 		c.gridy = 2;
 		ccadr.addMouseListener(this);
+		ccadr.setName("ccadr");
 		gcp.add(ccadr, c);
 
 		c.gridx = 1;
@@ -115,6 +121,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		c.gridx = 2;
 		c.gridy = 3;
 		gcp.add(bccadr, c);
+		bccadr.setName("bccadr");
 		bccadr.addMouseListener(this);
 
 		scrollPane.setViewportView(emailbody);
@@ -193,6 +200,12 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), password.getPasswordMail());
 
 					if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true)
+						// FIXME
+						// MessagesDate mail = new MessagesDate(String type,
+						// "0", "project_test91@mail.ru", emailadr.getText(),
+						// subj.getText(), Date sentDate, ArrayList<String>
+						// copyOnAddress, ArrayList<String> copyHideAddress,
+						// String content);
 						dispose();
 				}
 			}
@@ -206,8 +219,10 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	// -------- Controller for Mouse Click Address Fields----------------------
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseClicked(MouseEvent e) {
+		JTextField component = new JTextField();
+		component = (JTextField) e.getComponent();
+		new AddressBook(component);// start GUI Address book
 
 	}
 
@@ -235,4 +250,21 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 
 	}
 
+	public static void setDestinEMailAdt(String emlAddr, String name, String surname) {
+
+		emailadr.setText(name + " " + surname + "<" + emlAddr + ">");
+
+	}
+
+	public static void setBCC(String emlAddr, String name, String surname) {
+
+		bccadr.setText(name + " " + surname + "<" + emlAddr + ">");
+
+	}
+
+	public static void setCC(String emlAddr, String name, String surname) {
+
+		ccadr.setText(name + " " + surname + "<" + emlAddr + ">");
+
+	}
 }
