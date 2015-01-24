@@ -31,14 +31,14 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	private int selectedRow;
 	private ArrayList<People> peopleList;
 	private JTextField calledCompoent;
-	private JPanel panelCentr;
+	private JPanel panelCentre;
 	
 	public AddressBook(JTextField component) {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 1000);
 		peopleList = new ArrayList<People>();
-		panelCentr = new JPanel();
+		panelCentre = new JPanel();
 		calledCompoent = component;
 		initialization();
 		setVisible(true);
@@ -49,7 +49,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(700, 600);
 		peopleList = new ArrayList<People>();
-		panelCentr = new JPanel();
+		panelCentre = new JPanel();
 		initialization();		
 		setVisible(true);
 	}
@@ -66,10 +66,10 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		buttonCont = new JPanel();
 		jspCentre = new JScrollPane();
 		viewBook = new JTable(model);
-		Container gcp = getContentPane();
-		panelCentr.setLayout(new GridBagLayout());
-		((GridBagLayout) panelCentr.getLayout()).columnWidths = new int[] { 0, 0, 0 };
-		((GridBagLayout) panelCentr.getLayout()).rowHeights = new int[] { 0, 0 };
+		
+		panelCentre.setLayout(new GridBagLayout());
+		((GridBagLayout) panelCentre.getLayout()).columnWidths = new int[] { 0, 0, 0 };
+		((GridBagLayout) panelCentre.getLayout()).rowHeights = new int[] { 0, 0 };
 		
 		JPanel buttonPane = new JPanel();
 		buttonAdd.setText("Add contact");
@@ -105,8 +105,8 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		viewBook.addMouseListener(this);
 		// ---------------------------------------------------------
 		
-		panelCentr.add(viewBook, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		jspCentre = new JScrollPane(panelCentr);
+		panelCentre.add(viewBook, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		jspCentre = new JScrollPane(panelCentre);
 		getContentPane().add(buttonPane, BorderLayout.NORTH);
 		getContentPane().add(jspCentre, BorderLayout.CENTER);
 	}
