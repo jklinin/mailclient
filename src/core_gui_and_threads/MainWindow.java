@@ -83,6 +83,8 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		buttonAnswer = new JButton();
 		buttonAddressBook = new JButton();
 		toggleSentFolder = new JToggleButton();
+		previewMail = new JTable(model);
+
 		viewMail = new JEditorPane();
 
 		scrollPane1 = new JScrollPane();
@@ -153,18 +155,20 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		model.addColumn("TO");
 		model.addColumn("Subject");
 		model.addColumn("Sent Date");
-
-		previewMail = new JTable(model);
+		scrollPane1.setViewportView(previewMail);
 		previewMail.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		contentPanelLeft.add(previewMail, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(20, 0, 0, 0), 0, 0));
+		scrollPane1.setPreferredSize(new Dimension(780, 800));
+		contentPanelLeft.add(scrollPane1, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 		ListSelectionModel rowSM = previewMail.getSelectionModel();
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 3; i++) {
 			previewMail.getColumnModel().getColumn(i).setPreferredWidth(190);
-			previewMail.getColumnModel().getColumn(i).setMaxWidth(180);
+			previewMail.getColumnModel().getColumn(i).setMaxWidth(300);
 			previewMail.getColumnModel().getColumn(i).setMinWidth(100);
 		}
+		previewMail.getColumnModel().getColumn(3).setPreferredWidth(210);
 		rowSM.addListSelectionListener(this);
 		previewMail.addMouseListener(this);
+
 
 		// ----------JEditorPane----------------------------
 		viewMail.setEditable(false); // set JEdotorPane not editable
