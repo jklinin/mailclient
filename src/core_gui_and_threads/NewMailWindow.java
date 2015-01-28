@@ -39,10 +39,11 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	private JLabel labelCC;
 	private JLabel labelBCC;
 
-	private String contentType = "text";
+	private String contentType;
 
 	public NewMailWindow() {
 		super("New Mail");
+		contentType="text";
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
 		initialization();
@@ -57,7 +58,10 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	public NewMailWindow(MessagesDate message) {// answer selected email
 
 		super("Answer Mail");
-		contentType=message.getTypeMessages();
+		if(message.getTypeMessages().equals("html")){
+			contentType="text/html";
+		}
+		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
 		setResizable(false);
@@ -126,7 +130,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		bccadr.addMouseListener(this);
 
 		scrollPane.setViewportView(emailbody);
-		emailbody.setContentType("text");
+		emailbody.setContentType(contentType);
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_END;
 		c.weighty = 1.2;
@@ -185,7 +189,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
 		}
 		if (message.getTypeMessages().equals("html")) {
-			contentType = "html";
+			contentType = "text/html";
 			emailbody.setContentType("text/html");
 			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
 					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + message.getContent());
