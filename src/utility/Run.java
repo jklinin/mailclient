@@ -2,12 +2,15 @@ package utility;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
 import core_gui_and_threads.MainWindow;
 import func_address_book.People;
+import func_core.SaveReadFile;
 
 public class Run {
 	public static PeopleDateBase addressBookDateBase = new PeopleDateBase();
@@ -21,17 +24,28 @@ public class Run {
 		settings = readerXML.getSettings();
 		// ---------------------------------
 		
-MainWindow	mainWindow = new MainWindow();// GUI
+MainWindow	mainWindow = new MainWindow("Inbox");// GUI
 mainWindow.addWindowListener(new WindowAdapter() {
     @Override
     public void windowClosing(WindowEvent e) {
 
         // do other stuff....
     	System.out.println("Window is closed"); //TODO remove this 
-
+    	if(MainWindow.getMessagesListSent()!=null){
+    	try {
+			new SaveReadFile().saveMessages(MainWindow.getMessagesListSent(), "Sent");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (MessagingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	}
     	System.out.println("close main frame");//TODO remove this just for testing
-//		addressBookDateBase.addNewPeople("test1", "surname1", "emailaddr");
-//		addressBookDateBase.addNewPeople("test1", "surname2", "emailaddr");
 		addressBookDateBase.clocePeopleDateBase();
 		for (int i = 0; i < addressBookDateBase.getListPeople().size(); i++) {
 			System.out.println(((addressBookDateBase.getListPeople()).get(i)).getId());

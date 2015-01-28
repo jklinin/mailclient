@@ -3,8 +3,9 @@ package core_gui_and_threads;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import func_core.GetMails;
+import func_core.GetMailsServer;
 import func_core.MailReader;
+import func_core.SaveReadFile;
 
 
 
@@ -14,24 +15,32 @@ import func_core.MailReader;
 	 *
 	 */
 	public class AddRowsThread implements Runnable {
-		private String folder;
-		 AddRowsThread(String folder){
-			 this.folder=folder;
-			 System.out.println(this.folder +" AddRowsThread");//TODO
-		 }
-		public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
-			MainWindow.model.setRowCount(0);		
-			GetMails readMailFile = new MailReader();
-			MainWindow.messagesList = readMailFile.readMessagesFile(folder);
-			System.out.println(MainWindow.messagesList.size());//TODO
-			int i = MainWindow.messagesList.size() -1;
+	private String folder;
+
+	AddRowsThread(String folder) {
+		this.folder = folder;
+		System.out.println(this.folder + " AddRowsThread");// TODO
+	}
+
+	public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
+		MainWindow.model.setRowCount(0);
+		SaveReadFile readMailFile = new SaveReadFile();
+		if (folder.equals("Inbox")) {
+			MainWindow.messagesListInbox = readMailFile.readMessagesFile(folder);
+			System.out.println(MainWindow.messagesListInbox.size());// TODO
+			int i = MainWindow.messagesListInbox.size() - 1;
 			do {
 
-				MainWindow.model.addRow(new Object[] { MainWindow.messagesList.get(i).getAddressFrom(), MainWindow.messagesList.get(i).getAddressTo(), MainWindow.messagesList.get(i).getSubject(), MainWindow.messagesList.get(i).getSentDate() });
+				MainWindow.model.addRow(new Object[] { MainWindow.messagesListInbox.get(i).getAddressFrom(), MainWindow.messagesListInbox.get(i).getAddressTo(), MainWindow.messagesListInbox.get(i).getSubject(), MainWindow.messagesListInbox.get(i).getSentDate() });
 				i--;
 
 			} while (i > 0);
+		}else{
+			MainWindow.messagesListSent = readMailFile.readMessagesFile(folder);
+
+			
 		}
+	}
 
 		@Override
 		public void run() {

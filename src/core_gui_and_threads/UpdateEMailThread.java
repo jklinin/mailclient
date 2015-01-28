@@ -1,5 +1,8 @@
 package core_gui_and_threads;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import javax.mail.MessagingException;
 
 import utility.Run;
@@ -15,7 +18,7 @@ UpdateEMailThread(String folder){
 		PasswordDialog password = new PasswordDialog();
 		if (password.getStatus() == true) {
 			MainWindow.setStatusBarLabel("Receiving emails");
-			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
+			GetMailsServer readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
 
 			try {
 				readMail.connectionInbox(folder);
@@ -24,7 +27,19 @@ UpdateEMailThread(String folder){
 				e.printStackTrace();
 			}
 
-			readMail.getMassagesArray();
+//			readMail.getMassagesArray();
+			try {
+				readMail.getMessages();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		new Thread(new AddRowsThread(folder)).start();
 

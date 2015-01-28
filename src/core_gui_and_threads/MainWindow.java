@@ -19,11 +19,10 @@ import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
- * @author Nikolay, Yuri
- * the main window 
- * version 1.0.4
+ * @author Nikolay, Yuri the main window version 1.0.4
  *
  */
 public class MainWindow extends JFrame implements ActionListener, ListSelectionListener, MouseListener {
@@ -48,7 +47,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private JLabel viewlabel;
 	private static JLabel statuslabel;
 
-	static ArrayList<MessagesDate> messagesList;
+	protected static ArrayList<MessagesDate> messagesListInbox;
 	private String ccStringTemp;
 	private String bccStringString;
 	private String toStringTemp;
@@ -56,13 +55,16 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private String subjectStringTemp;
 	private String sentDateStringTemp;
 	private static String passwordMail;
+	protected static ArrayList<MessagesDate> messagesListSent;
 	private int selectedRow;
 	private String folder = "Inbox";
+	private DefaultTableModel modelTemp;
+	private String startFolder;
 
-	public MainWindow() {
+	public MainWindow(String startFolder) {
 		super("Mail Client");
+		this.startFolder = startFolder;
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
 		setSize(1500, 800);
 		addComponentsToPane();
 		setVisible(true);
@@ -98,8 +100,8 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		previewlabel = new JLabel();
 		viewlabel = new JLabel();
 		statuslabel = new JLabel();
-		messagesList = new ArrayList();
-
+		messagesListInbox = new ArrayList();
+		messagesListSent = new ArrayList();
 		contentPanelLeft = new JPanel();
 		contentPanelLeft.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPanelLeft.setLayout(new GridBagLayout());
@@ -169,7 +171,6 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		rowSM.addListSelectionListener(this);
 		previewMail.addMouseListener(this);
 
-
 		// ----------JEditorPane----------------------------
 		viewMail.setEditable(false); // set JEdotorPane not editable
 
@@ -196,6 +197,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		// -------------------------------------------------
 
 		new Thread(new AddRowsThread("Inbox")).start();
+		new Thread(new AddRowsThread("Sent")).start();
 
 	}
 
@@ -203,10 +205,10 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAnswer) {
-			NewMailWindow answerMail = new NewMailWindow(messagesList.get(selectedRow));
+			NewMailWindow answerMail = new NewMailWindow(messagesListInbox.get(selectedRow));
 			System.out.println("testAnswer");// TODO
 		} else if (e.getSource() == buttonUpdateMail) {
-			// passwordDialog();
+
 			System.out.println("testUpdate");// TODO
 			new Thread(new UpdateEMailThread("Inbox")).start(); // for POP3 only
 																// folder INBOX
@@ -221,13 +223,37 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		if (e.getSource() == toggleSentFolder) {
 			if (toggleSentFolder.getText() == "Sent Folder") {
 				toggleSentFolder.setText("Inbox Folder");
-				folder = "Send";
-				System.out.println(folder + " set folder");// TODO
-				new Thread(new AddRowsThread("Sent")).start();
+				if (messagesListSent.size() != 0) {
+					int k = messagesListSent.size() - 1;
+					System.out.println(messagesListSent.size());// TODO Just for
+																// testing
+
+					int rowCount = model.getRowCount();
+					// Remove rows one by one from the end of the table
+					for (int j = rowCount - 1; j >= 0; j--) {
+						model.removeRow(j);
+					}
+					do {
+						MainWindow.model.addRow(new Object[] { MainWindow.messagesListSent.get(k).getAddressFrom(), MainWindow.messagesListSent.get(k).getAddressTo(), MainWindow.messagesListSent.get(k).getSubject(), MainWindow.messagesListSent.get(k).getSentDate() });
+						k--;
+					} while (k > 0);
+				}
 			} else {
 				toggleSentFolder.setText("Sent Folder");
 				folder = "Inbox";
 				System.out.println(folder + " set folder");// TODO
+				int j = MainWindow.messagesListInbox.size() - 1;
+				int rowCount = model.getRowCount();
+				// Remove rows one by one from the end of the table
+				for (int i = rowCount - 1; i >= 0; i--) {
+					model.removeRow(i);
+				}
+
+				do {
+					MainWindow.model.addRow(new Object[] { MainWindow.messagesListInbox.get(j).getAddressFrom(), MainWindow.messagesListInbox.get(j).getAddressTo(), MainWindow.messagesListInbox.get(j).getSubject(), MainWindow.messagesListInbox.get(j).getSentDate() });
+					j--;
+
+				} while (j > 0);
 
 			}
 		}
@@ -244,49 +270,50 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
 		if (!lsm.isSelectionEmpty()) {
-			int lastElement = messagesList.size() - 1;
+			int lastElement = messagesListInbox.size() - 1;
 			selectedRow = lastElement - lsm.getMinSelectionIndex();
 
 			ccStringTemp = "";
-			if (messagesList.get(selectedRow).getCopyOnAddres() != null) {
-				for (int i = 0; i < messagesList.get(selectedRow).getCopyOnAddres().size(); i++) {
-					ccStringTemp = ccStringTemp + messagesList.get(selectedRow).getCopyOnAddres().get(i) + "; ";
+			if (messagesListInbox.get(selectedRow).getCopyOnAddres() != null) {
+				for (int i = 0; i < messagesListInbox.get(selectedRow).getCopyOnAddres().size(); i++) {
+					ccStringTemp = ccStringTemp + messagesListInbox.get(selectedRow).getCopyOnAddres().get(i) + "; ";
 				}
 
 			}
 			bccStringString = "";
-			if (messagesList.get(selectedRow).getCopyHideOnAddress() != null) {
-				for (int i = 0; i < messagesList.get(selectedRow).getCopyHideOnAddress().size(); i++) {
-					bccStringString = bccStringString + messagesList.get(selectedRow).getCopyHideOnAddress().get(i) + "; ";
+			if (messagesListInbox.get(selectedRow).getCopyHideOnAddress() != null) {
+				for (int i = 0; i < messagesListInbox.get(selectedRow).getCopyHideOnAddress().size(); i++) {
+					bccStringString = bccStringString + messagesListInbox.get(selectedRow).getCopyHideOnAddress().get(i) + "; ";
 
 				}
 			}
 			toStringTemp = "";
-			for (int i = 0; i < messagesList.get(selectedRow).getAddressTo().size(); i++) {
-				toStringTemp = toStringTemp + messagesList.get(selectedRow).getAddressTo().get(i) + "; ";
+			for (int i = 0; i < messagesListInbox.get(selectedRow).getAddressTo().size(); i++) {
+				toStringTemp = toStringTemp + messagesListInbox.get(selectedRow).getAddressTo().get(i) + "; ";
 
 			}
 			fromStringTemp = "";
-			for (int i = 0; i < messagesList.get(selectedRow).getAddressFrom().size(); i++) {
-				fromStringTemp = fromStringTemp + messagesList.get(selectedRow).getAddressFrom().get(i) + "; ";
+			for (int i = 0; i < messagesListInbox.get(selectedRow).getAddressFrom().size(); i++) {
+				fromStringTemp = fromStringTemp + messagesListInbox.get(selectedRow).getAddressFrom().get(i) + "; ";
 
 			}
-			subjectStringTemp = messagesList.get(selectedRow).getSubject();
-			sentDateStringTemp = messagesList.get(selectedRow).getSentDate().toString();
-			System.out.println(messagesList.get(selectedRow).getTypeMessages() + " type of selected messages");// TODO
-																												// remove
-																												// this
-																												// is
-																												// just
-																												// for
-																												// testing
-			if (messagesList.get(selectedRow).getTypeMessages().equals("text")) {
+			subjectStringTemp = messagesListInbox.get(selectedRow).getSubject();
+			sentDateStringTemp = messagesListInbox.get(selectedRow).getSentDate().toString();
+			System.out.println(messagesListInbox.get(selectedRow).getTypeMessages() + " type of selected messages");// TODO
+			// remove
+			// this
+			// is
+			// just
+			// for
+			// testing
+			if (messagesListInbox.get(selectedRow).getTypeMessages().equals("text")) {
 				viewMail.setContentType("text");
-				viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n" + messagesList.get(selectedRow).getContent());
-			} else if (messagesList.get(selectedRow).getTypeMessages().equals("html")) {
+				viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
+						+ messagesListInbox.get(selectedRow).getContent());
+			} else if (messagesListInbox.get(selectedRow).getTypeMessages().equals("html")) {
 				viewMail.setContentType("text/html");
 				viewMail.setText("<p> From: " + fromStringTemp + "<br>" + "To: " + toStringTemp + "<br>" + "CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + subjectStringTemp + "<br>" + "Sent Date: " + sentDateStringTemp + "<br>" + "</p>"
-						+ messagesList.get(selectedRow).getContent());
+						+ messagesListInbox.get(selectedRow).getContent());
 			}
 		}
 	}
@@ -296,7 +323,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		int row = previewMail.rowAtPoint(event.getPoint());
 		int col = previewMail.columnAtPoint(event.getPoint());
 		if (row >= 0 && col >= 0) {
-			NewMailWindow answerMail = new NewMailWindow(messagesList.get(selectedRow));
+			NewMailWindow answerMail = new NewMailWindow(messagesListInbox.get(selectedRow));
 		}
 
 	}
@@ -325,10 +352,15 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 	}
 
+	public static ArrayList<MessagesDate> getMessagesListSent() {
+		return messagesListSent;
+	}
+
 	// ----------------------------------------------------------
 
 	// ----- Controller for Label Satus bar----------------------
 	public static void setStatusBarLabel(String status) {
 		statuslabel.setText(status);
 	}
+
 }

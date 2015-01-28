@@ -34,7 +34,7 @@ import utility.Run;
  *         the sent folder version 1.0.3
  *
  */
-public class MailReader implements GetMails {
+public class MailReader implements GetMailsServer {
 
 	// --------- connection parameter--------------
 	private String hostName;
@@ -43,14 +43,13 @@ public class MailReader implements GetMails {
 	private Folder folder;
 	private Store store;
 	private Message messages[];
-	private ArrayList<MessagesDate> messagesList;
-	private String serverFolder;
+	private ArrayList<MessagesDate> messagesListInbox;
 
 	public MailReader(Object hostName, Object userName, String passwordMail) {
 		this.hostName = hostName.toString();
 		this.userName = userName.toString();
 		password = passwordMail;
-		messagesList = new ArrayList();
+		messagesListInbox = new ArrayList();
 	}
 
 	public MailReader() {
@@ -59,7 +58,7 @@ public class MailReader implements GetMails {
 
 	public void connectionInbox(String serverFolder) {
 		if (!password.equals("")) {
-			this.serverFolder = serverFolder;
+
 			Properties properties = System.getProperties();
 			properties.setProperty("mail.pop3.host", hostName);
 			properties.setProperty("mail.pop3.user", userName);
@@ -71,7 +70,7 @@ public class MailReader implements GetMails {
 			try {
 				store = session.getStore("pop3");
 				store.connect(hostName, userName, password);
-				folder = store.getFolder(serverFolder);
+				folder = store.getFolder("Inbox");
 				folder.open(Folder.READ_ONLY);
 			} catch (NoSuchProviderException e) {
 
@@ -98,7 +97,7 @@ public class MailReader implements GetMails {
 	 * 
 	 */
 
-	private void getMessages() throws MessagingException, FileNotFoundException, IOException {
+	public Message[] getMessages() throws MessagingException, FileNotFoundException, IOException {
 
 		String s;// temp
 		try {
@@ -156,106 +155,27 @@ public class MailReader implements GetMails {
 			content = messages[i].getContent();
 			if (content instanceof String) {
 				type = "text"; // set message type text
-				messagesList.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, content.toString()));
-			} else if (content instanceof Multipart) {
+				System.out.println("Save email text +++");//TODO remove this just
+															// for testing
+				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toString(), copyOnAddress, copyHideAddress, content.toString()));
+			} 
+			if (content instanceof Multipart){
+				Multipart mp;
+				BodyPart bodyPart = null;
+				type = "html";
 				for (int j = 0; j < ((Multipart) content).getCount(); j++) {
-					Multipart mp = (Multipart) content;
-					BodyPart bodyPart = mp.getBodyPart(j);
-					type = "html"; // set message type html
-					messagesList.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
+					 mp = (Multipart) content;
+					bodyPart = mp.getBodyPart(j);							
 				}
+				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toString(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
+				System.out.println("Save email html +++");//TODO remove this just
+				// for testing
 			}
 
 		}
 
-		saveMessages(messagesList);
-	}
-
-	/**
-	 * This method returns array of massages( e.g for gui) this method don't
-	 * read the file
-	 * 
-	 * @return the email message
-	 */
-	public Message[] getMassagesArray() {
-
-		try {
-			getMessages();
-		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
-
-		} catch (MessagingException e) {
-			System.err.println(e.getMessage());
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
+		new SaveReadFile().saveMessages(messagesListInbox, "Inbox");
 		return messages;
-
 	}
 
-	/**
-	 * the method for serialization of class MessagesDate
-	 * 
-	 * @param serverFolder
-	 * */
-	public void saveMessages(ArrayList<MessagesDate> mList) throws MessagingException, FileNotFoundException, IOException {
-		if (serverFolder.equals("Inbox")) {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(Run.getNameFileMessagesInboxContainer().toString()));
-			for (int i = 0; i < mList.size(); i++) {
-				out.writeObject(mList);
-
-			}
-			out.flush();
-			out.close();
-
-		} else {
-			if (serverFolder.equals("Sent")) {
-				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(Run.getNameFileMessagesSentContainer().toString()));
-				for (int i = 0; i < mList.size(); i++) {
-					out.writeObject(mList);
-
-				}
-				out.flush();
-				out.close();
-
-			}
-		}
-
-	}
-
-	/**
-	 * the method read the file .ser the method for deserialization of class
-	 * MessagesDate returns the array of Messages
-	 * */
-	public ArrayList<MessagesDate> readMessagesFile(String folder) {
-		ObjectInputStream in = null;
-		try {
-			if(folder.equals("Inbox")){
-			in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesInboxContainer().toString()));
-			}else{
-				System.out.println("++ reading from file "+Run.getNameFileMessagesSentContainer().toString() );
-				in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesSentContainer().toString()));
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
-
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-		ArrayList<MessagesDate> array = null;
-		try {
-			array = (ArrayList<MessagesDate>) in.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println(e.getMessage());
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-		try {
-			in.close();
-		} catch (IOException e) {
-			System.err.println(e.getMessage());
-		}
-		return array;
-
-	}
 }

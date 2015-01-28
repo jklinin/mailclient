@@ -3,7 +3,7 @@ package core_gui_and_threads;
 import javax.mail.MessagingException;
 
 import utility.Run;
-import func_core.GetMails;
+import func_core.GetMailsServer;
 import func_core.MailReader;
 
 public class GetSentEmails implements Runnable {
@@ -13,7 +13,7 @@ public class GetSentEmails implements Runnable {
 		PasswordDialog password = new PasswordDialog();
 		if (password.getStatus() == true) {
 			MainWindow.setStatusBarLabel("Receiving emails");
-			GetMails readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
+			GetMailsServer readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
 
 			try {
 				readMail.connectionInbox("Sent");

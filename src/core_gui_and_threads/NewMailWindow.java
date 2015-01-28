@@ -39,6 +39,8 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	private JLabel labelCC;
 	private JLabel labelBCC;
 
+	private String contentType = "text";
+
 	public NewMailWindow() {
 		super("New Mail");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -49,14 +51,13 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	}
 
 	/**
-	 * @author Yuri Kalinin the constructor with message parameter for the
-	 *         answering of email
+	 * @author Yuri Kalinin the constructor with message parameter for the answering of email
 	 * @param message
 	 */
 	public NewMailWindow(MessagesDate message) {// answer selected email
 
 		super("Answer Mail");
-
+		contentType=message.getTypeMessages();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
 		setResizable(false);
@@ -125,6 +126,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		bccadr.addMouseListener(this);
 
 		scrollPane.setViewportView(emailbody);
+		emailbody.setContentType("text");
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_END;
 		c.weighty = 1.2;
@@ -183,6 +185,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
 		}
 		if (message.getTypeMessages().equals("html")) {
+			contentType = "html";
 			emailbody.setContentType("text/html");
 			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
 					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + message.getContent());
@@ -198,15 +201,25 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 				PasswordDialog password = new PasswordDialog();
 				if (password.getStatus() == true) {
 					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), password.getPasswordMail());
-
-					if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true)
-						// FIXME
-						// MessagesDate mail = new MessagesDate(String type,
-						// "0", "project_test91@mail.ru", emailadr.getText(),
-						// subj.getText(), Date sentDate, ArrayList<String>
-						// copyOnAddress, ArrayList<String> copyHideAddress,
-						// String content);
+					ArrayList emlAdrTemp = new ArrayList();
+					emlAdrTemp.add(emailadr.getText());
+					ArrayList ccadrTemp = new ArrayList();
+					System.out.println(ccadr.getText());
+					ccadrTemp.add(ccadr.getText());
+					ArrayList bccadrTemp = new ArrayList();
+					bccadrTemp.add(bccadr.getText());
+					Date dateTemp = new Date();
+					ArrayList adrFromTemp = new ArrayList();
+					adrFromTemp.add("project_test91@mail.ru");
+					if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true) {
+						if(MainWindow.messagesListSent!=null){
+						MainWindow.messagesListSent.add(new MessagesDate(contentType, MainWindow.messagesListSent.size()+1, adrFromTemp, emlAdrTemp, subj.getText(), dateTemp.toGMTString(), ccadrTemp, bccadrTemp, emailbody.getText()));
+						}else{
+							MainWindow.messagesListSent= new ArrayList();
+							MainWindow.messagesListSent.add(new MessagesDate(contentType, MainWindow.messagesListSent.size()+1, adrFromTemp, emlAdrTemp, subj.getText(), dateTemp.toGMTString(), ccadrTemp, bccadrTemp, emailbody.getText()));
+						}
 						dispose();
+					}
 				}
 			}
 
