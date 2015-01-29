@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.mail.MessagingException;
+import javax.swing.JOptionPane;
 
 import utility.Run;
 import func_core.*;
@@ -18,27 +19,29 @@ UpdateEMailThread(String folder){
 		PasswordDialog password = new PasswordDialog();
 		if (password.getStatus() == true) {
 			MainWindow.setStatusBarLabel("Receiving emails");
-			GetMailsServer readMail = new MailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
+			GetMailsServer readMail = new ServerMailReader(Run.getSettingProtocolPOP(), Run.getSettingUserName(), password.getPasswordMail());
 
 			try {
 				readMail.connectionInbox(folder);
 			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Connection error", "Please check settings", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
+				
 			}
 
-//			readMail.getMassagesArray();
 			try {
 				readMail.getMessages();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Connection error", "Please check settings", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
+				
 			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
+				JOptionPane.showMessageDialog(null, "Connection error", "Please check settings", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Connection error", "Please check settings", JOptionPane.ERROR_MESSAGE);
+				System.err.println(e.getMessage());
 			}
 		}
 		new Thread(new AddRowsThread(folder)).start();

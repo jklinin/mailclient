@@ -11,7 +11,7 @@ import javax.swing.*;
 
 import utility.FieldsCheck;
 import utility.Run;
-import func_core.MailWrite;
+import func_core.ServerMailWrite;
 import func_core.MessagesDate;
 import func_core.SendMail;
 import gui_addressbook.AddressBook;
@@ -204,11 +204,10 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 			if (checkEMailAddress.checkEMailAddress() == true) {
 				PasswordDialog password = new PasswordDialog();
 				if (password.getStatus() == true) {
-					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), password.getPasswordMail());
+					SendMail writteMail = new ServerMailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), password.getPasswordMail());
 					ArrayList emlAdrTemp = new ArrayList();
 					emlAdrTemp.add(emailadr.getText());
 					ArrayList ccadrTemp = new ArrayList();
-					System.out.println(ccadr.getText());
 					ccadrTemp.add(ccadr.getText());
 					ArrayList bccadrTemp = new ArrayList();
 					bccadrTemp.add(bccadr.getText());
@@ -232,7 +231,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	}
 
 	// ----------------------------------------------------------------------------------
-	// TODO Mouse CKlick
+
 	// -------- Controller for Mouse Click Address Fields----------------------
 
 	@Override
@@ -245,26 +244,24 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		// no action 
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// no action 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		// no action 
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// no action 
 	}
 
 	public static void setDestinEMailAdt(String emlAddr, String name, String surname) {

@@ -1,9 +1,9 @@
 package func_address_book;
 
 import java.io.File;
-import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -14,7 +14,7 @@ import javax.xml.bind.Marshaller;
  * @author Yuri Kalinin 
  * @version 1.0.0
  */
-public class WriteXML {
+public class WriteXMLAddressBook {
 
 	public void writeXMLAddressBook(ArrayList<People> peopleList) {
 		RootXML people = new RootXML();
@@ -31,10 +31,11 @@ public class WriteXML {
 			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			jaxbMarshaller.marshal(people, file);
-			jaxbMarshaller.marshal(people, System.out); // TODO Just for testing
+			
 
 		} catch (JAXBException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Errorr: XML Writting", "Error in the write E Mail", JOptionPane.ERROR_MESSAGE);
+			System.err.println(e.getMessage());
 		}
 
 	}

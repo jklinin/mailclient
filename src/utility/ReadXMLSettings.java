@@ -2,7 +2,7 @@ package utility;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Vector;
+
 
 import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
  *
  */
 
-public class ReadXML {
+public class ReadXMLSettings {
 
 	private static ArrayList settings = new ArrayList();
 	private static String[] nodeSetting = { "hostNamePop", "hostNameSmtp", "userName", "messagesFileInbox",  "messagesFileSent" };

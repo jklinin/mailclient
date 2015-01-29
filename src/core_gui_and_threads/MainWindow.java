@@ -1,25 +1,20 @@
 package core_gui_and_threads;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
+
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-
-import utility.PeopleDateBase;
 import func_core.MessagesDate;
 import gui_addressbook.AddressBook;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 /**
  * @author Nikolay, Yuri the main window version 1.0.4
@@ -54,11 +49,9 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private String fromStringTemp;
 	private String subjectStringTemp;
 	private String sentDateStringTemp;
-	private static String passwordMail;
 	protected static ArrayList<MessagesDate> messagesListSent;
 	private int selectedRow;
 	private String folder = "Inbox";
-	private DefaultTableModel modelTemp;
 	private String startFolder;
 
 	public MainWindow(String startFolder) {
@@ -206,20 +199,20 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAnswer) {
 			if (selectedRow != 0) {
-				NewMailWindow answerMail = new NewMailWindow(messagesListInbox.get(selectedRow));
+				new NewMailWindow(messagesListInbox.get(selectedRow));
 			}
-			System.out.println("testAnswer");// TODO
+		
 		} else if (e.getSource() == buttonUpdateMail) {
 
-			System.out.println("testUpdate");// TODO
+	
 			new Thread(new UpdateEMailThread("Inbox")).start(); // for POP3 only
 																// folder INBOX
 
 		} else if (e.getSource() == buttonNewMail) {
-			NewMailWindow newMail = new NewMailWindow();
+			 new NewMailWindow();
 
 		} else if (e.getSource() == buttonAddressBook) {
-			AddressBook newAddressBook = new AddressBook();
+			 new AddressBook();
 		}
 
 		if (e.getSource() == toggleSentFolder) {
@@ -227,8 +220,8 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 				toggleSentFolder.setText("Inbox Folder");
 				if (messagesListSent.size() != 0) {
 					int k = messagesListSent.size() - 1;
-					System.out.println(messagesListSent.size());// TODO Just for
-																// testing
+				
+																
 
 					int rowCount = model.getRowCount();
 					// Remove rows one by one from the end of the table
@@ -243,7 +236,6 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			} else {
 				toggleSentFolder.setText("Sent Folder");
 				folder = "Inbox";
-				System.out.println(folder + " set folder");// TODO
 				int j = MainWindow.messagesListInbox.size() - 1;
 				int rowCount = model.getRowCount();
 				// Remove rows one by one from the end of the table
@@ -301,13 +293,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			}
 			subjectStringTemp = messagesListInbox.get(selectedRow).getSubject();
 			sentDateStringTemp = messagesListInbox.get(selectedRow).getSentDate().toString();
-			System.out.println(messagesListInbox.get(selectedRow).getTypeMessages() + " type of selected messages");// TODO
-			// remove
-			// this
-			// is
-			// just
-			// for
-			// testing
+			
 			if (messagesListInbox.get(selectedRow).getTypeMessages().equals("text")) {
 				viewMail.setContentType("text");
 				viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
@@ -325,32 +311,32 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		int row = previewMail.rowAtPoint(event.getPoint());
 		int col = previewMail.columnAtPoint(event.getPoint());
 		if (row >= 0 && col >= 0) {
-			NewMailWindow answerMail = new NewMailWindow(messagesListInbox.get(selectedRow));
+			 new NewMailWindow(messagesListInbox.get(selectedRow));
 		}
 
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// no action 
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// no action 
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// no action 
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// no action 
 
 	}
 

@@ -8,7 +8,7 @@ package func_core;
  */
 
 import java.util.Properties;
-import java.util.Scanner;
+
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,13 +21,13 @@ import javax.swing.JOptionPane;
 
 import core_gui_and_threads.MainWindow;
 
-public class MailWrite implements SendMail {
+public class ServerMailWrite implements SendMail {
 
 	private String userName;
 	private String password;
 	private String hostName;
 
-	public MailWrite(Object hostName, Object userName, String passwordMail) {
+	public ServerMailWrite(Object hostName, Object userName, String passwordMail) {
 		this.hostName = hostName.toString();
 		this.userName = userName.toString();
 		password = passwordMail;

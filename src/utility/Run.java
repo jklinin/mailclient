@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.mail.MessagingException;
 
 import core_gui_and_threads.MainWindow;
-import func_address_book.People;
 import func_core.SaveReadFile;
 
 public class Run {
@@ -19,7 +18,7 @@ public class Run {
 
 	public static void main(String[] args) throws MessagingException {
 		// ------settings-------------------
-		ReadXML readerXML = new ReadXML();
+		ReadXMLSettings readerXML = new ReadXMLSettings();
 		readerXML.readSettings();
 		settings = readerXML.getSettings();
 		// ---------------------------------
@@ -30,7 +29,7 @@ mainWindow.addWindowListener(new WindowAdapter() {
     public void windowClosing(WindowEvent e) {
 
         // do other stuff....
-    	System.out.println("Window is closed"); //TODO remove this 
+    	
     	if(MainWindow.getMessagesListSent()!=null){
     	try {
 			new SaveReadFile().saveMessages(MainWindow.getMessagesListSent(), "Sent");
@@ -45,11 +44,9 @@ mainWindow.addWindowListener(new WindowAdapter() {
 			e1.printStackTrace();
 		}
     	}
-    	System.out.println("close main frame");//TODO remove this just for testing
+    	
 		addressBookDateBase.clocePeopleDateBase();
-		for (int i = 0; i < addressBookDateBase.getListPeople().size(); i++) {
-			System.out.println(((addressBookDateBase.getListPeople()).get(i)).getId());
-		}
+		
     	mainWindow.dispose();
     }
 });

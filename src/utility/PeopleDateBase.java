@@ -1,6 +1,5 @@
 package utility;
 
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 
 import func_address_book.*;
@@ -9,8 +8,7 @@ import func_address_book.*;
  * contains list of all persons in the address book. this is temporary. by
  * closing of program people list will be written into xml file
  * 
- * @author Yuri 
- * version 1.0.0
+ * @author Yuri version 1.0.0
  */
 public class PeopleDateBase {
 	private static ArrayList<People> peopleList;
@@ -32,7 +30,7 @@ public class PeopleDateBase {
 		p.setSurname(surname);
 		p.setEmladr(emailaddr);
 		peopleList.add(p);
-		System.out.println(name);// TODO just for testing
+
 	}
 
 	private void setPeopleList(ArrayList<People> peopleList) {
@@ -48,9 +46,8 @@ public class PeopleDateBase {
 
 		@Override
 		public void run() {
-			System.out.println("Thread start "); // TODO this just for testing
-													// remove this
-			ReadOutXML read = new ReadOutXML();
+
+			ReadXMLAdressBook read = new ReadXMLAdressBook();
 			setPeopleList(read.read());
 			setFirsLastId();
 
@@ -64,7 +61,7 @@ public class PeopleDateBase {
 
 	public void clocePeopleDateBase() {
 		if (lastID != firstID) {
-			System.out.println("Write XML");// TODO Remove this just for testing
+
 			new Thread(new WritePeopleThread()).start();
 		}
 	}
@@ -74,14 +71,14 @@ public class PeopleDateBase {
 		@Override
 		public void run() {
 
-			WriteXML write = new WriteXML();
+			WriteXMLAddressBook write = new WriteXMLAddressBook();
 			write.writeXMLAddressBook(peopleList);
 
 		}
 
 	}
-	
-	public static void removePeople(int index){
+
+	public static void removePeople(int index) {
 		peopleList.remove(index);
 		lastID--;
 	}

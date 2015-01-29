@@ -53,7 +53,6 @@ public class SaveReadFile {
 			if (folder.equals("Inbox")) {
 				in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesInboxContainer().toString()));
 			} else {
-				System.out.println("++ reading from file " + Run.getNameFileMessagesSentContainer().toString());
 				in = new ObjectInputStream(new FileInputStream(Run.getNameFileMessagesSentContainer().toString()));
 			}
 		} catch (FileNotFoundException e) {

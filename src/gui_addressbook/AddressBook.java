@@ -19,8 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AddressBook extends JFrame implements ActionListener, ListSelectionListener, MouseListener {
@@ -117,12 +115,12 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAdd) {
-			NewContact newNewContact = new NewContact();
+			new NewContact();
 
 		}
 
 		if (e.getSource() == buttonRemove) {
-			System.out.println(selectedRow);// TODO just for testing
+		
 			PeopleDateBase.removePeople(selectedRow);
 
 			int rowCount = model.getRowCount();
@@ -144,7 +142,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 		if (!lsm.isSelectionEmpty()) {
 			selectedRow = lsm.getMinSelectionIndex();
-			System.out.println(selectedRow);// TODO remove this just for testing
+		
 		}
 
 	}
@@ -153,7 +151,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		System.out.println(selectedRow);// just for testing
+		
 		peopleList = PeopleDateBase.getListPeople();
 		if (calledCompoent.getName().equals("emailadr")) {
 			NewMailWindow.setDestinEMailAdt(peopleList.get(selectedRow).getEmladr(), peopleList.get(selectedRow).getName(), peopleList.get(selectedRow).getSurname());
@@ -173,32 +171,32 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+//		no action
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+//		no action
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+//		no action
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+//		no action
 
 	}
 
 	public static void updateContactTable() {
 
 		int rowCount = model.getRowCount();
-		System.out.println("Close");// TODO Remove this
+		
 		// Remove rows one by one from the end of the table
 		for (int i = rowCount - 1; i >= 0; i--) {
 			model.removeRow(i);

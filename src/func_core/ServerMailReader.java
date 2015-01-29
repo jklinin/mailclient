@@ -1,19 +1,12 @@
 package func_core;
 
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.Properties;
-import java.util.Scanner;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -27,14 +20,15 @@ import javax.mail.Store;
 import javax.swing.JOptionPane;
 
 import core_gui_and_threads.MainWindow;
-import utility.Run;
+
+;
 
 /**
  * @author Yuri Kalinin gets e-mails from the server for inbox folder and for
  *         the sent folder version 1.0.3
  *
  */
-public class MailReader implements GetMailsServer {
+public class ServerMailReader implements GetMailsServer {
 
 	// --------- connection parameter--------------
 	private String hostName;
@@ -45,14 +39,14 @@ public class MailReader implements GetMailsServer {
 	private Message messages[];
 	private ArrayList<MessagesDate> messagesListInbox;
 
-	public MailReader(Object hostName, Object userName, String passwordMail) {
+	public ServerMailReader(Object hostName, Object userName, String passwordMail) {
 		this.hostName = hostName.toString();
 		this.userName = userName.toString();
 		password = passwordMail;
 		messagesListInbox = new ArrayList();
 	}
 
-	public MailReader() {
+	public ServerMailReader() {
 
 	}
 
@@ -99,16 +93,14 @@ public class MailReader implements GetMailsServer {
 
 	public Message[] getMessages() throws MessagingException, FileNotFoundException, IOException {
 
-		String s;// temp
+
 		try {
 			messages = folder.getMessages();
 		} catch (MessagingException e) {
 			System.err.println(e.getMessage());
 
 		}
-		if (messages.length == 0) {
-			System.out.println("No messages found.");
-		}
+		
 		Object content;
 		String type; // type of messages contant
 		for (int i = 0; i < messages.length; i++) {
@@ -155,21 +147,19 @@ public class MailReader implements GetMailsServer {
 			content = messages[i].getContent();
 			if (content instanceof String) {
 				type = "text"; // set message type text
-				System.out.println("Save email text +++");//TODO remove this just
-															// for testing
+				
 				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toString(), copyOnAddress, copyHideAddress, content.toString()));
-			} 
-			if (content instanceof Multipart){
+			}
+			if (content instanceof Multipart) {
 				Multipart mp;
 				BodyPart bodyPart = null;
 				type = "html";
 				for (int j = 0; j < ((Multipart) content).getCount(); j++) {
-					 mp = (Multipart) content;
-					bodyPart = mp.getBodyPart(j);							
+					mp = (Multipart) content;
+					bodyPart = mp.getBodyPart(j);
 				}
 				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toString(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
-				System.out.println("Save email html +++");//TODO remove this just
-				// for testing
+				
 			}
 
 		}

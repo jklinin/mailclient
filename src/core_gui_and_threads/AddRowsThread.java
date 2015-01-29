@@ -3,23 +3,22 @@ package core_gui_and_threads;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import func_core.GetMailsServer;
-import func_core.MailReader;
+import javax.swing.JOptionPane;
+
+
 import func_core.SaveReadFile;
 
-
-
 /**
-	 * 
-	 * @author Yuri Kalinin this thread adds the new rows in the view table
-	 *
-	 */
-	public class AddRowsThread implements Runnable {
+ * 
+ * @author Yuri Kalinin this thread adds the new rows in the view table
+ *
+ */
+public class AddRowsThread implements Runnable {
 	private String folder;
 
 	AddRowsThread(String folder) {
 		this.folder = folder;
-		System.out.println(this.folder + " AddRowsThread");// TODO
+
 	}
 
 	public void addNewRowTable() throws FileNotFoundException, ClassNotFoundException, IOException {
@@ -27,7 +26,7 @@ import func_core.SaveReadFile;
 		SaveReadFile readMailFile = new SaveReadFile();
 		if (folder.equals("Inbox")) {
 			MainWindow.messagesListInbox = readMailFile.readMessagesFile(folder);
-			System.out.println(MainWindow.messagesListInbox.size());// TODO
+
 			int i = MainWindow.messagesListInbox.size() - 1;
 			do {
 
@@ -35,22 +34,21 @@ import func_core.SaveReadFile;
 				i--;
 
 			} while (i > 0);
-		}else{
+		} else {
 			MainWindow.messagesListSent = readMailFile.readMessagesFile(folder);
 
-			
 		}
 	}
 
-		@Override
-		public void run() {
-			try {
-				addNewRowTable();
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		MainWindow.setStatusBarLabel("Status bar");
+	@Override
+	public void run() {
+		try {
+			addNewRowTable();
+		} catch (ClassNotFoundException | IOException e) {
+			JOptionPane.showMessageDialog(null, "The file can't be funded", "Pleae add the XML file for the Address Book", JOptionPane.ERROR_MESSAGE);
+			System.err.println(e.getMessage());
 		}
+
+		MainWindow.setStatusBarLabel("Status bar");
 	}
+}

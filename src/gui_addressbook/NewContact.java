@@ -6,7 +6,6 @@ package gui_addressbook;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Element;
 
 import utility.FieldsCheck;
 import utility.Run;
@@ -14,8 +13,6 @@ import utility.Run;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class NewContact extends JFrame implements ActionListener, DocumentListener {
 	private JPanel buttonPane;
@@ -162,7 +159,7 @@ public class NewContact extends JFrame implements ActionListener, DocumentListen
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == saveContact) {
-			// TODO
+
 			if (FieldsCheck.isValidEmailAddress(emailF.getText()) == true) {
 				if (FieldsCheck.fieldsStringCheck(nameF.getText()) == true) {
 					if (FieldsCheck.fieldsStringCheck(surnameF.getText()) == true) {
