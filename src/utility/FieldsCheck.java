@@ -1,23 +1,23 @@
-package func_core;
+package utility;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.swing.JOptionPane;
 
-public class EMailAddressCheck {
+public class FieldsCheck {
 
 	private String ccadr;
 	private String bccadr;
 	private String emailadr;
 	
-	public EMailAddressCheck(String ccadr, String bccadr, String emailadr){
+	public FieldsCheck(String ccadr, String bccadr, String emailadr){
 		this.ccadr = ccadr;
 		this.bccadr = bccadr;
 		this.emailadr = emailadr;
 }
 	
 
-	public boolean checkAddress() {
+	public boolean checkEMailAddress() {
 		if (!ccadr.equals("")) {
 			if (isValidEmailAddress(ccadr) == false) {
 				JOptionPane.showMessageDialog(null, "Please check CC Email  Addresses", "Email addresses are not correct", JOptionPane.ERROR_MESSAGE);
@@ -62,5 +62,17 @@ public class EMailAddressCheck {
 		}
 		return result;
 	}
-
+/**
+ * check string value for the condition A_Z, a-z and length 1-8
+ * @param value
+ * @return 	true if the value is correct else false
+ */
+	public static boolean fieldsStringCheck(String value){
+		if (value.matches("[a-zA-Z]{1,8}") == true){
+		return true;
+		}else{
+			return false;
+		}
+		
+	}
 }

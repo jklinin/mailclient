@@ -205,7 +205,9 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAnswer) {
-			NewMailWindow answerMail = new NewMailWindow(messagesListInbox.get(selectedRow));
+			if (selectedRow != 0) {
+				NewMailWindow answerMail = new NewMailWindow(messagesListInbox.get(selectedRow));
+			}
 			System.out.println("testAnswer");// TODO
 		} else if (e.getSource() == buttonUpdateMail) {
 

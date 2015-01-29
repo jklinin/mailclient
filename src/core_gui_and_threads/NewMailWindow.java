@@ -9,8 +9,8 @@ package core_gui_and_threads;
 
 import javax.swing.*;
 
+import utility.FieldsCheck;
 import utility.Run;
-import func_core.EMailAddressCheck;
 import func_core.MailWrite;
 import func_core.MessagesDate;
 import func_core.SendMail;
@@ -200,8 +200,8 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == sendMail) {
-			EMailAddressCheck checkEMailAddress = new EMailAddressCheck(ccadr.getText(), bccadr.getText(), emailadr.getText());
-			if (checkEMailAddress.checkAddress() == true) {
+			FieldsCheck checkEMailAddress = new FieldsCheck(ccadr.getText(), bccadr.getText(), emailadr.getText());
+			if (checkEMailAddress.checkEMailAddress() == true) {
 				PasswordDialog password = new PasswordDialog();
 				if (password.getStatus() == true) {
 					SendMail writteMail = new MailWrite(Run.getSettingProtocolSMTP(), Run.getSettingUserName(), password.getPasswordMail());

@@ -19,20 +19,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AddressBook extends JFrame implements ActionListener, ListSelectionListener, MouseListener {
-	private DefaultTableModel model;
+	private static DefaultTableModel model;
 	private JButton buttonAdd;
 	private JButton buttonRemove;
 	private JPanel buttonCont;
 	private JScrollPane jspCentre;
 	private JTable viewBook;
 	private int selectedRow;
-	private ArrayList<People> peopleList;
+	private static ArrayList<People> peopleList;
 	private JTextField calledCompoent;
 	private JPanel panelCentre;
-	
+
 	public AddressBook(JTextField component) {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -50,7 +52,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		setSize(700, 600);
 		peopleList = new ArrayList<People>();
 		panelCentre = new JPanel();
-		initialization();		
+		initialization();
 		setVisible(true);
 	}
 
@@ -66,21 +68,20 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		buttonCont = new JPanel();
 		jspCentre = new JScrollPane();
 		viewBook = new JTable(model);
-		
+
 		panelCentre.setLayout(new GridBagLayout());
 		((GridBagLayout) panelCentre.getLayout()).columnWidths = new int[] { 0, 0, 0 };
 		((GridBagLayout) panelCentre.getLayout()).rowHeights = new int[] { 0, 0 };
-		
+
 		JPanel buttonPane = new JPanel();
 		buttonAdd.setText("Add contact");
 		buttonCont.add(buttonAdd);
 		buttonAdd.addActionListener(this);
 
-
 		buttonRemove.setText("Remove");
 		buttonRemove.addActionListener(this);
 		buttonCont.add(buttonRemove);
-		
+
 		buttonPane.add(buttonCont);
 
 		jspCentre.setViewportView(viewBook);
@@ -99,12 +100,13 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		}
 		// --- selection for JTable----------------------------------
 		ListSelectionModel selectionRows = viewBook.getSelectionModel();
+		viewBook.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		selectionRows.addListSelectionListener(this);
 		// ----------------------------------------------------------
 		// ---------mouse listner for JTable------------------------
 		viewBook.addMouseListener(this);
 		// ---------------------------------------------------------
-		
+
 		panelCentre.add(viewBook, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 		jspCentre = new JScrollPane(panelCentre);
 		getContentPane().add(buttonPane, BorderLayout.NORTH);
@@ -116,13 +118,24 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAdd) {
 			NewContact newNewContact = new NewContact();
-		}
-		if (e.getSource() == buttonRemove) {
-			System.out.println(selectedRow);//TODO just for testing
-			PeopleDateBase.removePeople(selectedRow);
-			dispose();
+
 		}
 
+		if (e.getSource() == buttonRemove) {
+			System.out.println(selectedRow);// TODO just for testing
+			PeopleDateBase.removePeople(selectedRow);
+
+			int rowCount = model.getRowCount();
+			// Remove rows one by one from the end of the table
+			for (int i = rowCount - 1; i >= 0; i--) {
+				model.removeRow(i);
+			}
+			peopleList = PeopleDateBase.getListPeople();
+			for (int i = 0; i < peopleList.size(); i++) {
+				model.addRow(new Object[] { peopleList.get(i).getName(), peopleList.get(i).getSurname(), peopleList.get(i).getEmladr() });
+			}
+			// dispose();
+		}
 	}
 
 	// ---------------- Controller for JTable selection-----------------
@@ -181,4 +194,20 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		// TODO Auto-generated method stub
 
 	}
+
+	public static void updateContactTable() {
+
+		int rowCount = model.getRowCount();
+		System.out.println("Close");// TODO Remove this
+		// Remove rows one by one from the end of the table
+		for (int i = rowCount - 1; i >= 0; i--) {
+			model.removeRow(i);
+		}
+		peopleList = PeopleDateBase.getListPeople();
+		for (int i = 0; i < peopleList.size(); i++) {
+			model.addRow(new Object[] { peopleList.get(i).getName(), peopleList.get(i).getSurname(), peopleList.get(i).getEmladr() });
+		}
+
+	}
+
 }
