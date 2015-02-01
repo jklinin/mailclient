@@ -63,12 +63,12 @@ public class FieldsCheck {
 		return result;
 	}
 /**
- * check string value for the condition A_Z, a-z and length 1-8
+ * check string value for the condition A_Z, a-z and length 1-16
  * @param value
  * @return 	true if the value is correct else false
  */
 	public static boolean fieldsStringCheck(String value){
-		if (value.matches("[a-zA-Z]{1,8}") == true){
+		if (value.matches("([a-zA-Z]{1,8})+(-)?([a-zA-Z]{1,8})+") == true){
 		return true;
 		}else{
 			return false;
