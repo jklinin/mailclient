@@ -11,6 +11,11 @@ import javax.mail.MessagingException;
 import core_gui_and_threads.MainWindow;
 import func_core.SaveReadFile;
 
+/**
+ * the main class of program 
+ * @author Yuri 
+ *
+ */
 public class Run {
 	public static PeopleDateBase addressBookDateBase = new PeopleDateBase();
 
@@ -23,7 +28,7 @@ public class Run {
 		settings = readerXML.getSettings();
 		// ---------------------------------
 		
-MainWindow	mainWindow = new MainWindow("Inbox");// GUI
+final MainWindow	mainWindow = new MainWindow("Inbox");// GUI
 mainWindow.addWindowListener(new WindowAdapter() {
     @Override
     public void windowClosing(WindowEvent e) {

@@ -54,7 +54,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		setVisible(true);
 	}
 
-	public void initialization() {
+	private  void initialization() {
 		model = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
