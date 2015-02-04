@@ -32,14 +32,16 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	private static ArrayList<People> peopleList;
 	private JTextField calledCompoent;
 	private JPanel panelCentre;
+	private boolean checkNewMailWindow;
 
 	public AddressBook(JTextField component) {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(630, 445);
+		setSize(700, 600);
 		peopleList = new ArrayList<People>();
 		panelCentre = new JPanel();
 		calledCompoent = component;
+		checkNewMailWindow=true; // if new window open from new mail window
 		initialization();
 		setVisible(true);
 	}
@@ -51,6 +53,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		peopleList = new ArrayList<People>();
 		panelCentre = new JPanel();
 		initialization();
+		checkNewMailWindow=false; // if the window opened not from new mail window
 		setVisible(true);
 	}
 
@@ -94,7 +97,13 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		}
 
 		peopleList = PeopleDateBase.getListPeople();
-		for (int i = 0; i < peopleList.size(); i++) {
+		int count;
+		if (peopleList != null) {
+			count = peopleList.size();
+		} else {
+			count = 0;
+		}
+		for (int i = 0; i < count; i++) {
 			model.addRow(new Object[] { peopleList.get(i).getName(), peopleList.get(i).getSurname(), peopleList.get(i).getEmladr() });
 		}
 		// --- selection for JTable----------------------------------
@@ -103,7 +112,9 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		selectionRows.addListSelectionListener(this);
 		// ----------------------------------------------------------
 		// ---------mouse listner for JTable------------------------
-		viewBook.addMouseListener(this);
+		if (checkNewMailWindow == true) {
+			viewBook.addMouseListener(this);
+		}
 		// ---------------------------------------------------------
 
 		panelCentre.add(jspCentre, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));

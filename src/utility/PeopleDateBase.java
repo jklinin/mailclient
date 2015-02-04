@@ -34,12 +34,21 @@ public class PeopleDateBase {
 	}
 
 	private void setPeopleList(ArrayList<People> peopleList) {
+		if(peopleList!=null){
 		this.peopleList = peopleList;
+		}else{
+			peopleList = new ArrayList<People>();
+		}
 	}
 
 	private void setFirsLastId() {
+		if(peopleList!=null){
 		lastID = (peopleList.size()) - 1;
 		firstID = lastID;
+		}else{
+			lastID=0;
+			firstID=0;
+		}
 	}
 
 	private class ReadPeopleThread implements Runnable {

@@ -15,7 +15,7 @@ import javax.xml.bind.Unmarshaller;
  * @return ArrayList of type People, which contains id, name, surname and emailaddress
  */
 public class ReadXMLAdressBook {
-	static ArrayList<People> peopleList = new ArrayList<People>();
+	private static ArrayList<People> peopleList = new ArrayList<People>();
 	
 	public static ArrayList<People> read() {
 		try {
@@ -31,6 +31,7 @@ public class ReadXMLAdressBook {
 			
 		} catch (JAXBException e) {
 			e.printStackTrace();
+			peopleList=null;
 		}
 		return peopleList;
 
