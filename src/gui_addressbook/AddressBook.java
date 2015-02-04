@@ -36,7 +36,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	public AddressBook(JTextField component) {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setSize(800, 1000);
+		setSize(630, 445);
 		peopleList = new ArrayList<People>();
 		panelCentre = new JPanel();
 		calledCompoent = component;
@@ -82,10 +82,11 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 
 		buttonPane.add(buttonCont);
 
-		jspCentre.setViewportView(viewBook);
 		model.addColumn("Name");
 		model.addColumn("Surname");
-		model.addColumn("Email_addr");
+		model.addColumn("Email address");
+		jspCentre.setViewportView(viewBook);
+		jspCentre.setPreferredSize(new Dimension(630, 400));
 		for (int i = 0; i < 3; i++) {
 			viewBook.getColumnModel().getColumn(i).setPreferredWidth(210);
 			viewBook.getColumnModel().getColumn(i).setMaxWidth(210);
@@ -105,10 +106,10 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		viewBook.addMouseListener(this);
 		// ---------------------------------------------------------
 
-		panelCentre.add(viewBook, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		jspCentre = new JScrollPane(panelCentre);
+		panelCentre.add(jspCentre, new GridBagConstraints(0, 1, 0, 0, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 		getContentPane().add(buttonPane, BorderLayout.NORTH);
-		getContentPane().add(jspCentre, BorderLayout.CENTER);
+		getContentPane().add(panelCentre);
+
 	}
 
 	// ------------------Controller for Buttons-------------------
