@@ -1,7 +1,5 @@
 package core_gui_and_threads;
 
-
-
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -14,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-
 
 /**
  * @author Nikolay, Yuri the main window version 1.0.4
@@ -43,13 +40,13 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private static JLabel statuslabel;
 
 	protected static ArrayList<MessagesDate> messagesListInbox;
+	protected static ArrayList<MessagesDate> messagesListSent;
 	private String ccStringTemp;
 	private String bccStringString;
 	private String toStringTemp;
 	private String fromStringTemp;
 	private String subjectStringTemp;
 	private String sentDateStringTemp;
-	protected static ArrayList<MessagesDate> messagesListSent;
 	private int selectedRow;
 	private String folder = "Inbox";
 	private String startFolder;
@@ -201,28 +198,25 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			if (selectedRow != 0) {
 				new NewMailWindow(messagesListInbox.get(selectedRow));
 			}
-		
+
 		} else if (e.getSource() == buttonUpdateMail) {
 
-	
 			new Thread(new UpdateEMailThread("Inbox")).start(); // for POP3 only
 																// folder INBOX
 
 		} else if (e.getSource() == buttonNewMail) {
-			 new NewMailWindow();
+			new NewMailWindow();
 
 		} else if (e.getSource() == buttonAddressBook) {
-			 new AddressBook();
+			new AddressBook();
 		}
 
 		if (e.getSource() == toggleSentFolder) {
 			if (toggleSentFolder.getText() == "Sent Folder") {
+				folder = "Sent";
 				toggleSentFolder.setText("Inbox Folder");
 				if (messagesListSent.size() != 0) {
 					int k = messagesListSent.size() - 1;
-				
-																
-
 					int rowCount = model.getRowCount();
 					// Remove rows one by one from the end of the table
 					for (int j = rowCount - 1; j >= 0; j--) {
@@ -264,44 +258,86 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
 		if (!lsm.isSelectionEmpty()) {
-			int lastElement = messagesListInbox.size() - 1;
-			selectedRow = lastElement - lsm.getMinSelectionIndex();
+			if (folder.equals("Inbox")) {
+				int lastElement = messagesListInbox.size() - 1;
+				selectedRow = lastElement - lsm.getMinSelectionIndex();
 
-			ccStringTemp = "";
-			if (messagesListInbox.get(selectedRow).getCopyOnAddres() != null) {
-				for (int i = 0; i < messagesListInbox.get(selectedRow).getCopyOnAddres().size(); i++) {
-					ccStringTemp = ccStringTemp + messagesListInbox.get(selectedRow).getCopyOnAddres().get(i) + "; ";
-				}
-
-			}
-			bccStringString = "";
-			if (messagesListInbox.get(selectedRow).getCopyHideOnAddress() != null) {
-				for (int i = 0; i < messagesListInbox.get(selectedRow).getCopyHideOnAddress().size(); i++) {
-					bccStringString = bccStringString + messagesListInbox.get(selectedRow).getCopyHideOnAddress().get(i) + "; ";
+				ccStringTemp = "";
+				if (messagesListInbox.get(selectedRow).getCopyOnAddres() != null) {
+					for (int i = 0; i < messagesListInbox.get(selectedRow).getCopyOnAddres().size(); i++) {
+						ccStringTemp = ccStringTemp + messagesListInbox.get(selectedRow).getCopyOnAddres().get(i) + "; ";
+					}
 
 				}
-			}
-			toStringTemp = "";
-			for (int i = 0; i < messagesListInbox.get(selectedRow).getAddressTo().size(); i++) {
-				toStringTemp = toStringTemp + messagesListInbox.get(selectedRow).getAddressTo().get(i) + "; ";
+				bccStringString = "";
+				if (messagesListInbox.get(selectedRow).getCopyHideOnAddress() != null) {
+					for (int i = 0; i < messagesListInbox.get(selectedRow).getCopyHideOnAddress().size(); i++) {
+						bccStringString = bccStringString + messagesListInbox.get(selectedRow).getCopyHideOnAddress().get(i) + "; ";
 
-			}
-			fromStringTemp = "";
-			for (int i = 0; i < messagesListInbox.get(selectedRow).getAddressFrom().size(); i++) {
-				fromStringTemp = fromStringTemp + messagesListInbox.get(selectedRow).getAddressFrom().get(i) + "; ";
+					}
+				}
+				toStringTemp = "";
+				for (int i = 0; i < messagesListInbox.get(selectedRow).getAddressTo().size(); i++) {
+					toStringTemp = toStringTemp + messagesListInbox.get(selectedRow).getAddressTo().get(i) + "; ";
 
-			}
-			subjectStringTemp = messagesListInbox.get(selectedRow).getSubject();
-			sentDateStringTemp = messagesListInbox.get(selectedRow).getSentDate().toString();
-			
-			if (messagesListInbox.get(selectedRow).getTypeMessages().equals("text")) {
-				viewMail.setContentType("text");
-				viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
-						+ messagesListInbox.get(selectedRow).getContent());
-			} else if (messagesListInbox.get(selectedRow).getTypeMessages().equals("html")) {
-				viewMail.setContentType("text/html");
-				viewMail.setText("<p> From: " + fromStringTemp + "<br>" + "To: " + toStringTemp + "<br>" + "CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + subjectStringTemp + "<br>" + "Sent Date: " + sentDateStringTemp + "<br>" + "</p>"
-						+ messagesListInbox.get(selectedRow).getContent());
+				}
+				fromStringTemp = "";
+				for (int i = 0; i < messagesListInbox.get(selectedRow).getAddressFrom().size(); i++) {
+					fromStringTemp = fromStringTemp + messagesListInbox.get(selectedRow).getAddressFrom().get(i) + "; ";
+
+				}
+				subjectStringTemp = messagesListInbox.get(selectedRow).getSubject();
+				sentDateStringTemp = messagesListInbox.get(selectedRow).getSentDate().toString();
+
+				if (messagesListInbox.get(selectedRow).getTypeMessages().equals("text")) {
+					viewMail.setContentType("text");
+					viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
+							+ messagesListInbox.get(selectedRow).getContent());
+				} else if (messagesListInbox.get(selectedRow).getTypeMessages().equals("html")) {
+					viewMail.setContentType("text/html");
+					viewMail.setText("<p> From: " + fromStringTemp + "<br>" + "To: " + toStringTemp + "<br>" + "CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + subjectStringTemp + "<br>" + "Sent Date: " + sentDateStringTemp + "<br>" + "</p>"
+							+ messagesListInbox.get(selectedRow).getContent());
+				}
+			} else {
+				int lastElement = messagesListSent.size() - 1;
+				selectedRow = lastElement - lsm.getMinSelectionIndex();
+
+				ccStringTemp = "";
+				if (messagesListSent.get(selectedRow).getCopyOnAddres() != null) {
+					for (int i = 0; i < messagesListSent.get(selectedRow).getCopyOnAddres().size(); i++) {
+						ccStringTemp = ccStringTemp + messagesListSent.get(selectedRow).getCopyOnAddres().get(i) + "; ";
+					}
+
+				}
+				bccStringString = "";
+				if (messagesListSent.get(selectedRow).getCopyHideOnAddress() != null) {
+					for (int i = 0; i < messagesListSent.get(selectedRow).getCopyHideOnAddress().size(); i++) {
+						bccStringString = bccStringString + messagesListSent.get(selectedRow).getCopyHideOnAddress().get(i) + "; ";
+
+					}
+				}
+				toStringTemp = "";
+				for (int i = 0; i < messagesListSent.get(selectedRow).getAddressTo().size(); i++) {
+					toStringTemp = toStringTemp + messagesListSent.get(selectedRow).getAddressTo().get(i) + "; ";
+
+				}
+				fromStringTemp = "";
+				for (int i = 0; i < messagesListSent.get(selectedRow).getAddressFrom().size(); i++) {
+					fromStringTemp = fromStringTemp + messagesListSent.get(selectedRow).getAddressFrom().get(i) + "; ";
+
+				}
+				subjectStringTemp = messagesListSent.get(selectedRow).getSubject();
+				sentDateStringTemp = messagesListSent.get(selectedRow).getSentDate().toString();
+
+				if (messagesListSent.get(selectedRow).getTypeMessages().equals("text")) {
+					viewMail.setContentType("text");
+					viewMail.setText("From: " + fromStringTemp + "\n" + "To: " + toStringTemp + "\n" + "CC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: " + subjectStringTemp + "\n" + "Sent Date: " + sentDateStringTemp + "\n" + "\n"
+							+ messagesListSent.get(selectedRow).getContent());
+				} else if (messagesListInbox.get(selectedRow).getTypeMessages().equals("html")) {
+					viewMail.setContentType("text/html");
+					viewMail.setText("<p> From: " + fromStringTemp + "<br>" + "To: " + toStringTemp + "<br>" + "CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: " + subjectStringTemp + "<br>" + "Sent Date: " + sentDateStringTemp + "<br>" + "</p>"
+							+ messagesListSent.get(selectedRow).getContent());
+				}
 			}
 		}
 	}
@@ -311,32 +347,37 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		int row = previewMail.rowAtPoint(event.getPoint());
 		int col = previewMail.columnAtPoint(event.getPoint());
 		if (row >= 0 && col >= 0) {
-			 new NewMailWindow(messagesListInbox.get(selectedRow));
+			if (folder.equals("Inbox")) {			
+				new NewMailWindow(messagesListInbox.get(selectedRow));
+			} else {
+				System.out.println("Sent ");
+				new NewMailWindow(messagesListSent.get(selectedRow));
+			}
 		}
 
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// no action 
+		// no action
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// no action 
+		// no action
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// no action 
+		// no action
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// no action 
+		// no action
 
 	}
 

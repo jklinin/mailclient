@@ -38,8 +38,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	private JLabel labelSub;
 	private JLabel labelCC;
 	private JLabel labelBCC;
-
-	private String contentType;
+	private String contentType="text";
 
 	public NewMailWindow() {
 		super("New Mail");
@@ -58,9 +57,11 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	public NewMailWindow(MessagesDate message) {// answer selected email
 
 		super("Answer Mail");
-		if(message.getTypeMessages().equals("html")){
-			contentType="text/html";
-		}
+		System.out.println(message.getTypeMessages());//TODO remove this
+//		if(message.getTypeMessages().equals("html")){
+//			contentType="text/html";
+//		}
+		contentType="text";
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
@@ -183,16 +184,18 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		for (int i = 0; i < message.getAddressFrom().size(); i++) {
 			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
 		}
-		if (message.getTypeMessages().equals("text")) {
-			emailbody.setContentType("text");
+		if(contentType.equals("text")){
+//		if (message.getTypeMessages().equals("text")) {
+//			emailbody.setContentType("text");
 			emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n" + "From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: "
 					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
 		}
-		if (message.getTypeMessages().equals("html")) {
-			contentType = "text/html";
-			emailbody.setContentType("text/html");
-			emailbody.setText("<br><br><br><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
-					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + message.getContent());
+		if(contentType.equals("text/html")){
+//		if (message.getTypeMessages().equals("html")) {
+//			contentType = "text/html";
+//			emailbody.setContentType("text/html");
+			emailbody.setText("<p></p><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
+					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + "<p>"+message.getContent()+"/p");
 		}
 	}
 
@@ -216,6 +219,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 					adrFromTemp.add("project_test91@mail.ru");
 					if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true) {
 						if(MainWindow.messagesListSent!=null){
+							System.out.println(contentType);//TODO remove this
 						MainWindow.messagesListSent.add(new MessagesDate(contentType, MainWindow.messagesListSent.size()+1, adrFromTemp, emlAdrTemp, subj.getText(), dateTemp.toGMTString(), ccadrTemp, bccadrTemp, emailbody.getText()));
 						}else{
 							MainWindow.messagesListSent= new ArrayList();
