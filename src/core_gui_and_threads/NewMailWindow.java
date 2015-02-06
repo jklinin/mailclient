@@ -71,7 +71,11 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		setVisible(true);
 	}
 
-	// GUI
+	/**
+	 * @author Nikolay Antonov
+	 * Adds the components to the the Address Book window,
+	 * sets the window layout.
+	 */
 	private void initialization() {
 		sendMail = new JButton("Send EMail");
 		labelDest = new JLabel("Destination @:");
@@ -145,8 +149,8 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	}
 
 	/**
+	 * @author Yuri Kalinin
 	 * Set fields in the answer- window
-	 * 
 	 * @param message
 	 */
 	private void setFieldsAnswer(MessagesDate message) {
@@ -200,7 +204,12 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	}
 
 	// -------------Controller for buttons-------------------
-
+	/**
+	 * @author Yuri Kalinin
+	 * Check the validity of an input email address
+	 * Sends the Mail to the Server
+	 * @param e event of pressing a sendMail button
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == sendMail) {
 			FieldsCheck checkEMailAddress = new FieldsCheck(ccadr.getText(), bccadr.getText(), emailadr.getText());
