@@ -39,7 +39,13 @@ public class AddRowsThread implements Runnable {
 
 		}
 	}
-
+	/**
+	 * @author Yuri Kalinin
+	 * Provides error-handling for the case of
+	 * no RowTable found,
+	 * runs the addrows thread,
+	 * sets the status bar label in main window.
+	 */
 	@Override
 	public void run() {
 		try {
