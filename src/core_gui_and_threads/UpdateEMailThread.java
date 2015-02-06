@@ -9,6 +9,11 @@ import javax.swing.JOptionPane;
 import utility.Run;
 import func_core.*;
 
+	/**
+	 * @author Yuri Kalinin method for updating locally saved emails,
+         * requires user password,
+         * handles exceptions
+	 */
 public class UpdateEMailThread implements Runnable {
 private String folder;
 UpdateEMailThread(String folder){
