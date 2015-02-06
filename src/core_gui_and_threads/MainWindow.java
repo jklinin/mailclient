@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  * @author Nikolay, Yuri the main window version 1.0.4
- *
+ * Defines the component names for the Main Window gui.
  */
 public class MainWindow extends JFrame implements ActionListener, ListSelectionListener, MouseListener {
 	static DefaultTableModel model;
@@ -50,7 +50,13 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	private int selectedRow;
 	private String folder = "Inbox";
 	private String startFolder;
-
+	
+	/**
+	 * @author Nikolay Antonov
+	 * Creates MainWindow Gui window
+	 * of a certain size, closes the whole
+	 * program on closure.
+	 */
 	public MainWindow(String startFolder) {
 		super("Mail Client");
 		this.startFolder = startFolder;
@@ -61,6 +67,12 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 
 	}
 
+	/**
+	 * @author Nikolay Antonov
+	 * Adds the components to the the Address Book window,
+	 * sets the window layout
+	 *
+	 */
 	public void addComponentsToPane() {
 
 		model = new DefaultTableModel() {
@@ -192,7 +204,12 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	}
 
 	// ------------------Controller for Buttons-------------------
-
+	/**
+	 * @Author Yuri Kalinin
+	 * Defines the behaviour of the
+	 * Gui buttons
+	 * @param e event of pressing a certain button
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAnswer) {
 			if (selectedRow != 0) {
@@ -249,6 +266,13 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 	}
 
 	// --------------Controllers for JTable----------------------
+	
+	/**
+	 * @author Yuri Kalinin
+	 * Allows to reply to the mail by pressing the record
+	 * from the incoming mail list
+	 * @param e event of pressing on an entry in the JTable list
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		// Ignore extra messages.
