@@ -232,12 +232,7 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 //		no action
 
 	}
-	/**
-	 * @author Yuri Kalinin
-	 * Adds new record to a Contact list, if the button
-	 * is pressed.
-	 * @param e event of pressing a buttonAdd button
-	 */
+	
 	public static void updateContactTable() {
 
 		int rowCount = model.getRowCount();
