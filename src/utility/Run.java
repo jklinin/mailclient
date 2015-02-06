@@ -14,7 +14,7 @@ import func_core.SaveReadFile;
 /**
  * the main class of program 
  * @author Yuri 
- *
+  * Launches the whole program
  */
 public class Run {
 	public static PeopleDateBase addressBookDateBase = new PeopleDateBase();
