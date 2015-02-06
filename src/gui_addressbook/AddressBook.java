@@ -21,6 +21,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+/**
+ * @author Nikolay Antonov
+ * Defines the component names for the AddressBook gui.
+ */
+
 public class AddressBook extends JFrame implements ActionListener, ListSelectionListener, MouseListener {
 	private static DefaultTableModel model;
 	private JButton buttonAdd;
@@ -33,7 +38,12 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	private JTextField calledCompoent;
 	private JPanel panelCentre;
 	private boolean checkNewMailWindow;
-
+	
+	/**
+	 * @author Nikolay Antonov
+	 * Creates Address Book Gui window
+	 * of a certain size, disposes on closure.
+	 */
 	public AddressBook(JTextField component) {
 		super("Address Book");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -56,7 +66,12 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 		checkNewMailWindow=false; // if the window opened not from new mail window
 		setVisible(true);
 	}
-
+	
+	/**
+	 * @author Nikolay Antonov
+	 * Adds the components to the the Address Book window,
+	 * sets the window layout.
+	 */
 	private  void initialization() {
 		model = new DefaultTableModel() {
 			@Override
@@ -124,7 +139,11 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	}
 
 	// ------------------Controller for Buttons-------------------
-
+	/**
+	 * @author Yuri Kalinin
+	 * Launches window which adds new Contacts
+	 * @param e event of pressing a buttonAdd button
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == buttonAdd) {
 			new NewContact();
@@ -149,6 +168,11 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	}
 
 	// ---------------- Controller for JTable selection-----------------
+	/**
+	 * @author Yuri Kalinin
+	 * reads the data of the email message of the selected row
+	 * @param e event of selecting a row from the table
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
@@ -160,7 +184,11 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 	}
 
 	// ---- Controller for MouseLisner JTable--------------------
-
+	/**
+	 * @author Yuri Kalinin
+	 * reads the data of the email message of the selected row
+	 * @param e event of clicking a row from the table with a mouse
+	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		
@@ -204,7 +232,12 @@ public class AddressBook extends JFrame implements ActionListener, ListSelection
 //		no action
 
 	}
-
+	/**
+	 * @author Yuri Kalinin
+	 * Adds new record to a Contact list, if the button
+	 * is pressed.
+	 * @param e event of pressing a buttonAdd button
+	 */
 	public static void updateContactTable() {
 
 		int rowCount = model.getRowCount();
