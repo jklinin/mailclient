@@ -35,27 +35,26 @@ mainWindow.addWindowListener(new WindowAdapter() {
 
         // do other stuff....
     	
-    	if(MainWindow.getMessagesListSent()!=null){
-    	try {
-			new SaveReadFile().saveMessages(MainWindow.getMessagesListSent(), "Sent");
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (MessagingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	}
-    	
-		addressBookDateBase.clocePeopleDateBase();
-		
-    	mainWindow.dispose();
-    }
-});
-		
+				if (MainWindow.getMessagesListSent() != null) {
+					try {
+						new SaveReadFile().saveMessages(MainWindow.getMessagesListSent(), "Sent");
+					} catch (FileNotFoundException e1) {
+						// no action 
+						
+					} catch (MessagingException e1) {
+						// no action
+						
+					} catch (IOException e1) {
+						// no action 
+						
+					}
+				}
+
+				addressBookDateBase.clocePeopleDateBase();
+
+				mainWindow.dispose();
+			}
+		});	
 			
 		}
 	
