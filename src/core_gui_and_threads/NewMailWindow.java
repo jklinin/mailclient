@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -57,11 +56,11 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 	public NewMailWindow(MessagesDate message) {// answer selected email
 
 		super("Answer Mail");
-		System.out.println(message.getTypeMessages());//TODO remove this
-//		if(message.getTypeMessages().equals("html")){
-//			contentType="text/html";
-//		}
+		if(message.getTypeMessages().equals("html")){
+			contentType="text/html";
+		}else{
 		contentType="text";
+		}
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setSize(800, 800);
@@ -135,7 +134,7 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		bccadr.addMouseListener(this);
 
 		scrollPane.setViewportView(emailbody);
-		emailbody.setContentType(contentType);
+		emailbody.setContentType(contentType); // set JEditorPane type
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.PAGE_END;
 		c.weighty = 1.2;
@@ -188,20 +187,21 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 		for (int i = 0; i < message.getAddressFrom().size(); i++) {
 			fromStringTemp = fromStringTemp + message.getAddressFrom().get(i) + "; ";
 		}
-		if(contentType.equals("text")){
-//		if (message.getTypeMessages().equals("text")) {
-//			emailbody.setContentType("text");
+		if (contentType.equals("text")) {
+			// if (message.getTypeMessages().equals("text")) {
+			// emailbody.setContentType("text");
 			emailbody.setText("\n\n\n\n____________________________________________________________________________________________________________\n" + "From: " + fromStringTemp + "\nTo: " + toStringTemp + "\nCC: " + ccStringTemp + "\n" + "BCC: " + bccStringString + "\n" + "Subject: "
 					+ message.getSubject() + "\nSent Date: " + message.getSentDate() + "\n" + message.getContent());
 		}
-		if(contentType.equals("text/html")){
-//		if (message.getTypeMessages().equals("html")) {
-//			contentType = "text/html";
-//			emailbody.setContentType("text/html");
-			emailbody.setText("<p></p><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>"
-					+ "Subject: " + message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + "<p>"+message.getContent()+"/p");
+		if (contentType.equals("text/html")) {
+			// if (message.getTypeMessages().equals("html")) {
+			// contentType = "text/html";
+			// emailbody.setContentType("text/html");
+			emailbody.setText("<p></p><p>____________________________________________________________________________________________________________ <br> From: " + fromStringTemp + "<br>To: " + toStringTemp + "<br>CC: " + ccStringTemp + "<br>" + "BCC: " + bccStringString + "<br>" + "Subject: "
+					+ message.getSubject() + "<br>Sent Date: " + message.getSentDate() + "<br></p>" + "<p>" + message.getContent() + "/p");
 		}
 	}
+	
 
 	// -------------Controller for buttons-------------------
 	/**
@@ -225,10 +225,10 @@ public class NewMailWindow extends JFrame implements ActionListener, MouseListen
 					bccadrTemp.add(bccadr.getText());
 					Date dateTemp = new Date();
 					ArrayList adrFromTemp = new ArrayList();
-					adrFromTemp.add("project_test91@mail.ru");
-					if (writteMail.sendEmail("project_test91@mail.ru", emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true) {
+					adrFromTemp.add(Run.getSettingUserName().toString());
+					if (writteMail.sendEmail(Run.getSettingUserName().toString(), emailadr.getText(), subj.getText(), emailbody.getText(), ccadr.getText(), bccadr.getText()) == true) {
 						if(MainWindow.messagesListSent!=null){
-							System.out.println(contentType);//TODO remove this
+						
 						MainWindow.messagesListSent.add(new MessagesDate(contentType, MainWindow.messagesListSent.size()+1, adrFromTemp, emlAdrTemp, subj.getText(), dateTemp.toGMTString(), ccadrTemp, bccadrTemp, emailbody.getText()));
 						}else{
 							MainWindow.messagesListSent= new ArrayList();
