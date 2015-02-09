@@ -81,7 +81,8 @@ public class PeopleDateBase {
 		public void run() {
 
 			WriteXMLAddressBook write = new WriteXMLAddressBook();
-			write.writeXMLAddressBook(peopleList);
+			write.setPeopleList(peopleList);
+			write.writeXMLAddressBook();
 
 		}
 
