@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
-
 import func_core.SaveReadFile;
 
 /**
@@ -26,25 +25,31 @@ public class AddRowsThread implements Runnable {
 		SaveReadFile readMailFile = new SaveReadFile();
 		if (folder.equals("Inbox")) {
 			MainWindow.messagesListInbox = readMailFile.readMessagesFile(folder);
+			int i;
+			if (MainWindow.messagesListInbox != null) {
+				if (MainWindow.messagesListInbox.size() > 0) {
+					i = MainWindow.messagesListInbox.size() - 1;
+				} else {
+					i = 0;
+				}
 
-			int i = MainWindow.messagesListInbox.size() - 1;
-			do {
+				do {
 
-				MainWindow.model.addRow(new Object[] { MainWindow.messagesListInbox.get(i).getAddressFrom(), MainWindow.messagesListInbox.get(i).getAddressTo(), MainWindow.messagesListInbox.get(i).getSubject(), MainWindow.messagesListInbox.get(i).getSentDate() });
-				i--;
+					MainWindow.model.addRow(new Object[] { MainWindow.messagesListInbox.get(i).getAddressFrom(), MainWindow.messagesListInbox.get(i).getAddressTo(), MainWindow.messagesListInbox.get(i).getSubject(), MainWindow.messagesListInbox.get(i).getSentDate() });
+					i--;
 
-			} while (i > 0);
+				} while (i > 0);
+			}
 		} else {
 			MainWindow.messagesListSent = readMailFile.readMessagesFile(folder);
 
 		}
 	}
+
 	/**
-	 * @author Yuri Kalinin
-	 * Provides error-handling for the case of
-	 * no RowTable found,
-	 * runs the addrows thread,
-	 * sets the status bar label in main window.
+	 * @author Yuri Kalinin Provides error-handling for the case of no RowTable
+	 *         found, runs the addrows thread, sets the status bar label in main
+	 *         window.
 	 */
 	@Override
 	public void run() {

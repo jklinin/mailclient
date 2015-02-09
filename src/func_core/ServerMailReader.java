@@ -148,7 +148,7 @@ public class ServerMailReader implements GetMailsServer {
 			if (content instanceof String) {
 				type = "text"; // set message type text
 				
-				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toString(), copyOnAddress, copyHideAddress, content.toString()));
+				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toGMTString(), copyOnAddress, copyHideAddress, content.toString()));
 			}
 			if (content instanceof Multipart) {
 				Multipart mp;
@@ -158,7 +158,7 @@ public class ServerMailReader implements GetMailsServer {
 					mp = (Multipart) content;
 					bodyPart = mp.getBodyPart(j);
 				}
-				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toString(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
+				messagesListInbox.add(new MessagesDate(type, messages[i].getMessageNumber(), fromAddress, toAddress, messages[i].getSubject(), messages[i].getSentDate().toGMTString(), copyOnAddress, copyHideAddress, bodyPart.getContent().toString()));
 				
 			}
 

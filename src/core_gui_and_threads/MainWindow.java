@@ -232,7 +232,7 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 			if (toggleSentFolder.getText() == "Sent Folder") {
 				folder = "Sent";
 				toggleSentFolder.setText("Inbox Folder");
-				if (messagesListSent.size() != 0) {
+				if (messagesListSent.size() > 0) {
 					int k = messagesListSent.size() - 1;
 					int rowCount = model.getRowCount();
 					// Remove rows one by one from the end of the table
