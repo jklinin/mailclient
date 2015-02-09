@@ -14,9 +14,9 @@ import javax.xml.bind.Marshaller;
  * @author Yuri Kalinin 
  * @version 1.0.0
  */
-public class WriteXMLAddressBook {
+public class WriteXMLAddressBook extends ReadWriteXMLAddressBook {
 
-	public void writeXMLAddressBook(ArrayList<People> peopleList) {
+	public void writeXMLAddressBook() {
 		RootXML people = new RootXML();
 
 		for (int i = 0; i < peopleList.size(); i++) {
@@ -24,7 +24,7 @@ public class WriteXMLAddressBook {
 		}
 		try {
 
-			File file = new File("file.xml");
+			File file = new File(fileName);
 			JAXBContext jaxbContext = JAXBContext.newInstance(RootXML.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
