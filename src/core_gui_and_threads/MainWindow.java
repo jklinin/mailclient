@@ -146,10 +146,10 @@ public class MainWindow extends JFrame implements ActionListener, ListSelectionL
 		// ----------------------------------------
 
 		// --------------------------JLabels--------------------
-		previewlabel.setText("Incoming mail" + "          ");
+		previewlabel.setText("Emails" + "          ");
 		previewlabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		buttonsPanel.add(previewlabel, 0);
-		viewlabel.setText("          " + "Mail content");
+		viewlabel.setText("          " + "Email preview ");
 		viewlabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		buttonsPanel.add(viewlabel, 6);
 
